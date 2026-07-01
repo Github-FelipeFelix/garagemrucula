@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Car } from "@/lib/types";
 import { formatBRL, formatKm } from "@/lib/format";
+import { ImageOff } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 
 export function CarCard({ car, priority = false }: { car: Car; priority?: boolean }) {
@@ -29,7 +30,10 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
             priority={priority}
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-muted">sem foto</div>
+          <div className="flex h-full flex-col items-center justify-center gap-1 text-muted">
+            <ImageOff size={22} />
+            <span className="text-xs">foto em breve</span>
+          </div>
         )}
 
         <div className="absolute left-3 top-3">
