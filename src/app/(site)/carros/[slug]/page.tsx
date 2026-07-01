@@ -21,7 +21,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const car = await getCarBySlug(slug);
   if (!car) return { title: "Carro não encontrado" };
-  const cover = car.photos?.[0]?.url;
   const desc =
     car.description?.slice(0, 160) ||
     [car.year, car.km != null ? formatKm(car.km) : null, formatBRL(car.price)]
@@ -33,7 +32,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     openGraph: {
       title: car.title,
       description: desc,
-      images: cover ? [cover] : ["/og.jpg"],
       url: `${siteUrl()}/carros/${car.slug}`,
     },
   };

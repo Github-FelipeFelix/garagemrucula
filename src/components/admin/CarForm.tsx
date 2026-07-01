@@ -7,6 +7,7 @@ import type { Car, CarSale } from "@/lib/types";
 import { PhotoUploader } from "./PhotoUploader";
 import { VideoUploader } from "./VideoUploader";
 import { QrCard } from "./QrCard";
+import { Toast } from "./Toast";
 
 type Media = { path: string; url: string };
 
@@ -41,6 +42,7 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
   function set<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -70,8 +72,11 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
       setSaving(false);
       return;
     }
-    router.push("/admin");
-    router.refresh();
+    setToast(editing ? "Alterações salvas! ✓" : "Carro criado! ✓");
+    setTimeout(() => {
+      router.push("/admin");
+      router.refresh();
+    }, 900);
   }
 
   async function onDelete() {
@@ -83,8 +88,11 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
       setSaving(false);
       return;
     }
-    router.push("/admin");
-    router.refresh();
+    setToast("Carro apagado.");
+    setTimeout(() => {
+      router.push("/admin");
+      router.refresh();
+    }, 700);
   }
 
   async function onDuplicate() {
@@ -97,8 +105,11 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
       setSaving(false);
       return;
     }
-    router.push(`/admin/carros/${j.id}`);
-    router.refresh();
+    setToast("Carro duplicado! ✓");
+    setTimeout(() => {
+      router.push(`/admin/carros/${j.id}`);
+      router.refresh();
+    }, 700);
   }
 
   return (
@@ -193,6 +204,7 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
         </section>
       )}
 
+      {toast && <Toast message={toast} />}
       {error && <p className="text-sm text-red-400">{error}</p>}
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/95 p-3 backdrop-blur">

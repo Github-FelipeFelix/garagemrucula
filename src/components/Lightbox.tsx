@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 type LightboxItem = { type: "photo" | "video"; url: string; path: string };
 
-// Galeria em tela cheia: abre a foto grande, navega por swipe (mobile), setas
-// (desktop) e teclado; swipe pra baixo ou ESC fecha. Mobile-first para eventos.
+const MAX_ZOOM = 4;
+const DBL_ZOOM = 2.5;
+
+// Galeria em tela cheia: navega por swipe (mobile), setas (desktop) e teclado.
+// Zoom pra ver detalhes do carro: toque duplo, pinça (2 dedos) ou duplo-clique;
+// quando ampliado, arrastar move a foto (pan) e o swipe de navegação é desativado.
 export function Lightbox({
   items,
   index,
@@ -21,16 +25,50 @@ export function Lightbox({
   onClose: () => void;
   onNavigate: (i: number) => void;
 }) {
-  const startX = useRef<number | null>(null);
-  const startY = useRef<number | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [smooth, setSmooth] = useState(false);
+
+  const g = useRef({
+    dragging: false,
+    startX: 0,
+    startY: 0,
+    panX: 0,
+    panY: 0,
+    pinchDist: 0,
+    pinchZoom: 1,
+    lastTap: 0,
+    moved: false,
+  });
+
+  const many = items.length > 1;
+  const zoomed = zoom > 1.01;
+  const cur = items[index];
+
+  const reset = useCallback(() => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }, []);
 
   const go = useCallback(
     (dir: number) => {
-      const n = items.length;
-      if (n > 1) onNavigate((index + dir + n) % n);
+      if (items.length > 1) onNavigate((index + dir + items.length) % items.length);
     },
     [index, items.length, onNavigate],
   );
+
+  // Toque/clique duplo alterna o zoom com uma animaçãozinha suave.
+  const toggleZoom = useCallback(() => {
+    setSmooth(true);
+    setZoom((z) => (z > 1.01 ? 1 : DBL_ZOOM));
+    setPan({ x: 0, y: 0 });
+    setTimeout(() => setSmooth(false), 200);
+  }, []);
+
+  // Reseta o zoom ao trocar de foto.
+  useEffect(() => {
+    reset();
+  }, [index, reset]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -39,7 +77,6 @@ export function Lightbox({
       else if (e.key === "ArrowLeft") go(-1);
     }
     window.addEventListener("keydown", onKey);
-    // Trava o scroll do body enquanto o lightbox está aberto.
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -48,22 +85,94 @@ export function Lightbox({
     };
   }, [go, onClose]);
 
-  const cur = items[index];
-  const many = items.length > 1;
+  function clampPan(x: number, y: number, z: number) {
+    const max = 260 * (z - 1);
+    return { x: Math.max(-max, Math.min(max, x)), y: Math.max(-max, Math.min(max, y)) };
+  }
+  function dist(a: React.Touch, b: React.Touch) {
+    return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+  }
 
   function onTouchStart(e: React.TouchEvent) {
-    startX.current = e.touches[0].clientX;
-    startY.current = e.touches[0].clientY;
+    const s = g.current;
+    if (e.touches.length === 2) {
+      s.pinchDist = dist(e.touches[0], e.touches[1]);
+      s.pinchZoom = zoom;
+      s.dragging = false;
+      s.moved = true;
+    } else if (e.touches.length === 1) {
+      s.startX = e.touches[0].clientX;
+      s.startY = e.touches[0].clientY;
+      s.panX = pan.x;
+      s.panY = pan.y;
+      s.dragging = true;
+      s.moved = false;
+    }
   }
+
+  function onTouchMove(e: React.TouchEvent) {
+    const s = g.current;
+    if (e.touches.length === 2 && s.pinchDist > 0) {
+      const next = Math.max(1, Math.min(MAX_ZOOM, s.pinchZoom * (dist(e.touches[0], e.touches[1]) / s.pinchDist)));
+      setZoom(next);
+      if (next <= 1.01) setPan({ x: 0, y: 0 });
+      s.moved = true;
+    } else if (e.touches.length === 1 && s.dragging) {
+      const dx = e.touches[0].clientX - s.startX;
+      const dy = e.touches[0].clientY - s.startY;
+      if (Math.abs(dx) > 6 || Math.abs(dy) > 6) s.moved = true;
+      if (zoomed) setPan(clampPan(s.panX + dx, s.panY + dy, zoom));
+    }
+  }
+
   function onTouchEnd(e: React.TouchEvent) {
-    if (startX.current == null || startY.current == null) return;
-    const dx = e.changedTouches[0].clientX - startX.current;
-    const dy = e.changedTouches[0].clientY - startY.current;
-    startX.current = null;
-    startY.current = null;
-    // Swipe horizontal claro navega; swipe pra baixo fecha.
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
-    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) onClose();
+    const s = g.current;
+    const ended = e.touches.length === 0;
+    // Toque duplo (toque simples, parado): alterna zoom.
+    if (ended && !s.moved && e.changedTouches.length === 1) {
+      const now = Date.now();
+      if (now - s.lastTap < 300) {
+        toggleZoom();
+        s.lastTap = 0;
+        s.dragging = false;
+        return;
+      }
+      s.lastTap = now;
+    }
+    // Swipe (só quando NÃO ampliado, e houve movimento): navega ou fecha.
+    if (ended && !zoomed && s.moved) {
+      const t = e.changedTouches[0];
+      if (t) {
+        const dx = t.clientX - s.startX;
+        const dy = t.clientY - s.startY;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
+        else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) onClose();
+      }
+    }
+    if (ended) {
+      s.dragging = false;
+      s.pinchDist = 0;
+    }
+  }
+
+  // Pan com o mouse no desktop (quando ampliado).
+  function onMouseDown(e: React.MouseEvent) {
+    if (!zoomed) return;
+    const s = g.current;
+    s.dragging = true;
+    s.startX = e.clientX;
+    s.startY = e.clientY;
+    s.panX = pan.x;
+    s.panY = pan.y;
+    e.preventDefault();
+  }
+  function onMouseMove(e: React.MouseEvent) {
+    const s = g.current;
+    if (!s.dragging || !zoomed) return;
+    setPan(clampPan(s.panX + (e.clientX - s.startX), s.panY + (e.clientY - s.startY), zoom));
+  }
+  function endMouse() {
+    g.current.dragging = false;
   }
 
   return (
@@ -86,26 +195,43 @@ export function Lightbox({
       </div>
 
       <div
-        className="relative flex flex-1 items-center justify-center overflow-hidden px-2 pb-2"
+        className="relative flex flex-1 items-center justify-center overflow-hidden"
+        style={{ touchAction: "none" }}
         onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={endMouse}
+        onMouseLeave={endMouse}
+        onDoubleClick={cur.type === "photo" ? toggleZoom : undefined}
       >
         {cur.type === "photo" ? (
-          <Image
-            key={cur.path}
-            src={cur.url}
-            alt={title}
-            fill
-            sizes="100vw"
-            quality={95}
-            className="object-contain"
-            priority
-          />
+          <div
+            className="relative h-full w-full"
+            style={{
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+              transition: smooth ? "transform 0.18s ease" : "none",
+              cursor: zoomed ? "grab" : "zoom-in",
+            }}
+          >
+            <Image
+              key={cur.path}
+              src={cur.url}
+              alt={title}
+              fill
+              sizes="100vw"
+              quality={95}
+              className="select-none object-contain"
+              draggable={false}
+              priority
+            />
+          </div>
         ) : (
           <video src={cur.url} controls autoPlay playsInline className="max-h-full max-w-full" />
         )}
 
-        {many && (
+        {many && !zoomed && (
           <>
             <button
               type="button"
@@ -124,6 +250,12 @@ export function Lightbox({
               <ChevronRight size={28} />
             </button>
           </>
+        )}
+
+        {cur.type === "photo" && !zoomed && (
+          <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/70">
+            toque 2× ou pince pra ampliar
+          </span>
         )}
       </div>
 
