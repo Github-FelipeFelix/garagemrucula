@@ -74,7 +74,7 @@ export function Vitrine({ cars }: { cars: Car[] }) {
 
   return (
     <div>
-      <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-line bg-surface p-4">
+      <div className="glass mb-8 flex flex-col gap-3 rounded-2xl border border-line p-4 sm:sticky sm:top-16 sm:z-30">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold text-muted">
             <SlidersHorizontal size={16} /> Filtros
@@ -138,7 +138,7 @@ export function Vitrine({ cars }: { cars: Car[] }) {
       {filtered.length > 0 ? (
         <>
           <p className="mb-4 text-sm text-muted">{filtered.length} carro(s)</p>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((car) => (
               <CarCard key={car.id} car={car} />
             ))}

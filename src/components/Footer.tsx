@@ -7,7 +7,7 @@ import { WhatsAppIcon, InstagramIcon } from "./icons";
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-line bg-surface">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:justify-between">
+      <div data-reveal className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:justify-between">
         <div className="max-w-sm">
           <Image src="/logo.png" alt="Garagem Rúcula" width={160} height={117} className="h-14 w-auto" />
           <p className="mt-4 text-sm leading-relaxed text-muted">

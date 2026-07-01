@@ -187,9 +187,11 @@ export default async function CarPage({ params }: Params) {
 
       {related.length > 0 && (
         <section className="mt-16">
-          <p className="eyebrow mb-3">Veja também</p>
-          <h2 className="section-title mb-6">Outros carros</h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal>
+            <p className="eyebrow mb-3">Veja também</p>
+            <h2 className="section-title mb-6">Outros carros</h2>
+          </div>
+          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((c) => (
               <CarCard key={c.id} car={c} />
             ))}

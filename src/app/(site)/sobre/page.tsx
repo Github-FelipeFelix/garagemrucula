@@ -19,7 +19,7 @@ const DIFERENCIAIS = [
 export default function SobrePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <div className="flex flex-col items-center text-center">
+      <div data-reveal className="flex flex-col items-center text-center">
         <Image src="/logo.png" alt="Garagem Rúcula" width={220} height={160} className="h-auto w-40" />
         <p className="eyebrow mt-6">Nossa história</p>
         <h1 className="mt-3 font-display text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
@@ -27,7 +27,7 @@ export default function SobrePage() {
         </h1>
       </div>
 
-      <div className="mt-8 space-y-5 leading-relaxed text-muted">
+      <div data-reveal className="mt-8 space-y-5 leading-relaxed text-muted">
         <p>
           Tudo começou com um Fusca <span className="text-ink">verde rúcula</span> — turbo, rodas de
           Porsche, feito no capricho. Foi esse carro que deu nome à garagem e mostrou o caminho:
@@ -41,9 +41,12 @@ export default function SobrePage() {
         </p>
       </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-3">
+      <div data-reveal-stagger className="mt-10 grid gap-4 sm:grid-cols-3">
         {DIFERENCIAIS.map((d) => (
-          <div key={d.title} className="card p-5">
+          <div
+            key={d.title}
+            className="card relative p-5 transition-all duration-300 hover:-translate-y-1 hover:border-rucula/50"
+          >
             <d.icon className="h-6 w-6 text-rucula-bright" />
             <h3 className="mt-3 font-display font-bold">{d.title}</h3>
             <p className="mt-1 text-sm text-muted">{d.text}</p>
@@ -51,7 +54,7 @@ export default function SobrePage() {
         ))}
       </div>
 
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
+      <div data-reveal className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
         <a
           href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
           target="_blank"

@@ -48,7 +48,7 @@ export function InstallApp() {
   }
 
   return (
-    <div className="relative mx-auto flex max-w-6xl items-center gap-3 rounded-2xl border border-rucula/30 bg-petroleo/25 py-3 pl-4 pr-9">
+    <div className="relative mx-auto flex max-w-6xl items-center gap-3 rounded-2xl border border-rucula/30 bg-petroleo/25 py-3 pl-4 pr-9 backdrop-blur-md">
       <Download className="hidden shrink-0 text-rucula-bright sm:block" />
       <div className="flex-1">
         <p className="font-semibold">Instale o app da Garagem Rúcula 📲</p>

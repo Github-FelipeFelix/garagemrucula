@@ -17,7 +17,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
   return (
     <Link
       href={`/carros/${car.slug}`}
-      className="group card relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60"
+      className="group card spotlight relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60 hover:shadow-[0_22px_44px_-24px_rgba(36,165,75,0.7)]"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-2">
         {cover ? (
@@ -56,7 +56,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="relative z-[2] flex flex-1 flex-col gap-2 p-4">
         <h3 className="line-clamp-2 font-display text-lg font-bold leading-tight text-ink">
           {car.title}
         </h3>

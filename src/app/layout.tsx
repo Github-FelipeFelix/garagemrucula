@@ -60,8 +60,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="pt-BR"
       data-scroll-behavior="smooth"
       className={`${geist.variable} ${exo2.variable} ${jetbrains.variable}`}
+      suppressHydrationWarning
     >
       <body className="min-h-dvh bg-bg text-ink">
+        {/* Marca "js-reveal" ANTES da 1ª pintura: só então o CSS esconde os
+            elementos de reveal-on-scroll. Sem JS, nada fica invisível. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js-reveal')",
+          }}
+        />
         {children}
         <ServiceWorkerRegister />
         <Analytics />

@@ -19,13 +19,18 @@ export default async function HomePage() {
     <>
       {/* HERO — marca (sem video, por decisao de produto), com orbs de glow */}
       <section className="relative overflow-hidden border-b border-line">
+        <div className="hero-grid" />
         <div
-          className="orb -left-24 -top-32 h-[380px] w-[380px]"
+          className="orb orb-float-a -left-24 -top-32 h-[380px] w-[380px]"
           style={{ background: "radial-gradient(circle, #013c43 0%, transparent 70%)" }}
         />
         <div
-          className="orb -right-24 top-10 h-[420px] w-[420px]"
+          className="orb orb-float-b -right-24 top-10 h-[420px] w-[420px]"
           style={{ background: "radial-gradient(circle, rgba(36,165,75,0.35) 0%, transparent 70%)" }}
+        />
+        <div
+          className="orb orb-float-c -bottom-32 left-1/2 h-[300px] w-[300px] -translate-x-1/2"
+          style={{ background: "radial-gradient(circle, rgba(243,232,56,0.16) 0%, transparent 70%)" }}
         />
 
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center sm:py-28">
@@ -38,7 +43,7 @@ export default async function HomePage() {
             priority
           />
           <h1 className="fade-up fade-up-1 font-display text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-7xl">
-            Garagem <span className="text-rucula-bright">Rúcula</span>
+            Garagem <span className="text-rucula-bright text-glow-rucula">Rúcula</span>
           </h1>
           <p className="fade-up fade-up-2 max-w-xl text-lg text-muted">
             Carros antigos, importados e modificados. Fuscas, kombis e projetos que contam história.
@@ -67,11 +72,13 @@ export default async function HomePage() {
       {/* DESTAQUES */}
       {featured.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-16">
-          <p className="eyebrow mb-3">Seleção da casa</p>
-          <h2 className="section-title mb-6">
-            Em <span className="text-senna">destaque</span>
-          </h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal>
+            <p className="eyebrow mb-3">Seleção da casa</p>
+            <h2 className="section-title mb-6">
+              Em <span className="text-senna">destaque</span>
+            </h2>
+          </div>
+          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((car, i) => (
               <CarCard key={car.id} car={car} priority={i < 3} />
             ))}
@@ -81,7 +88,7 @@ export default async function HomePage() {
 
       {/* À VENDA */}
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="mb-6 flex items-end justify-between gap-4">
+        <div data-reveal className="mb-6 flex items-end justify-between gap-4">
           <div>
             <p className="eyebrow mb-3">Disponíveis agora</p>
             <h2 className="section-title">À venda</h2>
@@ -95,13 +102,13 @@ export default async function HomePage() {
         </div>
 
         {disponiveis.length > 0 ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {disponiveis.slice(0, 6).map((car) => (
               <CarCard key={car.id} car={car} />
             ))}
           </div>
         ) : (
-          <div className="card px-6 py-14 text-center">
+          <div data-reveal className="card px-6 py-14 text-center">
             <p className="font-display text-xl font-bold">
               {hasCars ? "Nenhum carro disponível no momento." : "Em breve, novos carros por aqui."}
             </p>

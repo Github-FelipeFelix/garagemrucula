@@ -27,8 +27,8 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b backdrop-blur transition-colors ${
-        scrolled ? "border-line bg-bg/90 shadow-lg shadow-black/30" : "border-transparent bg-bg/70"
+      className={`sticky top-0 z-40 border-b backdrop-blur-xl transition-colors ${
+        scrolled ? "border-line bg-bg/80 shadow-lg shadow-black/30" : "border-transparent bg-bg/50"
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
