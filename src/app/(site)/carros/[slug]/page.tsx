@@ -86,12 +86,13 @@ export default async function CarPage({ params }: Params) {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ViewTracker carId={car.id} />
+      <div className="mx-auto max-w-6xl px-4 py-8">
+        <ViewTracker carId={car.id} />
       <Link
         href="/carros"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted transition hover:text-ink"
@@ -195,6 +196,7 @@ export default async function CarPage({ params }: Params) {
           </div>
         </section>
       )}
-    </div>
+      </div>
+    </>
   );
 }
