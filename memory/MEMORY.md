@@ -1,17 +1,19 @@
 # Memory Index — Garagem Rúcula
 
-## ➤ ONDE PARAMOS — ler ISTO primeiro · atualizar por último (att. 30/06/2026 — KICKOFF)
-> Ponto único de continuidade entre os 2 PCs (pasta sincroniza pelo Google Drive). Início de sessão: ler este bloco. Fim de sessão: reescrevê-lo. **O canônico vive também no `CLAUDE.md` da raiz** (carrega automático mesmo antes da memória).
+## ➤ ONDE PARAMOS — ler ISTO primeiro · atualizar por último (att. 01/07/2026)
+> Ponto único de continuidade entre os 2 PCs, sincronizado via **GitHub**. Início de sessão: ler este bloco. Fim de sessão: reescrevê-lo. **O canônico vive também no `CLAUDE.md` da raiz.**
 
-**🔴 INÍCIO DE TODA SESSÃO:** o hook `SessionStart` (`.claude/settings.json`) roda `scripts/sessao-inicio.ps1` → sincroniza git (se houver remote) + conserta o ponteiro de memória DESTA máquina. **1ª vez em cada PC:** rodar na mão `& "<repo>\scripts\sessao-inicio.ps1"` e **REINICIAR o Claude**.
+**🔴 MUDANÇA (01/07): o projeto SAIU do Google Drive → agora vive em DISCO LOCAL + GitHub.** Motivo: `npm install` corrompe no Drive (EBADF/EPERM — o G: nem aceita junction). Working dir do PC principal: **`C:\dev\garagemrucula`**. O **GitHub** (`github.com/Github-FelipeFelix/garagemrucula`) é a fonte da verdade e sincroniza TUDO (código + markdowns + `memory/`). A pasta antiga do Drive (`G:\...\Garagem Rucula`) está **APOSENTADA** (só guarda o `.env.local`). **SEMPRE abrir o Claude em `C:\dev\garagemrucula`.**
 
-**Projeto:** vitrine de carros do primo do Felipe (compra/venda de antigos, importados e modificados — turbo, rebaixado). Cliente vê o disponível → vai pro WhatsApp (+55 19 97416-5880) ou Instagram [@garagem_rucula](https://www.instagram.com/garagem_rucula/). Tem `/admin` mobile-first.
+**INÍCIO DE SESSÃO:** hook `SessionStart` → `sessao-inicio.ps1` faz `git pull` (ff-only) + conserta ponteiro de memória. **FIM DE SESSÃO:** `git push`. **PC novo:** `git clone <repo> C:\dev\garagemrucula` → copiar `.env.local` → `npm install`. **Node 20 dá warning** (supabase-js quer 22); funciona, mas ideal atualizar p/ Node 22.
 
-**Feito em 30/06 (kickoff):** scaffold Next.js 16.2.9 + React 19 + TS + Tailwind v4 (raiz); infra de continuidade 2-PCs (sessao-inicio.ps1 + hook + memory + CLAUDE.md); decisões de produto fechadas.
+**Projeto:** vitrine de carros (compra/venda de antigos, importados, modificados). Cliente → WhatsApp (+55 19 97416-5880) ou Instagram @garagem_rucula. `/admin` mobile-first.
 
-**PRÓXIMOS PASSOS:** (1) GitHub: pegar URL do repo c/ Felipe → `git remote add origin` → push. (2) Vercel: hospedar na conta EXISTENTE dele (`felipeherrera.contato@gmail.com`, Hobby s/ limite de projetos) conectada ao repo. (3) Supabase: pegar chaves do projeto novo (`garagemrucula@gmail.com`) → `.env.local` + schema tabela `cars` + storage + RLS. (4) Design tokens (paleta do logo) + processar logo, SEM vídeo na home. (5) PWA (manifest + SW network-first). (6) Site público + /admin. Testar de verdade (Chrome :9222 + dev-browser), desktop E mobile.
+**FEITO (01/07):** ✅ GitHub (6 commits). ✅ `.env.local` c/ chaves Supabase (ref do projeto: `lryzyydzjodywvzhiumx`, derivado do JWT). ✅ Logo → ícones PWA + favicon + og (via sharp). ✅ Design tokens (cores AMOSTRADAS do logo). ✅ Camada Supabase (clients read/server/admin, tipos, queries), `proxy.ts` (protege /admin), schema SQL. ✅ **SITE PÚBLICO COMPLETO E VALIDADO no browser** (home, vitrine c/ filtros, página do carro, sobre, 404) — desktop+mobile lindos, build de produção passa limpo.
 
-**Decisões fechadas:** sem vídeo na home; tema escuro/preto; vendidos ficam com selo "VENDIDO"; extras v1 = QR por carro + captura de leads + contador de views + histórico de vendas (TODOS). Paleta: verde rúcula + amarelo Senna + azul Senna sobre preto (detalhe no CLAUDE.md).
+**PRÓXIMOS PASSOS:** (1) ⚠️ **Felipe roda `supabase/migrations/0001_init.sql`** no SQL Editor do Supabase (DDL; desbloqueia os dados). (2) Felipe configura **Vercel** (import do repo + 4 env vars do `.env.local`) → site no ar. (3) Construir **/admin** (login email+senha, CRUD carros c/ upload+dnd, leads, views, QR, histórico vendas). (4) **PWA service worker** network-first. (5) Após SQL: criar user admin + carro de teste via service_role e testar tudo.
+
+**Decisões fechadas:** sem vídeo na home; tema escuro/preto; vendidos c/ selo "VENDIDO"; extras v1 = QR + leads + views + histórico vendas (TODOS). Paleta: verde rúcula #24a54b (claro #4ade80) + petróleo #013c43 + amarelo Senna #f3e838 + azul #204ba0 sobre preto #0a0a0a.
 
 **Contas:** Supabase = conta NOVA `garagemrucula@gmail.com` (free 2 projetos/conta, e o Rebobina já ocupa a do Felipe). Vercel = conta atual do Felipe (Hobby não limita projetos; SMS não chega no e-mail novo). GitHub = repo na conta do Felipe (pegar URL).
 

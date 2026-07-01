@@ -5,23 +5,28 @@
 ---
 
 ## 🟢 ONDE PARAMOS — ler ISTO primeiro · atualizar por último
-> Ponto único de continuidade entre os 2 PCs (a pasta sincroniza pelo Google Drive). Início de sessão: ler isto. Fim de sessão: reescrever isto + os arquivos de `memory/`.
+> Ponto único de continuidade entre os 2 PCs, sincronizado via **GitHub** (não mais pelo Drive). Início de sessão: ler isto. Fim de sessão: reescrever isto + os arquivos de `memory/`.
 
-**Estado (sessão 30/06/2026 — kickoff, PC principal C:):** Projeto recém-criado. Já feito nesta sessão:
-- ✅ Scaffold **Next.js 16.2.9 + React 19.2.4 + TypeScript + Tailwind v4** na raiz da pasta (criado via create-next-app, movido pra raiz). `git init` local feito pelo create-next-app (SEM remote ainda).
-- ✅ Infra de **continuidade entre 2 PCs**: `scripts/sessao-inicio.ps1` + hook `SessionStart` em `.claude/settings.json` + pasta `memory/` + este CLAUDE.md.
-- ✅ Decisões de produto fechadas (abaixo).
-- ⚠️ **Logo** está em `Logos/Logo Garagem Rucula.pdf.png` (fusca verde rúcula + kombi branca + Senna sobre fundo preto/amarelo/azul). Ainda NÃO processado para o site/PWA.
+**🔴 MUDANÇA DE ARQUITETURA (01/07/2026):** o projeto SAIU do Google Drive e agora vive em **disco local + GitHub**. Motivo: `npm install` corrompe na pasta do Drive (EBADF/EPERM; o G: nem aceita junction).
+- **Working dir do PC principal:** `C:\dev\garagemrucula`. **SEMPRE abrir o Claude aqui** (não no Drive).
+- **Fonte da verdade:** GitHub `github.com/Github-FelipeFelix/garagemrucula`. Sincroniza código + markdowns + `memory/`. Início de sessão faz `git pull`; fim faz `git push`.
+- Pasta antiga do Drive `G:\...\Garagem Rucula` está **APOSENTADA** (só guarda o `.env.local`, que não vai no git).
+- **Setup de PC novo:** `git clone <repo> C:\dev\garagemrucula` → copiar o `.env.local` → `npm install`. (Node 20 dá warning do supabase-js; funciona, mas ideal atualizar p/ Node 22.)
+
+**Estado (att. 01/07/2026):**
+- ✅ **GitHub** configurado (6 commits). **Supabase** `.env.local` com as chaves (ref do projeto `lryzyydzjodywvzhiumx`, derivado do JWT).
+- ✅ **Logo processado** → ícones PWA + favicon + og (via sharp). **Design tokens** com cores AMOSTRADAS do logo.
+- ✅ **Camada Supabase**: clients (read anon / server / admin service-role), tipos, queries; `proxy.ts` protege /admin; schema SQL escrito.
+- ✅ **Site público COMPLETO e VALIDADO** no browser (desktop+mobile): home (hero + destaques + grid), vitrine c/ filtros, página do carro (galeria fotos+vídeos, ficha, "tenho interesse"→WhatsApp+lead, views, compartilhar, selo VENDIDO), sobre, 404. Build de produção passa limpo.
 
 **PRÓXIMOS PASSOS (em ordem):**
-1. **Vercel:** hospedar na conta Vercel EXISTENTE do Felipe (`felipeherrera.contato@gmail.com`) — Hobby não limita nº de projetos, fica grátis. (Não criar conta nova: o SMS de verificação não chega no `garagemrucula@gmail.com` porque o celular já está atrelado à conta dele.) Conectar ao repo do GitHub.
-2. **GitHub:** Felipe criou um repo. **PEGAR A URL** com ele → `git remote add origin <url>` → primeiro push. (Sem remote, o `sessao-inicio.ps1` pula o sync de código, mas a pasta sincroniza pelo Drive mesmo assim.)
-3. **Supabase:** Felipe JÁ criou o projeto na conta nova `garagemrucula@gmail.com`. **PEGAR as chaves** (Project Settings → API: Project URL, anon key, service_role) → montar `.env.local`. Criar schema (tabela `cars` + storage de fotos/vídeos + RLS).
-4. **Design tokens** (paleta abaixo) em `globals.css` + fontes; processar o logo; **sem vídeo na home**.
-5. **PWA** (manifest + service worker network-first) — copiar padrão do Rebobina.
-6. Construir **site público** e **/admin** (escopo abaixo). Testar de verdade (Chrome real :9222 + dev-browser), desktop E mobile, antes de dizer "feito".
+1. ⚠️ **Felipe roda `supabase/migrations/0001_init.sql`** no SQL Editor do Supabase (DDL não passa pela API REST; desbloqueia os dados).
+2. **Felipe configura a Vercel:** import do repo + 4 env vars (as do `.env.local`) na conta dele (`felipeherrera.contato@gmail.com`, Hobby). Deploy automático a cada `git push origin main`.
+3. Construir **/admin** (login email+senha, CRUD carros c/ upload+dnd, leads, views, QR, histórico de vendas). Mobile-first.
+4. **PWA service worker** network-first (regra 5/10).
+5. Após o SQL: criar user admin + carro de teste via service_role e testar tudo de ponta a ponta.
 
-**Contas (resolvendo o medo de virar pagante):** o limite que pega é **Supabase free = 2 projetos por conta** (e o Rebobina já ocupa a do Felipe) → por isso o Supabase do Rúcula é uma **conta nova** (`garagemrucula@gmail.com`), cota grátis fresca. Vercel Hobby NÃO limita nº de projetos → hospeda na conta atual do Felipe sem custo.
+**Contas:** Supabase = conta NOVA `garagemrucula@gmail.com` (free = 2 projetos/conta; a do Felipe já tem o Rebobina). Vercel = conta do Felipe (`felipeherrera.contato@gmail.com`, Hobby s/ limite de projetos). git `user.email = felipeherrera.contato@gmail.com` (precisa bater com a Vercel).
 
 ---
 
