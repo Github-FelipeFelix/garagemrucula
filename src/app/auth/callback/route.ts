@@ -20,6 +20,11 @@ export async function GET(request: NextRequest) {
       const base = !isLocal && forwardedHost ? `https://${forwardedHost}` : origin;
       return NextResponse.redirect(`${base}${next}`);
     }
+    console.error("[auth/callback] falha ao trocar o code:", error.message);
+  } else {
+    // Sem code: o provedor devolveu um erro (ex.: acesso negado, app não verificado).
+    const provErr = searchParams.get("error_description") || searchParams.get("error");
+    console.error("[auth/callback] sem code; erro do provedor:", provErr ?? "(nenhum)");
   }
 
   // Falhou (code ausente/inválido ou e-mail não autorizado): volta pro login.
