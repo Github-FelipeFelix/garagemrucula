@@ -101,3 +101,23 @@ h1, h2, h3 {
     display: none;
   }
 }
+
+/* Botoes reutilizaveis */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition active:scale-95;
+  }
+  .btn-primary {
+    @apply bg-senna text-black hover:bg-senna/90;
+  }
+  .btn-zap {
+    @apply bg-zap text-white hover:brightness-110;
+  }
+  .btn-outline {
+    @apply border border-line bg-transparent text-ink hover:border-rucula-bright hover:text-rucula-bright;
+  }
+  /* Titulo de secao */
+  .section-title {
+    @apply font-display text-2xl font-extrabold uppercase tracking-tight sm:text-3xl;
+  }
+}

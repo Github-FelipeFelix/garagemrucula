@@ -1,0 +1,52 @@
+import Link from "next/link";
+import Image from "next/image";
+import { Instagram } from "lucide-react";
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/lib/site";
+import { whatsappLink } from "@/lib/format";
+import { WhatsAppIcon } from "./icons";
+
+export function Footer() {
+  return (
+    <footer className="mt-20 border-t border-line bg-surface">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:justify-between">
+        <div className="max-w-sm">
+          <Image src="/logo.png" alt="Garagem Rúcula" width={160} height={117} className="h-14 w-auto" />
+          <p className="mt-4 text-sm leading-relaxed text-muted">
+            Compra e venda de carros antigos, importados e modificados. Fuscas, kombis e projetos
+            que contam história.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="font-display text-sm font-bold uppercase tracking-wider text-muted">Contato</h3>
+          <a
+            href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 text-sm text-ink transition hover:text-zap"
+          >
+            <WhatsAppIcon className="h-5 w-5 text-zap" />
+            (19) 97416-5880
+          </a>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 text-sm text-ink transition hover:text-rucula-bright"
+          >
+            <Instagram size={20} className="text-rucula-bright" />
+            @{INSTAGRAM_HANDLE}
+          </a>
+          <nav className="mt-3 flex flex-col gap-2 text-sm text-muted">
+            <Link href="/carros" className="transition hover:text-ink">Ver carros</Link>
+            <Link href="/sobre" className="transition hover:text-ink">Sobre a garagem</Link>
+          </nav>
+        </div>
+      </div>
+
+      <div className="border-t border-line py-5 text-center text-xs text-muted">
+        © {new Date().getFullYear()} Garagem Rúcula. Todos os direitos reservados.
+      </div>
+    </footer>
+  );
+}
