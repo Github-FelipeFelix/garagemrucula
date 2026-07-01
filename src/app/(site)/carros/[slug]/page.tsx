@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Calendar, Gauge, Cog, Settings2, Palette, Fuel, Factory, Car, type LucideIcon } from "lucide-react";
 import { InstagramIcon } from "@/components/icons";
 import { getCarBySlug } from "@/lib/queries";
 import { CarGallery } from "@/components/CarGallery";
@@ -43,18 +43,19 @@ export default async function CarPage({ params }: Params) {
   const car = await getCarBySlug(slug);
   if (!car) notFound();
 
-  const specsRaw: Array<[string, string | number | null | undefined]> = [
-    ["Ano", car.year],
-    ["KM", car.km != null ? formatKm(car.km) : null],
-    ["Motor", car.engine],
-    ["Câmbio", car.transmission],
-    ["Cor", car.color],
-    ["Combustível", car.fuel],
-    ["Marca", car.brand],
-    ["Modelo", car.model],
+  type Spec = { icon: LucideIcon; label: string; value: string | number | null | undefined };
+  const specsRaw: Spec[] = [
+    { icon: Calendar, label: "Ano", value: car.year },
+    { icon: Gauge, label: "KM", value: car.km != null ? formatKm(car.km) : null },
+    { icon: Cog, label: "Motor", value: car.engine },
+    { icon: Settings2, label: "Câmbio", value: car.transmission },
+    { icon: Palette, label: "Cor", value: car.color },
+    { icon: Fuel, label: "Combustível", value: car.fuel },
+    { icon: Factory, label: "Marca", value: car.brand },
+    { icon: Car, label: "Modelo", value: car.model },
   ];
   const specs = specsRaw.filter(
-    (s): s is [string, string | number] => s[1] != null && s[1] !== "",
+    (s): s is Spec & { value: string | number } => s.value != null && s.value !== "",
   );
   const sold = car.status === "vendido";
   const url = `${siteUrl()}/carros/${car.slug}`;
@@ -93,10 +94,13 @@ export default async function CarPage({ params }: Params) {
 
           {specs.length > 0 && (
             <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
-              {specs.map(([k, v]) => (
-                <div key={k} className="bg-surface p-3">
-                  <dt className="text-xs uppercase tracking-wide text-muted">{k}</dt>
-                  <dd className="font-medium text-ink">{String(v)}</dd>
+              {specs.map(({ icon: Icon, label, value }) => (
+                <div key={label} className="flex items-center gap-2.5 bg-surface p-3">
+                  <Icon size={18} className="shrink-0 text-rucula-bright" />
+                  <div className="min-w-0">
+                    <dt className="text-[11px] uppercase tracking-wide text-muted">{label}</dt>
+                    <dd className="truncate font-medium text-ink">{String(value)}</dd>
+                  </div>
                 </div>
               ))}
             </dl>

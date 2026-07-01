@@ -14,6 +14,7 @@ export default async function CarrosPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
+      <p className="eyebrow mb-3">Vitrine</p>
       <h1 className="section-title mb-2">Carros</h1>
       <p className="mb-8 text-muted">Fuscas, kombis, antigos, importados e projetos modificados.</p>
       <Vitrine cars={cars} />

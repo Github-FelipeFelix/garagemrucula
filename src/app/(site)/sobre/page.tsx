@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Award, Wrench } from "lucide-react";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/lib/site";
 import { whatsappLink } from "@/lib/format";
@@ -9,14 +10,22 @@ export const metadata: Metadata = {
   description: "A história da Garagem Rúcula — do fusca verde rúcula ao nome que virou marca.",
 };
 
+const DIFERENCIAIS = [
+  { icon: Award, title: "Seleção a dedo", text: "Cada carro é escolhido e preparado com capricho — nada de qualquer coisa." },
+  { icon: Wrench, title: "Antigos e modificados", text: "Fuscas, kombis, importados e projetos turbo, rebaixado, rodas e som. O nicho é esse." },
+  { icon: WhatsAppIcon, title: "Papo direto", text: "Curtiu um carro? Fala com a gente na hora, no WhatsApp ou no Instagram." },
+];
+
 export default function SobrePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <Image src="/logo.png" alt="Garagem Rúcula" width={220} height={160} className="mx-auto h-auto w-40" />
-
-      <h1 className="mt-8 text-center font-display text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
-        A Garagem <span className="text-rucula-bright">Rúcula</span>
-      </h1>
+      <div className="flex flex-col items-center text-center">
+        <Image src="/logo.png" alt="Garagem Rúcula" width={220} height={160} className="h-auto w-40" />
+        <p className="eyebrow mt-6">Nossa história</p>
+        <h1 className="mt-3 font-display text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
+          A Garagem <span className="text-rucula-bright">Rúcula</span>
+        </h1>
+      </div>
 
       <div className="mt-8 space-y-5 leading-relaxed text-muted">
         <p>
@@ -30,10 +39,16 @@ export default function SobrePage() {
           um com sua história. Uma pegada que carrega a paixão pelo automobilismo e a homenagem eterna
           ao <span className="text-ink">Senna</span>, presente na nossa marca.
         </p>
-        <p>
-          Aqui no site você vê o que está disponível — fotos, ficha e modificações de cada carro. Curtiu
-          algum? É só chamar no WhatsApp ou no Instagram que a gente conversa.
-        </p>
+      </div>
+
+      <div className="mt-10 grid gap-4 sm:grid-cols-3">
+        {DIFERENCIAIS.map((d) => (
+          <div key={d.title} className="card p-5">
+            <d.icon className="h-6 w-6 text-rucula-bright" />
+            <h3 className="mt-3 font-display font-bold">{d.title}</h3>
+            <p className="mt-1 text-sm text-muted">{d.text}</p>
+          </div>
+        ))}
       </div>
 
       <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">

@@ -17,7 +17,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="font-display text-sm font-bold uppercase tracking-wider text-muted">Contato</h3>
+          <p className="eyebrow">Contato</p>
           <a
             href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
             target="_blank"
