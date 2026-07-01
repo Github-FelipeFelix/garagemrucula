@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getAdminUser } from "@/lib/auth";
-import { sanitizeCarInput, ensureUniqueSlug, REVALIDATE_PATHS } from "@/lib/car-input";
+import { sanitizeCarInput, sanitizeSale, ensureUniqueSlug, REVALIDATE_PATHS } from "@/lib/car-input";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -31,6 +31,14 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
   if (error) {
     console.error("[PATCH /api/admin/cars]", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  // Histórico de venda (privado): grava quando vendido, remove caso contrário.
+  const sale = sanitizeSale((body as Record<string, unknown>).sale);
+  if (input.status === "vendido" && sale) {
+    await supabase.from("car_sales").upsert({ car_id: id, ...sale });
+  } else if (input.status !== "vendido") {
+    await supabase.from("car_sales").delete().eq("car_id", id);
   }
 
   for (const p of REVALIDATE_PATHS) revalidatePath(p);

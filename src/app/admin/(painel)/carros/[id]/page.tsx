@@ -3,16 +3,22 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { CarForm } from "@/components/admin/CarForm";
-import type { Car } from "@/lib/types";
+import type { Car, CarSale } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-async function getCar(id: string): Promise<Car | null> {
+// 2 queries + join manual no TS (regra 1: sem embedded joins do PostgREST).
+async function getCarAndSale(id: string): Promise<{ car: Car; sale: CarSale | null } | null> {
   try {
     const supabase = createAdminClient();
-    const { data, error } = await supabase.from("cars").select("*").eq("id", id).maybeSingle();
-    if (error || !data) return null;
-    return data as Car;
+    const { data: car, error } = await supabase.from("cars").select("*").eq("id", id).maybeSingle();
+    if (error || !car) return null;
+    const { data: sale } = await supabase
+      .from("car_sales")
+      .select("*")
+      .eq("car_id", id)
+      .maybeSingle();
+    return { car: car as Car, sale: (sale as CarSale) ?? null };
   } catch {
     return null;
   }
@@ -22,8 +28,8 @@ type Params = { params: Promise<{ id: string }> };
 
 export default async function EditarCarroPage({ params }: Params) {
   const { id } = await params;
-  const car = await getCar(id);
-  if (!car) notFound();
+  const result = await getCarAndSale(id);
+  if (!result) notFound();
 
   return (
     <div>
@@ -31,7 +37,7 @@ export default async function EditarCarroPage({ params }: Params) {
         <ArrowLeft size={16} /> voltar
       </Link>
       <h1 className="mb-5 font-display text-2xl font-bold">Editar carro</h1>
-      <CarForm car={car} />
+      <CarForm car={result.car} sale={result.sale} />
     </div>
   );
 }

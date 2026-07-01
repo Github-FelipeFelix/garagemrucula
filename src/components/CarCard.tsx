@@ -16,7 +16,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
   return (
     <Link
       href={`/carros/${car.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition hover:border-rucula/60"
+      className="group card relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-2">
         {cover ? (

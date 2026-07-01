@@ -79,4 +79,17 @@ export async function ensureUniqueSlug(
   return `${root}-x`;
 }
 
+// Dados de venda (privados) — usados quando status = vendido.
+export function sanitizeSale(
+  v: unknown,
+): { sold_price: number | null; sold_at: string | null; notes: string | null } | null {
+  if (!v || typeof v !== "object") return null;
+  const s = v as Record<string, unknown>;
+  const sold_price = toNum(s.sold_price);
+  const sold_at = toStr(s.sold_at);
+  const notes = toStr(s.notes);
+  if (sold_price == null && !sold_at && !notes) return null;
+  return { sold_price, sold_at, notes };
+}
+
 export const REVALIDATE_PATHS = ["/", "/carros"] as const;

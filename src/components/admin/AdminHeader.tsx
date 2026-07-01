@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 const NAV = [
   { href: "/admin", label: "Carros" },
   { href: "/admin/leads", label: "Leads" },
+  { href: "/admin/vendas", label: "Vendas" },
 ];
 
 export function AdminHeader() {
@@ -50,6 +51,9 @@ export function AdminHeader() {
         <div className="flex items-center gap-3">
           <Link href="/" target="_blank" className="text-sm text-muted hover:text-ink">
             ver site
+          </Link>
+          <Link href="/admin/senha" className="text-sm text-muted hover:text-ink">
+            senha
           </Link>
           <button
             type="button"

@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { getFeaturedCars, getCars } from "@/lib/queries";
 import { CarCard } from "@/components/CarCard";
 import { WhatsAppIcon } from "@/components/icons";
+import { InstallApp } from "@/components/InstallApp";
 import { whatsappLink } from "@/lib/format";
 
 // ISR: revalida a cada 60s (o admin invalida na hora com revalidatePath ao salvar).
@@ -16,25 +17,33 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO — marca (sem video, por decisao de produto) */}
+      {/* HERO — marca (sem video, por decisao de produto), com orbs de glow */}
       <section className="relative overflow-hidden border-b border-line">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,#013c4366,transparent_60%)]" />
-        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center sm:py-24">
+        <div
+          className="orb -left-24 -top-32 h-[380px] w-[380px]"
+          style={{ background: "radial-gradient(circle, #013c43 0%, transparent 70%)" }}
+        />
+        <div
+          className="orb -right-24 top-10 h-[420px] w-[420px]"
+          style={{ background: "radial-gradient(circle, rgba(36,165,75,0.35) 0%, transparent 70%)" }}
+        />
+
+        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center sm:py-28">
           <Image
             src="/logo.png"
             alt="Garagem Rúcula"
             width={420}
             height={306}
-            className="h-auto w-52 sm:w-72"
+            className="fade-up h-auto w-52 drop-shadow-2xl sm:w-72"
             priority
           />
-          <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight sm:text-6xl">
+          <h1 className="fade-up fade-up-1 font-display text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-7xl">
             Garagem <span className="text-rucula-bright">Rúcula</span>
           </h1>
-          <p className="max-w-xl text-lg text-muted">
+          <p className="fade-up fade-up-2 max-w-xl text-lg text-muted">
             Carros antigos, importados e modificados. Fuscas, kombis e projetos que contam história.
           </p>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <div className="fade-up fade-up-3 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Link href="/carros" className="btn btn-primary">
               Ver carros disponíveis
             </Link>
@@ -51,9 +60,14 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <div className="px-4 pt-8">
+        <InstallApp />
+      </div>
+
       {/* DESTAQUES */}
       {featured.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-14">
+        <section className="mx-auto max-w-6xl px-4 py-16">
+          <p className="eyebrow mb-3">Seleção da casa</p>
           <h2 className="section-title mb-6">
             Em <span className="text-senna">destaque</span>
           </h2>
@@ -66,9 +80,12 @@ export default async function HomePage() {
       )}
 
       {/* À VENDA */}
-      <section className="mx-auto max-w-6xl px-4 py-14">
+      <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-6 flex items-end justify-between gap-4">
-          <h2 className="section-title">À venda</h2>
+          <div>
+            <p className="eyebrow mb-3">Disponíveis agora</p>
+            <h2 className="section-title">À venda</h2>
+          </div>
           <Link
             href="/carros"
             className="inline-flex items-center gap-1 text-sm font-medium text-rucula-bright hover:underline"
@@ -84,7 +101,7 @@ export default async function HomePage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-line bg-surface px-6 py-14 text-center">
+          <div className="card px-6 py-14 text-center">
             <p className="font-display text-xl font-bold">
               {hasCars ? "Nenhum carro disponível no momento." : "Em breve, novos carros por aqui."}
             </p>

@@ -8,10 +8,20 @@ import { CarCard } from "./CarCard";
 const selectClass =
   "rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-rucula-bright";
 
+const PRICE_RANGES = [
+  { value: "", label: "Qualquer preço" },
+  { value: "0-50000", label: "Até R$ 50 mil" },
+  { value: "50000-100000", label: "R$ 50–100 mil" },
+  { value: "100000-200000", label: "R$ 100–200 mil" },
+  { value: "200000-", label: "Acima de R$ 200 mil" },
+];
+
 export function Vitrine({ cars }: { cars: Car[] }) {
   const [q, setQ] = useState("");
   const [brand, setBrand] = useState("");
   const [tag, setTag] = useState("");
+  const [year, setYear] = useState("");
+  const [price, setPrice] = useState("");
   const [order, setOrder] = useState<"recentes" | "barato" | "caro">("recentes");
   const [showSold, setShowSold] = useState(true);
 
@@ -20,12 +30,22 @@ export function Vitrine({ cars }: { cars: Car[] }) {
     [cars],
   );
   const tags = useMemo(() => [...new Set(cars.flatMap((c) => c.tags))].sort(), [cars]);
+  const years = useMemo(
+    () => [...new Set(cars.map((c) => c.year).filter(Boolean) as number[])].sort((a, b) => b - a),
+    [cars],
+  );
 
   const filtered = useMemo(() => {
+    const [pMin, pMax] = price
+      ? price.split("-").map((n) => (n === "" ? null : Number(n)))
+      : [null, null];
     const out = cars.filter((c) => {
       if (!showSold && c.status === "vendido") return false;
       if (brand && c.brand !== brand) return false;
       if (tag && !c.tags.includes(tag)) return false;
+      if (year && String(c.year) !== year) return false;
+      if (pMin != null && (c.price ?? 0) < pMin) return false;
+      if (pMax != null && (c.price ?? Infinity) > pMax) return false;
       if (q) {
         const hay = `${c.title} ${c.brand ?? ""} ${c.model ?? ""} ${c.tags.join(" ")}`.toLowerCase();
         if (!hay.includes(q.toLowerCase())) return false;
@@ -40,14 +60,30 @@ export function Vitrine({ cars }: { cars: Car[] }) {
       });
     }
     return out;
-  }, [cars, q, brand, tag, order, showSold]);
+  }, [cars, q, brand, tag, year, price, order, showSold]);
+
+  const hasFilters = !!(q || brand || tag || year || price || !showSold);
+  function clearFilters() {
+    setQ("");
+    setBrand("");
+    setTag("");
+    setYear("");
+    setPrice("");
+    setShowSold(true);
+  }
 
   return (
     <div>
-      {/* Filtros */}
       <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-line bg-surface p-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-muted">
-          <SlidersHorizontal size={16} /> Filtros
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm font-semibold text-muted">
+            <SlidersHorizontal size={16} /> Filtros
+          </div>
+          {hasFilters && (
+            <button type="button" onClick={clearFilters} className="text-xs text-rucula-bright hover:underline">
+              limpar filtros
+            </button>
+          )}
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <div className="relative flex-1 sm:min-w-56">
@@ -59,19 +95,30 @@ export function Vitrine({ cars }: { cars: Car[] }) {
               className="w-full rounded-lg border border-line bg-bg py-2 pl-9 pr-3 text-sm text-ink outline-none focus:border-rucula-bright"
             />
           </div>
-          <select className={selectClass} value={brand} onChange={(e) => setBrand(e.target.value)}>
+          <select className={selectClass} value={brand} onChange={(e) => setBrand(e.target.value)} aria-label="Marca">
             <option value="">Todas as marcas</option>
             {brands.map((b) => (
               <option key={b} value={b}>{b}</option>
             ))}
           </select>
-          <select className={selectClass} value={tag} onChange={(e) => setTag(e.target.value)}>
+          <select className={selectClass} value={year} onChange={(e) => setYear(e.target.value)} aria-label="Ano">
+            <option value="">Qualquer ano</option>
+            {years.map((y) => (
+              <option key={y} value={String(y)}>{y}</option>
+            ))}
+          </select>
+          <select className={selectClass} value={price} onChange={(e) => setPrice(e.target.value)} aria-label="Faixa de preço">
+            {PRICE_RANGES.map((r) => (
+              <option key={r.value} value={r.value}>{r.label}</option>
+            ))}
+          </select>
+          <select className={selectClass} value={tag} onChange={(e) => setTag(e.target.value)} aria-label="Estilo">
             <option value="">Todos os estilos</option>
             {tags.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
-          <select className={selectClass} value={order} onChange={(e) => setOrder(e.target.value as typeof order)}>
+          <select className={selectClass} value={order} onChange={(e) => setOrder(e.target.value as typeof order)} aria-label="Ordenar">
             <option value="recentes">Mais recentes</option>
             <option value="barato">Menor preço</option>
             <option value="caro">Maior preço</option>
@@ -88,7 +135,6 @@ export function Vitrine({ cars }: { cars: Car[] }) {
         </div>
       </div>
 
-      {/* Resultados */}
       {filtered.length > 0 ? (
         <>
           <p className="mb-4 text-sm text-muted">{filtered.length} carro(s)</p>

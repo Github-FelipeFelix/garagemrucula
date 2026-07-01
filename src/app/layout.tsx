@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Archivo } from "next/font/google";
+import { Geist, Exo_2, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
@@ -9,10 +9,17 @@ const geist = Geist({
   display: "swap",
 });
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const exo2 = Exo_2({
+  variable: "--font-exo2",
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
+  weight: ["500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -48,7 +55,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${geist.variable} ${archivo.variable}`}>
+    <html
+      lang="pt-BR"
+      data-scroll-behavior="smooth"
+      className={`${geist.variable} ${exo2.variable} ${jetbrains.variable}`}
+    >
       <body className="min-h-dvh bg-bg text-ink">
         {children}
         <ServiceWorkerRegister />

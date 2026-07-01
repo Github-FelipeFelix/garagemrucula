@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2, Loader2 } from "lucide-react";
-import type { Car } from "@/lib/types";
+import type { Car, CarSale } from "@/lib/types";
 import { PhotoUploader } from "./PhotoUploader";
+import { VideoUploader } from "./VideoUploader";
 import { QrCard } from "./QrCard";
 import { siteUrl } from "@/lib/site";
 
 type Media = { path: string; url: string };
 
-export function CarForm({ car }: { car?: Car }) {
+export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
   const router = useRouter();
   const editing = !!car;
 
@@ -33,6 +34,12 @@ export function CarForm({ car }: { car?: Car }) {
     mods: (car?.mods ?? []).join("\n"),
   });
   const [photos, setPhotos] = useState<Media[]>(car?.photos ?? []);
+  const [videos, setVideos] = useState<Media[]>(car?.videos ?? []);
+  const [saleForm, setSaleForm] = useState({
+    sold_price: sale?.sold_price?.toString() ?? "",
+    sold_at: sale?.sold_at ?? "",
+    notes: sale?.notes ?? "",
+  });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,6 +56,8 @@ export function CarForm({ car }: { car?: Car }) {
       tags: form.tags.split(",").map((s) => s.trim()).filter(Boolean),
       mods: form.mods.split("\n").map((s) => s.trim()).filter(Boolean),
       photos,
+      videos,
+      sale: saleForm,
     };
     const url = editing ? `/api/admin/cars/${car.id}` : "/api/admin/cars";
     const res = await fetch(url, {
@@ -123,6 +132,10 @@ export function CarForm({ car }: { car?: Car }) {
           <PhotoUploader value={photos} onChange={setPhotos} />
         </div>
         <div>
+          <label className="label">Vídeos (opcional)</label>
+          <VideoUploader value={videos} onChange={setVideos} />
+        </div>
+        <div>
           <label className="label">Tags do nicho (separadas por vírgula)</label>
           <input className="input" value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="turbo, rebaixado, antigo, importado" />
         </div>
@@ -135,6 +148,30 @@ export function CarForm({ car }: { car?: Car }) {
           <textarea className="input min-h-32" value={form.description} onChange={(e) => set("description", e.target.value)} placeholder="Conte a história e o estado do carro…" />
         </div>
       </section>
+
+      {/* Venda (PRIVADO) — aparece só quando o status é vendido */}
+      {form.status === "vendido" && (
+        <section className="flex flex-col gap-4 rounded-xl border border-senna/30 bg-surface p-4">
+          <div>
+            <p className="font-display font-bold text-senna">Venda (particular)</p>
+            <p className="text-xs text-muted">Controle só seu — nunca aparece no site.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+              <label className="label">Valor da venda (R$)</label>
+              <input className="input" inputMode="numeric" value={saleForm.sold_price} onChange={(e) => setSaleForm((s) => ({ ...s, sold_price: e.target.value }))} />
+            </div>
+            <div>
+              <label className="label">Data da venda</label>
+              <input type="date" className="input" value={saleForm.sold_at} onChange={(e) => setSaleForm((s) => ({ ...s, sold_at: e.target.value }))} />
+            </div>
+          </div>
+          <div>
+            <label className="label">Observações</label>
+            <input className="input" value={saleForm.notes} onChange={(e) => setSaleForm((s) => ({ ...s, notes: e.target.value }))} placeholder="Ex: quem comprou, forma de pagamento…" />
+          </div>
+        </section>
+      )}
 
       {editing && car.slug && (
         <section className="rounded-xl border border-line bg-surface p-4">
