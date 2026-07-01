@@ -1,26 +1,103 @@
 @import "tailwindcss";
 
+/*
+  Garagem Rucula — design tokens (tema escuro sobre preto).
+  Cores AMOSTRADAS do logo (Logos/Logo Garagem Rucula.pdf.png):
+    fusca petroleo #013c43 · faixa verde viva #24a54b · amarelo Senna #f3e838
+    azul Senna #204ba0 · branco kombi #dcdedd
+  Regra herdada: texto sobre fundo escuro usa a VARIANTE CLARA da cor da marca.
+*/
+@theme {
+  /* Fontes (ligadas ao next/font no layout.tsx) */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-geist-sans), sans-serif;
+
+  /* Neutros — superficies escuras */
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-surface-2: #1c1c1c;
+  --color-line: #262626;
+  --color-ink: #fafafa;
+  --color-muted: #a1a1aa;
+
+  /* Verde rucula — primaria (faixa viva do logo) + variante clara p/ texto */
+  --color-rucula: #24a54b;
+  --color-rucula-bright: #4ade80;
+  --color-rucula-dark: #17703a;
+
+  /* Verde petroleo — o fusca original; superficie/detalhe de marca */
+  --color-petroleo: #013c43;
+  --color-petroleo-2: #06525b;
+
+  /* Amarelo Senna — destaque: CTA, preco, "disponivel" */
+  --color-senna: #f3e838;
+  --color-senna-deep: #cdb800;
+
+  /* Azul Senna — secundaria + variante clara */
+  --color-azul: #204ba0;
+  --color-azul-bright: #5b9bd5;
+
+  /* WhatsApp (botao flutuante / CTA de contato) */
+  --color-zap: #25d366;
+}
+
+/* Base — dark-only por decisao de produto (nao segue prefers-color-scheme) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  border-color: var(--color-line);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Titulos usam a display por padrao */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Selecao de texto na cor da marca */
+::selection {
+  background: var(--color-senna);
+  color: #000;
+}
+
+/* Scrollbar discreta no tema escuro */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 9999px;
+}
+
+/* Foco acessivel e visivel sobre o preto */
+:focus-visible {
+  outline: 2px solid var(--color-senna);
+  outline-offset: 2px;
+}
+
+/* Utilitario: esconder scrollbar em carrosseis horizontais */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
