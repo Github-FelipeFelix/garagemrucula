@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git *)",
+      "Bash(dev-browser *)",
+      "Bash(npx dev-browser *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/sessao-inicio.ps1"],
+            "timeout": 90,
+            "statusMessage": "Sincronizando codigo + memoria (Garagem Rucula)..."
+          }
+        ]
+      }
+    ]
+  }
+}
