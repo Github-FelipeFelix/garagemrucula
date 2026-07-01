@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Trash2, Loader2 } from "lucide-react";
 import type { Car } from "@/lib/types";
 import { PhotoUploader } from "./PhotoUploader";
+import { QrCard } from "./QrCard";
+import { siteUrl } from "@/lib/site";
 
 type Media = { path: string; url: string };
 
@@ -133,6 +135,13 @@ export function CarForm({ car }: { car?: Car }) {
           <textarea className="input min-h-32" value={form.description} onChange={(e) => set("description", e.target.value)} placeholder="Conte a história e o estado do carro…" />
         </div>
       </section>
+
+      {editing && car.slug && (
+        <section className="rounded-xl border border-line bg-surface p-4">
+          <label className="label">QR Code — imprima e cole no vidro (abre a página do carro)</label>
+          <QrCard url={`${siteUrl()}/carros/${car.slug}`} slug={car.slug} />
+        </section>
+      )}
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 

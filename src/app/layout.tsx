@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Archivo } from "next/font/google";
 import "./globals.css";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${geist.variable} ${archivo.variable}`}>
-      <body className="min-h-dvh bg-bg text-ink">{children}</body>
+      <body className="min-h-dvh bg-bg text-ink">
+        {children}
+        <ServiceWorkerRegister />
+      </body>
     </html>
   );
 }
