@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Instagram } from "lucide-react";
-import { WhatsAppIcon } from "@/components/icons";
+import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/lib/site";
 import { whatsappLink } from "@/lib/format";
 
@@ -47,7 +46,7 @@ export default function SobrePage() {
           <WhatsAppIcon className="h-5 w-5" /> (19) 97416-5880
         </a>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-          <Instagram size={18} /> @{INSTAGRAM_HANDLE}
+          <InstagramIcon className="h-5 w-5" /> @{INSTAGRAM_HANDLE}
         </a>
       </div>
     </div>

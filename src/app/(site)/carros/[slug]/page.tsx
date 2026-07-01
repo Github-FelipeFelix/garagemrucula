@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Instagram } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { InstagramIcon } from "@/components/icons";
 import { getCarBySlug } from "@/lib/queries";
 import { CarGallery } from "@/components/CarGallery";
 import { InteresseButton } from "@/components/InteresseButton";
@@ -10,6 +11,8 @@ import { ViewTracker } from "@/components/ViewTracker";
 import { StatusBadge } from "@/components/StatusBadge";
 import { formatBRL, formatKm } from "@/lib/format";
 import { INSTAGRAM_URL, siteUrl } from "@/lib/site";
+
+export const revalidate = 60;
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -109,7 +112,7 @@ export default async function CarPage({ params }: Params) {
                   rel="noopener noreferrer"
                   className="btn btn-outline w-full"
                 >
-                  <Instagram size={18} /> Instagram
+                  <InstagramIcon className="h-5 w-5" /> Instagram
                 </a>
                 <ShareButton title={car.title} url={url} />
               </div>

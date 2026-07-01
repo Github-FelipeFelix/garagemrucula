@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Todos os carros da Garagem Rúcula: antigos, importados e modificados.",
 };
 
+export const revalidate = 60;
+
 export default async function CarrosPage() {
   const cars = await getCars();
 

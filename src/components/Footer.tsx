@@ -1,9 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram } from "lucide-react";
 import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/lib/site";
 import { whatsappLink } from "@/lib/format";
-import { WhatsAppIcon } from "./icons";
+import { WhatsAppIcon, InstagramIcon } from "./icons";
 
 export function Footer() {
   return (
@@ -34,7 +33,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="flex items-center gap-2.5 text-sm text-ink transition hover:text-rucula-bright"
           >
-            <Instagram size={20} className="text-rucula-bright" />
+            <InstagramIcon className="h-5 w-5 text-rucula-bright" />
             @{INSTAGRAM_HANDLE}
           </a>
           <nav className="mt-3 flex flex-col gap-2 text-sm text-muted">

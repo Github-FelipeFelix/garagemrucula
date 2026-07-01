@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createReadClient } from "@/lib/supabase/read";
 import type { Car } from "@/lib/types";
 
 // Garante arrays/valores mesmo se colunas ainda nao existirem no banco (regra 3).
@@ -30,7 +30,7 @@ type GetCarsOptions = { featured?: boolean; limit?: number };
 // Todas as leituras degradam para [] se a tabela ainda nao existir (regra 3).
 export async function getCars(options: GetCarsOptions = {}): Promise<Car[]> {
   try {
-    const supabase = await createClient();
+    const supabase = createReadClient();
     let query = supabase.from("cars").select("*");
     if (options.featured) query = query.eq("featured", true);
     query = query.order("created_at", { ascending: false });
@@ -57,7 +57,7 @@ export async function getFeaturedCars(limit = 6): Promise<Car[]> {
 
 export async function getCarBySlug(slug: string): Promise<Car | null> {
   try {
-    const supabase = await createClient();
+    const supabase = createReadClient();
     const { data, error } = await supabase.from("cars").select("*").eq("slug", slug).maybeSingle();
     if (error) {
       console.error("[getCarBySlug]", error.message);

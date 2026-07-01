@@ -6,6 +6,9 @@ import { CarCard } from "@/components/CarCard";
 import { WhatsAppIcon } from "@/components/icons";
 import { whatsappLink } from "@/lib/format";
 
+// ISR: revalida a cada 60s (o admin invalida na hora com revalidatePath ao salvar).
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [featured, all] = await Promise.all([getFeaturedCars(6), getCars({ limit: 8 })]);
   const disponiveis = all.filter((c) => c.status !== "vendido");
