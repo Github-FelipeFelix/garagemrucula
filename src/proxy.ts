@@ -1,8 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isAdminEmail } from "@/lib/admins";
 
-// Proxy (ex-"middleware", renomeado no Next 16). Protege o /admin por e-mail hardcoded.
-const ADMIN_EMAILS = ["garagemrucula@gmail.com", "felipeherrera.contato@gmail.com"];
+// Proxy (ex-"middleware", renomeado no Next 16). Protege o /admin (lista em lib/admins).
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -34,7 +34,7 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isLogin = pathname === "/admin/login";
   const isAdminApi = pathname.startsWith("/api/admin");
-  const allowed = !!user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
+  const allowed = isAdminEmail(user?.email);
 
   // API do admin: sempre 401 se nao autorizado.
   if (isAdminApi && !allowed) {
