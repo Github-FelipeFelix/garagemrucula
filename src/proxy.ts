@@ -1,10 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Proteção do /admin (regra herdada): lista de e-mails hardcoded aqui.
+// Proxy (ex-"middleware", renomeado no Next 16). Protege o /admin por e-mail hardcoded.
 const ADMIN_EMAILS = ["garagemrucula@gmail.com", "felipeherrera.contato@gmail.com"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(

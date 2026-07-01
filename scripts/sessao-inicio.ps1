@@ -1,5 +1,6 @@
 # sessao-inicio.ps1 — Garagem Rucula
-# Objetivo: continuar SEMPRE de onde paramos, em qualquer um dos 2 PCs (pasta sincroniza pelo Google Drive).
+# Objetivo: continuar SEMPRE de onde paramos, em qualquer um dos 2 PCs (sincroniza via GitHub).
+# Projeto vive em disco LOCAL (ex: C:\dev\garagemrucula); o GitHub e a fonte da verdade.
 # 1) Sincroniza codigo com origin/main (se houver remote git), com fast-forward seguro.
 # 2) Conserta o ponteiro da memoria do Claude DESTA maquina, apontando para a pasta memory/ deste projeto.
 # Roda automaticamente via hook SessionStart (.claude/settings.json). Tambem da pra rodar na mao.
@@ -31,7 +32,7 @@ if ($git) {
   try {
     $hasRemote = (& $git -C $repo remote) -ne $null -and (& $git -C $repo remote) -ne ''
     if (-not $hasRemote) {
-      Write-Host "[git] Sem remote configurado ainda. (Pulei o sync de codigo; a pasta sincroniza pelo Drive.)"
+      Write-Host "[git] Sem remote configurado. Rode: git remote add origin https://github.com/Github-FelipeFelix/garagemrucula"
     } else {
       & $git -C $repo fetch origin main --quiet
       $local  = (& $git -C $repo rev-parse --short HEAD)
