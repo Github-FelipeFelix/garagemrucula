@@ -1,8 +1,10 @@
 ---
 name: project_garagem_rucula
-description: Plano completo do site Garagem Rúcula — escopo do site público + admin, stack, paleta, decisões e extras.
-metadata:
+description: "Plano completo do site Garagem Rúcula — escopo do site público + admin, stack, paleta, decisões e extras."
+metadata: 
+  node_type: memory
   type: project
+  originSessionId: 67654963-a746-4d27-9b3c-c0f1c1074895
 ---
 
 # Garagem Rúcula — plano
@@ -21,7 +23,7 @@ Vitrine de carros do primo do Felipe. Nicho: antigos, importados, modificados (t
 - **Vendidos** ficam visíveis com selo **"VENDIDO"** (prova social).
 
 ## /admin (só o primo) — mobile-first
-- Login por e-mail (`garagemrucula@gmail.com`).
+- Login por **e-mail/senha OU Google (OAuth)** (`garagemrucula@gmail.com`). Porteiro = lista de e-mails em `lib/admins.ts`.
 - CRUD de carros: upload de várias fotos com arrastar-reordenar (@dnd-kit), vídeos, preço, ficha, modificações.
 - Status: Disponível / Reservado / Vendido. Destaque na home.
 - **Extras v1 (todos aprovados):** QR Code por carro (colar no vidro em eventos); captura de leads (clique "tenho interesse" → WhatsApp + registro no admin); contador de visualizações; histórico de vendas (por quanto vendeu — privado).

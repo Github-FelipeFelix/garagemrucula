@@ -1,8 +1,10 @@
 ---
 name: aprendizados_rebobina
-description: Regras técnicas herdadas do Rebobina 3D e do EnergyDex, reaproveitadas no Garagem Rúcula para nascer com poucos bugs.
-metadata:
+description: "Regras técnicas herdadas do Rebobina 3D e do EnergyDex, reaproveitadas no Garagem Rúcula para nascer com poucos bugs."
+metadata: 
+  node_type: memory
   type: reference
+  originSessionId: 67654963-a746-4d27-9b3c-c0f1c1074895
 ---
 
 # Aprendizados herdados (Rebobina 3D + EnergyDex)
@@ -32,5 +34,13 @@ Fontes: `Rebobina 3D/rebobina3d` (Next 16 + Supabase + Vercel + PWA, maduro) e `
 19. **supabase-js v2 exige Node 22 (WebSocket nativo) em script standalone** — dentro do Next funciona (Next provê WebSocket). Pra scripts Node avulsos (seed/admin/QA), usar a **REST API do Supabase via `fetch`**.
 20. **lucide-react removeu ícones de marca** (Instagram etc) → criar SVG próprio, COM `width`/`height` explícitos (senão o SVG estica sem constraint).
 21. **Next 16: renomear `middleware.ts` → `proxy.ts`** (função `middleware`→`proxy`; `config.matcher` igual).
+
+## Aprendizados novos — sessão 2 Garagem Rúcula (01/07/2026, tarde/noite)
+22. **`NEXT_PUBLIC_*` é embutida no BUILD** → se `NEXT_PUBLIC_SITE_URL` na Vercel tiver `localhost` (copiado do `.env.local`), sitemap/robots/canonical/og/QR saem com localhost em PROD. Fazer o helper `siteUrl()` DEFENSIVO: env não-local vence; senão, em deploy Vercel (`process.env.VERCEL`) usa o domínio canônico; no client, QR/share usam `window.location.origin`. Nunca copiar `.env.local` inteiro pra Vercel sem revisar.
+23. **Card clicável com carrossel interno:** NÃO aninhar `<button>` dentro de `<a>` (HTML inválido → hydration mismatch). Padrão: o card é um `<div>`; foto e texto são `<Link>` IRMÃOS pro mesmo destino; setas/bolinhas são `<button>` irmãos com z-index acima + `preventDefault`/`stopPropagation`; swipe não dispara click (o browser distingue), então trocar foto ≠ navegar.
+24. **next/image (Next 16):** `sizes` baixo (ex: `120px`) + quality default (75) = foto BORRADA. Pra qualidade: declarar `images.qualities` no `next.config` (senão `quality={90}` é ignorado) + `formats:['image/avif','image/webp']`. O arquivo ORIGINAL vai intacto pro Storage — a degradação é só na exibição.
+25. **Google OAuth via Supabase:** (a) Google Cloud → OAuth Client "Web" com redirect `https://<ref>.supabase.co/auth/v1/callback` (o dono do projeto Cloud pode ser QUALQUER conta — não aparece no login); (b) Supabase → Auth → Providers → Google ON + Client ID/Secret + Site/Redirect URLs. Código: `signInWithOAuth({provider:'google', redirectTo:.../auth/callback})` + rota `/auth/callback` com `exchangeCodeForSession` (PKCE). Erro `"provider is not enabled"` = não ligou/salvou no Supabase. App "Testing" = só test users + aviso "não verificado"; **publicar** (scopes email/profile = não-sensíveis) NÃO exige verificação. Google **bloqueia login em browser automatizado** → validar só até a tela do Google; login completo é manual.
+26. **`cursor:pointer` não é default em `<button>`/`<select>`** (só `<a>` tem) → parecem "não clicáveis". Regra global no `globals.css` pra `button`/`select`/`[role=button]`/`summary` + `not-allowed` nos disabled.
+27. **Falso "hydration mismatch" no DEV por hot-reload** (além do SW, item 16): após várias edições, server e client podem ficar com versões diferentes do componente (ex: className antigo no diff do warning). NÃO é bug real → confirmar no **build de produção** (`npm run build && npm start` → hydration 0). Se persistir no dev, limpar `.next` com o dev parado.
 
 Aplicação no projeto em [[project_garagem_rucula]] e [[setup_continuidade]].
