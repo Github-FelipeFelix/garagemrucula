@@ -103,11 +103,13 @@ export function CarCardMedia({
           >
             <ChevronRight size={18} />
           </button>
-          <div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 gap-1.5">
+          <div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 gap-1.5 rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm">
             {photos.map((_, i) => (
               <span
                 key={i}
-                className={`h-1.5 rounded-full transition-all ${i === idx ? "w-4 bg-white" : "w-1.5 bg-white/50"}`}
+                className={`h-1.5 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all ${
+                  i === idx ? "w-4 bg-white" : "w-1.5 bg-white/60"
+                }`}
               />
             ))}
           </div>
