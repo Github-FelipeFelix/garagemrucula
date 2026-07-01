@@ -7,6 +7,8 @@ metadata:
 
 # Garagem Rúcula — plano
 
+> **STATUS (02/07/2026):** v1 IMPLEMENTADO e no ar em https://garagemrucula.vercel.app. Este arquivo é o plano/escopo original; o **estado atual e as pendências** (cosméticos, rate-limit, domínio, cadastro) vivem no [[MEMORY]] e no `CLAUDE.md`.
+
 Vitrine de carros do primo do Felipe. Nicho: antigos, importados, modificados (turbo, rebaixado, rodas, som…). Ninguém compra pelo site → redireciona pro **WhatsApp +55 19 97416-5880** (mensagem pré-preenchida com o carro) ou **Instagram @garagem_rucula** (~40 mil seguidores). Domínio reservado: **www.garagemrucula.com.br** (Registro.br). E-mail do primo: **garagemrucula@gmail.com**.
 
 **História da marca:** primeiro fusca que ele montou (verde rúcula, turbo, rodas de Porsche) vendeu por R$110 mil → daí o nome. Ele é fã do Senna (logo tem silhueta do Senna + kombi em homenagem). Felipe tem um fusca rat look 1973 comprado com ele.

@@ -1,31 +1,33 @@
 # Memory Index — Garagem Rúcula
 
-## ➤ ONDE PARAMOS — ler ISTO primeiro · atualizar por último (att. 01/07/2026)
-> Ponto único de continuidade entre os 2 PCs, sincronizado via **GitHub**. Início de sessão: ler este bloco. Fim de sessão: reescrevê-lo. **O canônico vive também no `CLAUDE.md` da raiz.**
+## ➤ ONDE PARAMOS — ler ISTO primeiro · atualizar por último (att. 02/07/2026 — FIM DE SESSÃO)
+> Continuidade entre os 2 PCs via **GitHub**. Início: hook roda `git pull`. Fim: `git push`. Canônico também no `CLAUDE.md` da raiz.
 
-**🔴 MUDANÇA (01/07): o projeto SAIU do Google Drive → agora vive em DISCO LOCAL + GitHub.** Motivo: `npm install` corrompe no Drive (EBADF/EPERM — o G: nem aceita junction). Working dir do PC principal: **`C:\dev\garagemrucula`**. O **GitHub** (`github.com/Github-FelipeFelix/garagemrucula`) é a fonte da verdade e sincroniza TUDO (código + markdowns + `memory/`). A pasta antiga do Drive (`G:\...\Garagem Rucula`) está **APOSENTADA** (só guarda o `.env.local`). **SEMPRE abrir o Claude em `C:\dev\garagemrucula`.**
+**🟢 SITE NO AR e FUNCIONAL: https://garagemrucula.vercel.app** — v1 completo, testado em produção **sem bugs**. Deploy automático a cada `git push origin main`.
 
-**INÍCIO DE SESSÃO:** hook `SessionStart` → `sessao-inicio.ps1` faz `git pull` (ff-only) + conserta ponteiro de memória. **FIM DE SESSÃO:** `git push`. **PC novo:** `git clone <repo> C:\dev\garagemrucula` → copiar `.env.local` → `npm install`. **Node 20 dá warning** (supabase-js quer 22); funciona, mas ideal atualizar p/ Node 22.
+**AMBIENTE:** o projeto vive em **`C:\dev\garagemrucula`** (disco local — NÃO no Google Drive; o `npm install` corrompe lá com EBADF). GitHub `github.com/Github-FelipeFelix/garagemrucula` (**PÚBLICO**) é a fonte da verdade. **Sempre abrir o Claude em `C:\dev\garagemrucula`.** Hook `SessionStart` → `sessao-inicio.ps1` faz `git pull`. **PC novo:** `git clone` → `git config user.email felipeherrera.contato@gmail.com` → copiar `.env.local` (guardado na pasta antiga do Drive) → `npm install` (Node ideal 22+; no 20 dá só warning).
 
-**Projeto:** vitrine de carros (compra/venda de antigos, importados, modificados). Cliente → WhatsApp (+55 19 97416-5880) ou Instagram @garagem_rucula. `/admin` mobile-first.
+**Projeto:** vitrine de carros do primo do Felipe (antigos/importados/modificados — turbo, rebaixado). Cliente vê o disponível → vai pro WhatsApp (+55 19 97416-5880, msg pronta) ou Instagram @garagem_rucula. `/admin` mobile-first (o primo é leigo, usa do celular em eventos).
 
-**🟢 SITE NO AR: https://garagemrucula.vercel.app** (deploy automático a cada `git push`). SQL já rodado; Supabase funcionando com dados reais.
+## 🔜 PENDÊNCIAS — COMEÇAR A PRÓXIMA SESSÃO POR AQUI
+1. 🎨 **COSMÉTICOS / visual "UAU" (PRIORIDADE — o Felipe pediu explicitamente).** Ele quer o site LINDO pra impressionar o primo. Trazer o MÁXIMO de melhorias visuais (do Rebobina e além): **reveal-on-scroll** (entrada animada das seções ao rolar), **scroll progress bar** no topo, **spotlight/glow radial nos cards** no hover, **glass cards** (backdrop-blur), mais microinterações e transições suaves, hero ainda mais impactante. Já existe a base (Exo 2, orbs no hero, botões c/ glow, cards elevados, eyebrows, fade-up no hero). Objetivo: bonito **e** funcional, sem quebrar nada.
+2. 🔒 **Rate-limit no `/api/lead`** (rota pública, sem proteção contra spam de leads). Padrão do Rebobina = **Upstash**. Fazer quando o Felipe criar a conta grátis (+ env vars).
+3. 🌐 **Domínio `garagemrucula.com.br`** — DNS configurado no Registro.br (apex = campo Nome VAZIO, não `@`; A→`216.198.79.1`; CNAME www→`2a5a7eacc180262f.vercel-dns-017.com`). Estava PROPAGANDO no fim da sessão. Checar: `curl -I https://garagemrucula.com.br`. Quando abrir: Felipe muda **`NEXT_PUBLIC_SITE_URL`** na Vercel (Settings→Env Vars) de `https://garagemrucula.vercel.app` → `https://www.garagemrucula.com.br` + re-deploy (Claude não acessa a Vercel; só confirma).
+4. 🚗 **Primo cadastrar os carros reais** e apagar o `fusca-teste`. Guia mastigado em `COMO-USAR-O-ADMIN.md`.
 
-**⚠️ APRENDIZADO CRÍTICO (deploy Vercel):** o clone local NÃO herda o `user.email` local do outro repo → os commits saíram como `felipe.felix@housi.com.br` e a Vercel Hobby **bloqueou** o deploy (repo privado + autor sem acesso). CORRIGIDO: `git config user.email felipeherrera.contato@gmail.com` no clone C:, E o **repo virou PÚBLICO** (Settings→Danger Zone) — o que remove a restrição de vez. Todo clone novo: rodar esse `git config`.
+## ✅ JÁ FEITO (v1 completo — tudo testado em prod)
+- **Site público:** home (hero c/ orbs + destaques + grid), vitrine c/ filtros (marca/ano/preço/estilo/busca + limpar), página do carro (galeria fotos+vídeos, ficha c/ ícones, "tenho interesse"→WhatsApp **e registra lead**, QR, compartilhar, "veja também", selo VENDIDO), sobre (c/ diferenciais), 404, error.tsx.
+- **Admin** (`/admin`, protegido por `proxy.ts` + e-mails em `lib/admins`): login email+senha, dashboard (4 métricas + leads recentes), CRUD de carros (upload fotos c/ arrastar @dnd-kit + vídeos, ficha completa, tags, mods), status/destaque, **duplicar carro**, **histórico de vendas** (tabela `car_sales`, privado), leads, **trocar senha** (/admin/senha). Header responsivo (mobile ok).
+- **Infra:** PWA (SW network-first) + banner "instalar app"; SEO (sitemap/robots/JSON-LD); favicon; Vercel Analytics. Supabase (clients read/server/admin, RLS, bucket `car-media` público, RPC `bump_car_view`).
+- **Senha do admin:** trocada pelo Felipe — **NUNCA versionar senha** (repo é público).
 
-**FEITO (01/07):** ✅ GitHub público + Vercel no ar. ✅ Supabase (`.env.local`, ref `lryzyydzjodywvzhiumx`, SQL rodado, bucket testado). ✅ Logo→ícones/og. ✅ **SITE PÚBLICO** (home, vitrine, carro, sobre, 404) + **ADMIN** completo (login, dashboard, CRUD c/ upload fotos+dnd + **vídeos**, leads, QR, **histórico de vendas**, **trocar senha**). ✅ **Filtros** de marca/ano/preço/estilo/busca. ✅ **PWA** + banner **"instalar app"**. ✅ **Refinamento visual nível Rebobina** (estudei o projeto: Exo 2 + JetBrains Mono, eyebrows mono, orbs de glow, botões com glow, cards elevados, pulse no WhatsApp). ✅ QA desktop+mobile (zero erros). ✅ Usuário admin `garagemrucula@gmail.com` (senha já trocada pelo Felipe — NUNCA versionar senha aqui, o repo é PÚBLICO). Carro de teste `fusca-teste` no site (apagar no /admin quando quiser).
+**Decisões fechadas:** sem vídeo na home; tema escuro/preto; vendidos c/ selo "VENDIDO"; extras v1 (QR, leads, views, histórico vendas) TODOS feitos. Paleta: verde rúcula #24a54b (claro #4ade80) + petróleo #013c43 + amarelo Senna #f3e838 + azul #204ba0 sobre preto #0a0a0a.
 
-**FEITO na madrugada (autônomo, 01→02/07):** ✅ **SEO** (sitemap.xml dinâmico c/ carros, robots.txt, JSON-LD Product/Offer na pág do carro → preço no Google). ✅ **Veja também** (carros relacionados no fim da pág do carro). ✅ Header muda ao rolar. ✅ Dashboard c/ **leads recentes** + 4 métricas. ✅ **Duplicar carro** (rota + botão, cadastro rápido). ✅ Voltar-ao-topo + skeletons (loading.tsx) + **error.tsx** (tela de erro amigável). ✅ **favicon.ico** (do logo, via png-to-ico). ✅ **Vercel Analytics** (`@vercel/analytics` no layout — habilitar no painel da Vercel p/ ver visitas). ✅ Refinamento visual completo (ficha do carro c/ ícones lucide, Sobre c/ diferenciais, eyebrows vitrine/footer). ✅ **QA rigoroso**: criar/editar/duplicar/vender/apagar carro + filtros + trocar senha testados no browser; **prod sem erros**. NOTA: aviso de hydration no DEV era o service worker servindo bundle velho — em prod os assets têm hash, sem efeito.
-
-**PRÓXIMOS PASSOS (dependem do Felipe):** (1) **Domínio**: DNS configurado no Registro.br (modo avançado, propagando ~2h). Quando `garagemrucula.com.br` resolver, **mudar `NEXT_PUBLIC_SITE_URL` na Vercel** pro domínio (o Claude NÃO tem acesso à conta Vercel p/ mudar env var; só monitora e avisa). (2) Trocar a senha temporária (/admin/senha). (3) Cadastrar carros reais + apagar `fusca-teste`. (4) Habilitar Analytics no painel Vercel. (5) (opcional) testar instalação PWA no celular.
-
-**Decisões fechadas:** sem vídeo na home; tema escuro/preto; vendidos c/ selo "VENDIDO"; extras v1 = QR + leads + views + histórico vendas (TODOS). Paleta: verde rúcula #24a54b (claro #4ade80) + petróleo #013c43 + amarelo Senna #f3e838 + azul #204ba0 sobre preto #0a0a0a.
-
-**Contas:** Supabase = conta NOVA `garagemrucula@gmail.com` (free 2 projetos/conta, e o Rebobina já ocupa a do Felipe). Vercel = conta atual do Felipe (Hobby não limita projetos; SMS não chega no e-mail novo). GitHub = repo na conta do Felipe (pegar URL).
+**Contas:** Supabase = `garagemrucula@gmail.com` (conta nova; ref projeto `lryzyydzjodywvzhiumx`). Vercel = `felipeherrera.contato@gmail.com` (Hobby). git `user.email` DEVE ser `felipeherrera.contato@gmail.com` (bate com a Vercel).
 
 ---
 
 ## Índice
-- [Projeto Garagem Rúcula — plano completo](project_garagem_rucula.md) — escopo do site + admin, stack, paleta, decisões, extras v1.
-- [Setup & continuidade entre 2 PCs](setup_continuidade.md) — scaffold, contas, sessao-inicio.ps1, o que falta configurar.
-- [Aprendizados herdados do Rebobina 3D](aprendizados_rebobina.md) — regras técnicas reaproveitadas (PostgREST, admin middleware, PWA SW, await serverless, testar de verdade).
+- [Projeto — plano/escopo completo](project_garagem_rucula.md)
+- [Setup & continuidade (local + GitHub)](setup_continuidade.md)
+- [Aprendizados técnicos (Rebobina + deploy/infra desta sessão)](aprendizados_rebobina.md)

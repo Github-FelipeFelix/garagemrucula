@@ -20,6 +20,17 @@ Fontes: `Rebobina 3D/rebobina3d` (Next 16 + Supabase + Vercel + PWA, maduro) e `
 9. **Deploy:** git push → Vercel. **git user.email deve bater com a conta Vercel** (`felipeherrera.contato@gmail.com`), senão bloqueia deploy no Hobby. TS error quebra o build.
 10. **Testar de verdade:** tsc/build ≠ funciona. Validar na UI com Chrome REAL `--remote-debugging-port=9222` + `dev-browser --connect` (Google bloqueia login em browser de automação), checar console, desktop E mobile, após deploy. `window.confirm` nativo trava no dev-browser → dá pra sobrescrever.
 11. **Design tokens** em `globals.css` (CSS vars) + Tailwind v4. Texto sobre fundo escuro usa VARIANTE CLARA da cor da marca.
-12. **dev-browser:** roda script JS em sandbox QuickJS (sem npm/fs host). `browser.getPage`, `page.goto/click/fill/evaluate/screenshot`, `page.snapshotForAI()`. Daemon pode ficar órfão (EADDRINUSE pipe) → matar `node` com `daemon.mjs` no cmdline.
+12. **dev-browser:** roda script JS em sandbox QuickJS (sem npm/fs host). `browser.getPage`, `page.goto/click/fill/evaluate/screenshot`. **Timeout de 30s por script** → dividir QA em scripts curtos. `setInputFiles` com path do host FALHA (fs bloqueado) → testar upload por outra via (ex: signed URL via REST). Daemon pode ficar órfão.
+
+## Aprendizados novos — sessão Garagem Rúcula (01–02/07/2026)
+13. **npm no Google Drive CORROMPE** (EBADF/EPERM; o `G:` nem aceita junction/reparse). Projetos Next ficam em disco LOCAL (`C:\dev\...`), sincronizados via GitHub — não pela pasta do Drive.
+14. **`git clone` NÃO herda o `user.email` local** → o commit sai com o e-mail GLOBAL (ex: `felipe.felix@housi.com.br`). Rodar `git config user.email felipeherrera.contato@gmail.com` em CADA clone, senão a Vercel bloqueia o deploy.
+15. **Vercel Hobby + repo PRIVADO bloqueia deploy** se o commit author/co-author não for membro ("commit author did not have contributing access"). Solução definitiva: **repo PÚBLICO** (some a trava); alternativa: author = dono + sem co-authors.
+16. **SW cache-first em `/_next/static` → FALSO "hydration mismatch" no DEV** (serve bundle JS velho enquanto o server tem o novo). Em PROD NÃO afeta (assets têm hash de conteúdo). Ao investigar hydration no dev-browser: desregistrar o SW + `caches.delete()` antes de testar.
+17. **Registro.br: apex/raiz = campo Nome VAZIO** (não `@`, que Cloudflare et al. usam). `A`→IP no raiz (vazio); `CNAME`→`www`.
+18. **NUNCA versionar senha/segredo** — o repo é PÚBLICO. `.env.local` no `.gitignore`; senha do admin fica fora do git.
+19. **supabase-js v2 exige Node 22 (WebSocket nativo) em script standalone** — dentro do Next funciona (Next provê WebSocket). Pra scripts Node avulsos (seed/admin/QA), usar a **REST API do Supabase via `fetch`**.
+20. **lucide-react removeu ícones de marca** (Instagram etc) → criar SVG próprio, COM `width`/`height` explícitos (senão o SVG estica sem constraint).
+21. **Next 16: renomear `middleware.ts` → `proxy.ts`** (função `middleware`→`proxy`; `config.matcher` igual).
 
 Aplicação no projeto em [[project_garagem_rucula]] e [[setup_continuidade]].
