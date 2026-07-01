@@ -22,7 +22,7 @@
 - ✅ Logo → ícones/og. **Visual refinado nível Rebobina** (Exo 2 + JetBrains Mono, eyebrows mono, orbs de glow, botões com glow, cards elevados, pulse no WhatsApp — estudei o Rebobina de verdade).
 - ✅ **Site público**: home, vitrine (filtros marca/ano/preço/estilo/busca), página do carro (galeria fotos+vídeos, ficha, interesse→WhatsApp+lead, views, QR, compartilhar, selo VENDIDO), sobre, 404.
 - ✅ **Admin**: login, dashboard, CRUD c/ upload de fotos (dnd) + vídeos, leads, QR, **histórico de vendas** (car_sales privado), **trocar senha** (/admin/senha). PWA + banner "instalar app". QA desktop+mobile sem erros.
-- ✅ User admin `garagemrucula@gmail.com` (senha TEMP `Rucula-3a84915144!` → TROCAR). Carro `fusca-teste` no site (apagar depois).
+- ✅ User admin `garagemrucula@gmail.com` (senha já trocada pelo Felipe — NUNCA versionar senha, o repo é PÚBLICO). Carro `fusca-teste` no site (apagar depois).
 - ✅ **Madrugada (autônomo):** SEO (sitemap/robots/JSON-LD), "veja também", header ao rolar, dashboard c/ leads recentes, duplicar carro, voltar-ao-topo, skeletons, error.tsx, favicon.ico, Vercel Analytics, refinamento visual completo (ícones na ficha, Sobre c/ diferenciais). QA rigoroso — produção sem erros.
 
 **PRÓXIMOS PASSOS:**
