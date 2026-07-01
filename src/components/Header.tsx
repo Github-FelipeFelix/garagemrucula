@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
@@ -15,10 +15,22 @@ const LINKS = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur">
+    <header
+      className={`sticky top-0 z-40 border-b backdrop-blur transition-colors ${
+        scrolled ? "border-line bg-bg/90 shadow-lg shadow-black/30" : "border-transparent bg-bg/70"
+      }`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
           <Image src="/logo.png" alt="Garagem Rúcula" width={140} height={102} className="h-10 w-auto" priority />

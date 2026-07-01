@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Gauge, Cog, Settings2, Palette, Fuel, Factory, Car, type LucideIcon } from "lucide-react";
 import { InstagramIcon } from "@/components/icons";
-import { getCarBySlug } from "@/lib/queries";
+import { getCarBySlug, getCars } from "@/lib/queries";
+import { CarCard } from "@/components/CarCard";
 import { CarGallery } from "@/components/CarGallery";
 import { InteresseButton } from "@/components/InteresseButton";
 import { ShareButton } from "@/components/ShareButton";
@@ -43,6 +44,10 @@ export default async function CarPage({ params }: Params) {
   const car = await getCarBySlug(slug);
   if (!car) notFound();
 
+  const related = (await getCars())
+    .filter((c) => c.id !== car.id && c.status !== "vendido")
+    .slice(0, 3);
+
   type Spec = { icon: LucideIcon; label: string; value: string | number | null | undefined };
   const specsRaw: Spec[] = [
     { icon: Calendar, label: "Ano", value: car.year },
@@ -60,8 +65,32 @@ export default async function CarPage({ params }: Params) {
   const sold = car.status === "vendido";
   const url = `${siteUrl()}/carros/${car.slug}`;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: car.title,
+    ...(car.photos?.[0]?.url ? { image: [car.photos[0].url] } : {}),
+    ...(car.description ? { description: car.description } : {}),
+    ...(car.brand ? { brand: { "@type": "Brand", name: car.brand } } : {}),
+    ...(car.price != null
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: car.price,
+            priceCurrency: "BRL",
+            availability: sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+            url,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ViewTracker carId={car.id} />
       <Link
         href="/carros"
@@ -154,6 +183,18 @@ export default async function CarPage({ params }: Params) {
           )}
         </div>
       </div>
+
+      {related.length > 0 && (
+        <section className="mt-16">
+          <p className="eyebrow mb-3">Veja também</p>
+          <h2 className="section-title mb-6">Outros carros</h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((c) => (
+              <CarCard key={c.id} car={c} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
