@@ -195,23 +195,34 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/95 p-3 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/95 p-3 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
           {editing ? (
-            <div className="flex items-center gap-4">
-              <button type="button" onClick={onDelete} disabled={saving} className="flex items-center gap-1.5 text-sm text-red-400 hover:text-red-300">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={onDelete}
+                disabled={saving}
+                className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-2 text-sm font-semibold text-red-300 transition hover:border-red-500 hover:bg-red-500/20 disabled:opacity-50"
+              >
                 <Trash2 size={16} /> Apagar
               </button>
-              <button type="button" onClick={onDuplicate} disabled={saving} className="flex items-center gap-1.5 text-sm text-muted hover:text-ink">
+              <button
+                type="button"
+                onClick={onDuplicate}
+                disabled={saving}
+                className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm font-semibold text-ink transition hover:border-rucula-bright hover:text-rucula-bright disabled:opacity-50"
+              >
                 <Copy size={16} /> Duplicar
               </button>
             </div>
           ) : (
             <span />
           )}
-          <button type="submit" disabled={saving} className="btn btn-primary">
+          <button type="submit" disabled={saving} className="btn btn-primary whitespace-nowrap">
             {saving ? <Loader2 className="animate-spin" size={18} /> : null}
-            {editing ? "Salvar alterações" : "Criar carro"}
+            <span className="sm:hidden">{editing ? "Salvar" : "Criar"}</span>
+            <span className="hidden sm:inline">{editing ? "Salvar alterações" : "Criar carro"}</span>
           </button>
         </div>
       </div>

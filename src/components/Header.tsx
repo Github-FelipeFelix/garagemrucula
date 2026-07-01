@@ -25,6 +25,11 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Fecha o menu mobile ao trocar de página (evita menu preso aberto).
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   return (
     <header
       className={`sticky top-0 z-40 border-b backdrop-blur-xl transition-colors ${

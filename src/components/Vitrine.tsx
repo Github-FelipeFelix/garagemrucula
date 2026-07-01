@@ -24,6 +24,7 @@ export function Vitrine({ cars }: { cars: Car[] }) {
   const [price, setPrice] = useState("");
   const [order, setOrder] = useState<"recentes" | "barato" | "caro">("recentes");
   const [showSold, setShowSold] = useState(true);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const brands = useMemo(
     () => [...new Set(cars.map((c) => c.brand).filter(Boolean) as string[])].sort(),
@@ -63,6 +64,8 @@ export function Vitrine({ cars }: { cars: Car[] }) {
   }, [cars, q, brand, tag, year, price, order, showSold]);
 
   const hasFilters = !!(q || brand || tag || year || price || !showSold);
+  // Filtros ativos no painel colapsável (não conta a busca, que fica sempre visível).
+  const panelCount = [brand, tag, year, price].filter(Boolean).length + (showSold ? 0 : 1);
   function clearFilters() {
     setQ("");
     setBrand("");
@@ -75,18 +78,9 @@ export function Vitrine({ cars }: { cars: Car[] }) {
   return (
     <div>
       <div className="glass mb-8 flex flex-col gap-3 rounded-2xl border border-line p-4 sm:sticky sm:top-16 sm:z-30">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-muted">
-            <SlidersHorizontal size={16} /> Filtros
-          </div>
-          {hasFilters && (
-            <button type="button" onClick={clearFilters} className="text-xs text-rucula-bright hover:underline">
-              limpar filtros
-            </button>
-          )}
-        </div>
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          <div className="relative flex-1 sm:min-w-56">
+        {/* Busca sempre visível + (mobile) botão que abre os filtros + (desktop) limpar */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
             <input
               value={q}
@@ -95,6 +89,36 @@ export function Vitrine({ cars }: { cars: Car[] }) {
               className="w-full rounded-lg border border-line bg-bg py-2 pl-9 pr-3 text-sm text-ink outline-none focus:border-rucula-bright"
             />
           </div>
+          <button
+            type="button"
+            onClick={() => setFiltersOpen((v) => !v)}
+            className="flex shrink-0 items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-medium text-ink sm:hidden"
+            aria-expanded={filtersOpen}
+            aria-controls="filtros-painel"
+          >
+            <SlidersHorizontal size={16} /> Filtros
+            {panelCount > 0 && (
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-rucula px-1 text-xs font-bold text-black">
+                {panelCount}
+              </span>
+            )}
+          </button>
+          {hasFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="hidden shrink-0 text-xs text-rucula-bright hover:underline sm:block"
+            >
+              limpar
+            </button>
+          )}
+        </div>
+
+        {/* Painel de filtros: colapsa no mobile, sempre visível no desktop */}
+        <div
+          id="filtros-painel"
+          className={`${filtersOpen ? "flex" : "hidden"} flex-col gap-3 sm:flex sm:flex-row sm:flex-wrap sm:items-center`}
+        >
           <select className={selectClass} value={brand} onChange={(e) => setBrand(e.target.value)} aria-label="Marca">
             <option value="">Todas as marcas</option>
             {brands.map((b) => (
@@ -132,6 +156,15 @@ export function Vitrine({ cars }: { cars: Car[] }) {
             />
             Mostrar vendidos
           </label>
+          {hasFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="text-left text-xs text-rucula-bright hover:underline sm:hidden"
+            >
+              limpar filtros
+            </button>
+          )}
         </div>
       </div>
 

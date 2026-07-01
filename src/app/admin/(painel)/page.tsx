@@ -78,7 +78,7 @@ export default async function AdminDashboard() {
                 >
                   <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg bg-surface-2">
                     {car.photos?.[0]?.url ? (
-                      <Image src={car.photos[0].url} alt="" fill sizes="80px" className="object-cover" />
+                      <Image src={car.photos[0].url} alt="" fill sizes="120px" className="object-cover" />
                     ) : (
                       <span className="flex h-full w-full items-center justify-center text-xs text-muted">—</span>
                     )}

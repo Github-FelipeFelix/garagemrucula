@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Play } from "lucide-react";
+import { Play, ZoomIn } from "lucide-react";
 import type { CarPhoto, CarVideo } from "@/lib/types";
+import { Lightbox } from "./Lightbox";
 
 type Item = { type: "photo" | "video"; url: string; path: string };
 
@@ -21,6 +22,7 @@ export function CarGallery({
     ...videos.map((v) => ({ type: "video" as const, url: v.url, path: v.path })),
   ];
   const [active, setActive] = useState(0);
+  const [lbOpen, setLbOpen] = useState(false);
 
   if (items.length === 0) {
     return (
@@ -30,20 +32,32 @@ export function CarGallery({
     );
   }
 
-  const cur = items[Math.min(active, items.length - 1)];
+  const idx = Math.min(active, items.length - 1);
+  const cur = items[idx];
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-surface-2">
+      <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-surface-2">
         {cur.type === "photo" ? (
-          <Image
-            src={cur.url}
-            alt={title}
-            fill
-            sizes="(max-width: 1024px) 100vw, 640px"
-            className="object-contain"
-            priority
-          />
+          <button
+            type="button"
+            onClick={() => setLbOpen(true)}
+            className="absolute inset-0 h-full w-full cursor-zoom-in"
+            aria-label="Ampliar foto"
+          >
+            <Image
+              src={cur.url}
+              alt={title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 768px"
+              quality={90}
+              className="object-contain"
+              priority
+            />
+            <span className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white opacity-0 transition group-hover:opacity-100">
+              <ZoomIn size={13} /> ampliar
+            </span>
+          </button>
         ) : (
           <video src={cur.url} controls playsInline className="h-full w-full object-contain" />
         )}
@@ -57,12 +71,12 @@ export function CarGallery({
               type="button"
               onClick={() => setActive(i)}
               className={`relative h-16 w-20 shrink-0 overflow-hidden rounded-lg border ${
-                i === active ? "border-rucula-bright" : "border-line"
+                i === idx ? "border-rucula-bright" : "border-line"
               }`}
               aria-label={`Ver ${it.type === "video" ? "vídeo" : "foto"} ${i + 1}`}
             >
               {it.type === "photo" ? (
-                <Image src={it.url} alt="" fill sizes="80px" className="object-cover" />
+                <Image src={it.url} alt="" fill sizes="160px" className="object-cover" />
               ) : (
                 <span className="flex h-full w-full items-center justify-center bg-black text-white">
                   <Play size={18} />
@@ -71,6 +85,16 @@ export function CarGallery({
             </button>
           ))}
         </div>
+      )}
+
+      {lbOpen && (
+        <Lightbox
+          items={items}
+          index={idx}
+          title={title}
+          onClose={() => setLbOpen(false)}
+          onNavigate={setActive}
+        />
       )}
     </div>
   );

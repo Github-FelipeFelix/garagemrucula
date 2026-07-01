@@ -40,7 +40,7 @@ function SortablePhoto({
       style={style}
       className="relative aspect-square overflow-hidden rounded-lg border border-line bg-surface-2"
     >
-      <Image src={item.url} alt="" fill sizes="120px" className="object-cover" />
+      <Image src={item.url} alt="" fill sizes="(max-width: 640px) 33vw, 220px" quality={82} className="object-cover" />
       {isCover && (
         <span className="absolute left-1 top-1 rounded bg-senna px-1.5 py-0.5 text-[10px] font-bold text-black">
           capa
