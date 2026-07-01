@@ -46,6 +46,21 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Mãozinha em tudo que é clicável: <button>/<select> não trazem cursor:pointer
+   por padrão (só <a>), o que passava a impressão de "não clicável". */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]),
+summary,
+select {
+  cursor: pointer;
+}
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 h1, h2, h3 {
   font-family: var(--font-display);
   letter-spacing: -0.02em;
