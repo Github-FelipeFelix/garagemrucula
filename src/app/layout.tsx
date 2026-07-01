@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Exo_2, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
 const geist = Geist({
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh bg-bg text-ink">
         {children}
         <ServiceWorkerRegister />
+        <Analytics />
       </body>
     </html>
   );
