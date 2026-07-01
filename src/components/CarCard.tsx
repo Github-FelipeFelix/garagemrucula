@@ -1,13 +1,13 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Car } from "@/lib/types";
 import { formatBRL, formatKm } from "@/lib/format";
-import { ImageOff } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
+import { CarCardMedia } from "./CarCardMedia";
 
 export function CarCard({ car, priority = false }: { car: Car; priority?: boolean }) {
-  const cover = car.photos?.[0]?.url ?? null;
+  const photos = (car.photos ?? []).map((p) => p.url).filter(Boolean) as string[];
   const sold = car.status === "vendido";
+  const href = `/carros/${car.slug}`;
   const specs = [
     car.year ? String(car.year) : null,
     car.km != null ? formatKm(car.km) : null,
@@ -15,41 +15,23 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
   ].filter(Boolean) as string[];
 
   return (
-    <Link
-      href={`/carros/${car.slug}`}
-      className="group card spotlight relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60 hover:shadow-[0_22px_44px_-24px_rgba(36,165,75,0.7)]"
-    >
+    <div className="group card spotlight relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60 hover:shadow-[0_22px_44px_-24px_rgba(36,165,75,0.7)]">
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-2">
-        {cover ? (
-          <Image
-            src={cover}
-            alt={car.title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={82}
-            className={`object-cover transition duration-500 group-hover:scale-105 ${sold ? "opacity-50" : ""}`}
-            priority={priority}
-          />
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-1 text-muted">
-            <ImageOff size={22} />
-            <span className="text-xs">foto em breve</span>
-          </div>
-        )}
+        <CarCardMedia photos={photos} alt={car.title} href={href} sold={sold} priority={priority} />
 
-        <div className="absolute left-3 top-3">
+        <div className="pointer-events-none absolute left-3 top-3 z-30">
           <StatusBadge status={car.status} />
         </div>
 
         {car.featured && !sold && (
-          <div className="absolute right-3 top-3 rounded-full bg-senna px-2 py-0.5 text-xs font-bold text-black">
+          <div className="pointer-events-none absolute right-3 top-3 z-30 rounded-full bg-senna px-2 py-0.5 text-xs font-bold text-black">
             ★ destaque
           </div>
         )}
 
         {/* Selo VENDIDO diagonal por cima da foto (prova social) */}
         {sold && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center">
             <span className="rotate-[-10deg] rounded-md border-2 border-white/85 px-6 py-2 font-display text-3xl font-extrabold uppercase tracking-widest text-white shadow-lg">
               Vendido
             </span>
@@ -57,7 +39,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
         )}
       </div>
 
-      <div className="relative z-[2] flex flex-1 flex-col gap-2 p-4">
+      <Link href={href} className="relative z-[2] flex flex-1 flex-col gap-2 p-4">
         <h3 className="line-clamp-2 font-display text-lg font-bold leading-tight text-ink">
           {car.title}
         </h3>
@@ -77,7 +59,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
             ))}
           </div>
         )}
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
