@@ -13,20 +13,22 @@
 - Pasta antiga do Drive `G:\...\Garagem Rucula` está **APOSENTADA** (só guarda o `.env.local`, que não vai no git).
 - **Setup de PC novo:** `git clone <repo> C:\dev\garagemrucula` → copiar o `.env.local` → `npm install`. (Node 20 dá warning do supabase-js; funciona, mas ideal atualizar p/ Node 22.)
 
-**Estado (att. 01/07/2026):**
-- ✅ **GitHub** configurado (6 commits). **Supabase** `.env.local` com as chaves (ref do projeto `lryzyydzjodywvzhiumx`, derivado do JWT).
-- ✅ **Logo processado** → ícones PWA + favicon + og (via sharp). **Design tokens** com cores AMOSTRADAS do logo.
-- ✅ **Camada Supabase**: clients (read anon / server / admin service-role), tipos, queries; `proxy.ts` protege /admin; schema SQL escrito.
-- ✅ **Site público COMPLETO e VALIDADO** no browser (desktop+mobile): home (hero + destaques + grid), vitrine c/ filtros, página do carro (galeria fotos+vídeos, ficha, "tenho interesse"→WhatsApp+lead, views, compartilhar, selo VENDIDO), sobre, 404. Build de produção passa limpo.
+**🟢 SITE NO AR: https://garagemrucula.vercel.app** — deploy automático a cada `git push`. SQL já rodado; Supabase com dados reais.
 
-**PRÓXIMOS PASSOS (em ordem):**
-1. ⚠️ **Felipe roda `supabase/migrations/0001_init.sql`** no SQL Editor do Supabase (DDL não passa pela API REST; desbloqueia os dados).
-2. **Felipe configura a Vercel:** import do repo + 4 env vars (as do `.env.local`) na conta dele (`felipeherrera.contato@gmail.com`, Hobby). Deploy automático a cada `git push origin main`.
-3. Construir **/admin** (login email+senha, CRUD carros c/ upload+dnd, leads, views, QR, histórico de vendas). Mobile-first.
-4. **PWA service worker** network-first (regra 5/10).
-5. Após o SQL: criar user admin + carro de teste via service_role e testar tudo de ponta a ponta.
+**⚠️ LIÇÃO (deploy Vercel):** o clone C: não herdou o `user.email` local → commits saíram como `felipe.felix@housi.com.br` e a Vercel Hobby bloqueou o deploy (repo privado + autor sem acesso). Corrigido: `git config user.email felipeherrera.contato@gmail.com` no C: **e o repo virou PÚBLICO** (remove a trava de vez). Em todo clone novo, rodar esse git config.
 
-**Contas:** Supabase = conta NOVA `garagemrucula@gmail.com` (free = 2 projetos/conta; a do Felipe já tem o Rebobina). Vercel = conta do Felipe (`felipeherrera.contato@gmail.com`, Hobby s/ limite de projetos). git `user.email = felipeherrera.contato@gmail.com` (precisa bater com a Vercel).
+**Estado (att. 01/07/2026) — v1 essencialmente PRONTO e no ar:**
+- ✅ GitHub **público** + Vercel (deploy ok). Supabase (SQL rodado, bucket testado, chaves no `.env.local`, ref `lryzyydzjodywvzhiumx`).
+- ✅ Logo → ícones/og. **Visual refinado nível Rebobina** (Exo 2 + JetBrains Mono, eyebrows mono, orbs de glow, botões com glow, cards elevados, pulse no WhatsApp — estudei o Rebobina de verdade).
+- ✅ **Site público**: home, vitrine (filtros marca/ano/preço/estilo/busca), página do carro (galeria fotos+vídeos, ficha, interesse→WhatsApp+lead, views, QR, compartilhar, selo VENDIDO), sobre, 404.
+- ✅ **Admin**: login, dashboard, CRUD c/ upload de fotos (dnd) + vídeos, leads, QR, **histórico de vendas** (car_sales privado), **trocar senha** (/admin/senha). PWA + banner "instalar app". QA desktop+mobile sem erros.
+- ✅ User admin `garagemrucula@gmail.com` (senha TEMP `Rucula-3a84915144!` → TROCAR). Carro `fusca-teste` no site (apagar depois).
+
+**PRÓXIMOS PASSOS:**
+1. **Domínio `garagemrucula.com.br`**: adicionar na Vercel (Settings→Domains) + registros DNS (A + CNAME) no Registro.br → depois atualizar `NEXT_PUBLIC_SITE_URL` na Vercel pro domínio.
+2. Felipe trocar a senha temporária (/admin/senha) e cadastrar os carros reais (apagar o de teste).
+
+**Contas:** Supabase = conta NOVA `garagemrucula@gmail.com` (free = 2 projetos/conta). Vercel = conta do Felipe (`felipeherrera.contato@gmail.com`, Hobby). git `user.email = felipeherrera.contato@gmail.com` (OBRIGATÓRIO bater com a Vercel — checar em cada clone novo).
 
 ---
 
