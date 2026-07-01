@@ -10,7 +10,11 @@ O botão **"Entrar com Google"** já está no site (`/admin/login`), mas só fun
 
 ## PARTE 1 — Google Cloud (criar as chaves)
 
-Abra **https://console.cloud.google.com** logado na conta **garagemrucula@gmail.com**.
+Abra **https://console.cloud.google.com** logado na **sua conta Google** — pode ser a
+sua (`felipeherrera.contato@gmail.com`) ou a `garagemrucula@gmail.com`, **tanto faz**:
+a conta dona do projeto NÃO aparece no login, serve só pra você administrar as chaves.
+O que decide quem entra no painel são os **usuários de teste** (passo 1.3) + a lista do
+sistema — não a conta dona do projeto.
 
 ### 1.1 Criar um projeto
 - No topo, clique no seletor de projeto → **"Novo projeto"**.
