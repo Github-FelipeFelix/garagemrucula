@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Garagem Rúcula
 
-## Getting Started
+Site de vitrine de carros da **Garagem Rúcula** — compra e venda de veículos antigos, importados e modificados (fuscas, kombis, projetos turbo e rebaixado). O cliente vê os carros disponíveis (fotos, vídeos, ficha, modificações) e é levado ao **WhatsApp** (com mensagem pronta) ou **Instagram**. Inclui painel `/admin` mobile-first para o dono gerenciar tudo — inclusive do celular, em eventos.
 
-First, run the development server:
+🔗 **Site:** https://garagemrucula.vercel.app
+📸 **Instagram:** [@garagem_rucula](https://www.instagram.com/garagem_rucula/)
+
+## Stack
+
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Tailwind CSS v4** — tema escuro, cores amostradas do logo
+- **Supabase** — Postgres + Auth + Storage, com RLS
+- **Vercel** — deploy automático a cada push
+- **PWA** — instalável no celular (service worker network-first)
+
+## Rodando localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Crie um `.env.local` a partir do `.env.example` com as chaves do Supabase.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estrutura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app/(site)` — site público (home, vitrine, página do carro, sobre)
+- `src/app/admin` — painel protegido (CRUD de carros, leads, vendas, trocar senha)
+- `src/lib` — clients Supabase (leitura/servidor/admin), tipos, helpers
+- `supabase/migrations` — schema SQL (rodar no SQL Editor do Supabase)
 
-## Learn More
+## Funcionalidades
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Vitrine** com filtros: marca, ano, faixa de preço, estilo (turbo/rebaixado/…) e busca
+- **Página do carro**: galeria de fotos/vídeos, ficha técnica, modificações, botão "tenho interesse" (abre o WhatsApp e registra o lead), QR Code, compartilhar
+- **Admin**: cadastro com upload de fotos arrastáveis (dnd-kit), status, destaque na home, contador de visualizações, histórico de vendas (privado)
+- Carros vendidos permanecem na vitrine com selo **"VENDIDO"** (prova social)
