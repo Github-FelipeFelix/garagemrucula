@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Trash2, Loader2 } from "lucide-react";
+import { Trash2, Loader2, Copy } from "lucide-react";
 import type { Car, CarSale } from "@/lib/types";
 import { PhotoUploader } from "./PhotoUploader";
 import { VideoUploader } from "./VideoUploader";
@@ -85,6 +85,20 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
       return;
     }
     router.push("/admin");
+    router.refresh();
+  }
+
+  async function onDuplicate() {
+    if (!editing) return;
+    setSaving(true);
+    const res = await fetch(`/api/admin/cars/${car.id}/duplicate`, { method: "POST" });
+    const j = (await res.json().catch(() => ({}))) as { id?: string; error?: string };
+    if (!res.ok || !j.id) {
+      setError(j.error || "Erro ao duplicar.");
+      setSaving(false);
+      return;
+    }
+    router.push(`/admin/carros/${j.id}`);
     router.refresh();
   }
 
@@ -185,9 +199,14 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
       <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/95 p-3 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           {editing ? (
-            <button type="button" onClick={onDelete} disabled={saving} className="flex items-center gap-1.5 text-sm text-red-400 hover:text-red-300">
-              <Trash2 size={16} /> Apagar
-            </button>
+            <div className="flex items-center gap-4">
+              <button type="button" onClick={onDelete} disabled={saving} className="flex items-center gap-1.5 text-sm text-red-400 hover:text-red-300">
+                <Trash2 size={16} /> Apagar
+              </button>
+              <button type="button" onClick={onDuplicate} disabled={saving} className="flex items-center gap-1.5 text-sm text-muted hover:text-ink">
+                <Copy size={16} /> Duplicar
+              </button>
+            </div>
           ) : (
             <span />
           )}
