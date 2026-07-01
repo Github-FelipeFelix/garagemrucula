@@ -3,6 +3,7 @@ import { Geist, Exo_2, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { siteUrl } from "@/lib/site";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +25,8 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.garagemrucula.com.br";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl()),
   title: {
     default: "Garagem Rúcula — carros antigos, importados e modificados",
     template: "%s · Garagem Rúcula",

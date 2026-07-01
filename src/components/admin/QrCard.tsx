@@ -5,14 +5,19 @@ import QRCode from "qrcode";
 import { Download } from "lucide-react";
 
 // Gera o QR Code que leva à página do carro (para imprimir e colar no vidro em eventos).
-export function QrCard({ url, slug }: { url: string; slug: string }) {
+// A URL é montada no client a partir do host real (window.location.origin), então o QR
+// aponta sempre para o domínio que o admin está acessando — sem depender de env var.
+export function QrCard({ slug }: { slug: string }) {
+  const [url, setUrl] = useState("");
   const [dataUrl, setDataUrl] = useState("");
 
   useEffect(() => {
-    QRCode.toDataURL(url, { width: 600, margin: 2 })
+    const u = `${window.location.origin}/carros/${slug}`;
+    setUrl(u);
+    QRCode.toDataURL(u, { width: 600, margin: 2 })
       .then(setDataUrl)
       .catch(() => setDataUrl(""));
-  }, [url]);
+  }, [slug]);
 
   return (
     <div className="flex items-center gap-4">

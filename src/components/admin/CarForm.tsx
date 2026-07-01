@@ -7,7 +7,6 @@ import type { Car, CarSale } from "@/lib/types";
 import { PhotoUploader } from "./PhotoUploader";
 import { VideoUploader } from "./VideoUploader";
 import { QrCard } from "./QrCard";
-import { siteUrl } from "@/lib/site";
 
 type Media = { path: string; url: string };
 
@@ -190,7 +189,7 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
       {editing && car.slug && (
         <section className="rounded-xl border border-line bg-surface p-4">
           <label className="label">QR Code — imprima e cole no vidro (abre a página do carro)</label>
-          <QrCard url={`${siteUrl()}/carros/${car.slug}`} slug={car.slug} />
+          <QrCard slug={car.slug} />
         </section>
       )}
 
