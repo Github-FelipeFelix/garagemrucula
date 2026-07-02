@@ -15,7 +15,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
   ].filter(Boolean) as string[];
 
   return (
-    <div className="group card spotlight relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60 hover:shadow-[0_22px_44px_-24px_rgba(36,165,75,0.7)]">
+    <div className="group card spotlight relative isolate flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-rucula/60 hover:shadow-[0_22px_44px_-24px_rgba(36,165,75,0.7)]">
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-2">
         <CarCardMedia photos={photos} alt={car.title} href={href} sold={sold} priority={priority} />
 
