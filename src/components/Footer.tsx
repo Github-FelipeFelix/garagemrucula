@@ -45,6 +45,11 @@ export function Footer() {
 
       <div className="border-t border-line py-5 text-center text-xs text-muted">
         © {new Date().getFullYear()} Garagem Rúcula. Todos os direitos reservados.
+        {" · "}
+        {/* Acesso discreto ao painel (o primo acha o admin de qualquer aparelho). A trava e o login. */}
+        <Link href="/admin" className="text-muted/70 transition hover:text-ink">
+          Painel
+        </Link>
       </div>
     </footer>
   );

@@ -19,5 +19,16 @@ export default function manifest(): MetadataRoute.Manifest {
       { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
       { src: "/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
+    // Atalho no app instalado (segurar o icone -> "Painel"): abre direto o /admin.
+    // O primo gerencia os carros do celular em eventos sem digitar a URL na mao.
+    shortcuts: [
+      {
+        name: "Painel (gerenciar carros)",
+        short_name: "Painel",
+        description: "Cadastrar e editar os carros",
+        url: "/admin",
+        icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+      },
+    ],
   };
 }

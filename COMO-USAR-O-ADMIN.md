@@ -4,8 +4,25 @@ Guia rápido pra cadastrar e gerenciar os carros. Dá pra fazer tudo pelo **celu
 
 ## Entrar
 1. Acesse **garagemrucula.com.br/admin** (ou garagemrucula.vercel.app/admin enquanto o domínio não fica pronto)
-2. E-mail: **garagemrucula@gmail.com** · Senha: (a que você definir)
-3. **Troque a senha** no primeiro acesso: menu **“senha”** no topo.
+2. Toque em **“Entrar com Google”** (a conta **garagemrucula@gmail.com**) — ou use e-mail e senha.
+3. Se usar senha, **troque no primeiro acesso**: menu **“senha”** no topo.
+
+> 💡 O painel funciona no computador **e no celular** — cada aparelho faz o login uma vez e já fica salvo. Não precisa estar no computador pra mexer.
+
+## Deixar o painel a um toque no celular (recomendado)
+Pra não precisar digitar o endereço toda vez (ótimo pra usar em eventos):
+
+**No Android (Chrome):**
+1. Abra **garagemrucula.com.br/admin** e faça o login.
+2. Toque nos **três pontinhos** (canto superior) → **“Adicionar à tela inicial”**.
+3. Vai aparecer um **ícone da Garagem Rúcula** na tela do celular que abre **direto no painel**.
+
+**No iPhone (Safari):**
+1. Abra **garagemrucula.com.br/admin** e faça o login.
+2. Toque no botão **Compartilhar** (o quadradinho com a seta pra cima) → **“Adicionar à Tela de Início”**.
+3. Pronto: ícone na tela que abre direto no painel.
+
+> Se você já instalou o app da Garagem Rúcula no celular, também dá pra **segurar o ícone** do app e tocar em **“Painel”** — vai direto pra cá.
 
 ## Cadastrar um carro
 1. Clique em **“+ Novo carro”**
