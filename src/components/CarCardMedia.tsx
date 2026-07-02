@@ -114,7 +114,7 @@ export function CarCardMedia({
             type="button"
             onClick={(e) => onArrow(e, -1)}
             aria-label="Foto anterior"
-            className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/55 p-1.5 text-white opacity-0 transition hover:bg-black/75 group-hover:opacity-100 max-sm:opacity-100"
+            className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/55 p-2 text-white opacity-0 transition before:absolute before:-inset-2 before:content-[''] hover:bg-black/75 group-hover:opacity-100 max-sm:opacity-100"
           >
             <ChevronLeft size={18} />
           </button>
@@ -122,7 +122,7 @@ export function CarCardMedia({
             type="button"
             onClick={(e) => onArrow(e, 1)}
             aria-label="Próxima foto"
-            className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/55 p-1.5 text-white opacity-0 transition hover:bg-black/75 group-hover:opacity-100 max-sm:opacity-100"
+            className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/55 p-2 text-white opacity-0 transition before:absolute before:-inset-2 before:content-[''] hover:bg-black/75 group-hover:opacity-100 max-sm:opacity-100"
           >
             <ChevronRight size={18} />
           </button>
