@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
@@ -18,7 +17,6 @@ function GoogleIcon() {
 }
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -47,23 +45,32 @@ export default function LoginPage() {
       setLoading(false);
       return;
     }
-    router.replace(nextUrl());
-    router.refresh();
+    // Navegação HARD (não router.replace): garante que o servidor enxergue o
+    // cookie de sessão na hora. No celular/PWA o router.replace+refresh às vezes
+    // ficava "carregando" por muito tempo antes de entrar.
+    window.location.assign(nextUrl());
   }
 
   async function signInWithGoogle() {
     setGoogleLoading(true);
     setError(null);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
+    // skipBrowserRedirect + redirect manual: no navegador do celular / PWA o
+    // redirect automático às vezes não disparava (botão ficava esmaecido e nada
+    // acontecia). Redirecionar na mão a partir de data.url é confiável.
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl())}` },
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl())}`,
+        skipBrowserRedirect: true,
+      },
     });
-    if (error) {
-      setError("Não foi possível abrir o login do Google.");
+    if (error || !data?.url) {
+      setError("Não foi possível abrir o login do Google. Tente o e-mail e a senha abaixo.");
       setGoogleLoading(false);
+      return;
     }
-    // Sucesso: o navegador é redirecionado pro Google.
+    window.location.href = data.url;
   }
 
   return (
