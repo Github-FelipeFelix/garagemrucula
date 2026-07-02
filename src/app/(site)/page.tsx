@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { getFeaturedCars, getCars } from "@/lib/queries";
+import { getSiteSettings } from "@/lib/settings";
 import { CarCard } from "@/components/CarCard";
 import { WhatsAppIcon } from "@/components/icons";
 import { InstallApp } from "@/components/InstallApp";
@@ -11,7 +12,11 @@ import { whatsappLink } from "@/lib/format";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [featured, all] = await Promise.all([getFeaturedCars(6), getCars({ limit: 8 })]);
+  const [featured, all, settings] = await Promise.all([
+    getFeaturedCars(6),
+    getCars({ limit: 8 }),
+    getSiteSettings(),
+  ]);
   const disponiveis = all.filter((c) => c.status !== "vendido");
   const hasCars = all.length > 0;
 
@@ -45,9 +50,7 @@ export default async function HomePage() {
           <h1 className="fade-up fade-up-1 font-display text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-7xl">
             Garagem <span className="text-rucula-bright text-glow-rucula">Rucula</span>
           </h1>
-          <p className="fade-up fade-up-2 max-w-xl text-lg text-muted">
-            Carros antigos, importados e modificados. Fuscas, kombis e projetos que contam história.
-          </p>
+          <p className="fade-up fade-up-2 max-w-xl text-lg text-muted">{settings.heroSubtitulo}</p>
           <div className="fade-up fade-up-3 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Link href="/carros" className="btn btn-primary">
               Ver carros disponíveis

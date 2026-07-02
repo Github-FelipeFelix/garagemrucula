@@ -4,19 +4,22 @@ import { Award, Wrench } from "lucide-react";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/lib/site";
 import { whatsappLink } from "@/lib/format";
+import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Sobre",
   description: "A história da Garagem Rucula — do fusca verde rucula ao nome que virou marca.",
 };
 
-const DIFERENCIAIS = [
-  { icon: Award, title: "Seleção a dedo", text: "Cada carro é escolhido e preparado com capricho — nada de qualquer coisa." },
-  { icon: Wrench, title: "Antigos e modificados", text: "Fuscas, kombis, importados e projetos turbo, rebaixado, rodas e som. O nicho é esse." },
-  { icon: WhatsAppIcon, title: "Papo direto", text: "Curtiu um carro? Fala com a gente na hora, no WhatsApp ou no Instagram." },
-];
+// ISR: revalida pra pegar o texto editado no admin (o admin também força na hora).
+export const revalidate = 60;
 
-export default function SobrePage() {
+// Ícones fixos (por índice); o TEXTO dos diferenciais é editável no /admin/site.
+const DIF_ICONS = [Award, Wrench, WhatsAppIcon];
+
+export default async function SobrePage() {
+  const s = await getSiteSettings();
+  const diferenciais = s.diferenciais.map((d, i) => ({ ...d, icon: DIF_ICONS[i] ?? Award }));
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div data-reveal className="flex flex-col items-center text-center">
@@ -28,28 +31,19 @@ export default function SobrePage() {
       </div>
 
       <div data-reveal className="mt-8 space-y-5 leading-relaxed text-muted">
-        <p>
-          Tudo começou com um Fusca <span className="text-ink">verde rucula</span> — turbo, rodas de
-          Porsche, feito no capricho. Foi esse carro que deu nome à garagem e mostrou o caminho:
-          transformar clássicos em projetos que a galera para pra olhar.
-        </p>
-        <p>
-          De lá pra cá, a Garagem Rucula virou referência em <span className="text-ink">carros
-          antigos, importados e modificados</span> — fuscas, kombis e projetos turbo e rebaixado, cada
-          um com sua história. Uma pegada que carrega a paixão pelo automobilismo e a homenagem eterna
-          ao <span className="text-ink">Senna</span>, presente na nossa marca.
-        </p>
+        <p className="whitespace-pre-line">{s.sobreP1}</p>
+        <p className="whitespace-pre-line">{s.sobreP2}</p>
       </div>
 
       <div data-reveal-stagger className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {DIFERENCIAIS.map((d) => (
+        {diferenciais.map((d, i) => (
           <div
-            key={d.title}
+            key={i}
             className="card relative p-5 transition-all duration-300 hover:-translate-y-1 hover:border-rucula/50"
           >
             <d.icon className="h-6 w-6 text-rucula-bright" />
-            <h3 className="mt-3 font-display font-bold">{d.title}</h3>
-            <p className="mt-1 text-sm text-muted">{d.text}</p>
+            <h3 className="mt-3 font-display font-bold">{d.titulo}</h3>
+            <p className="mt-1 text-sm text-muted">{d.texto}</p>
           </div>
         ))}
       </div>

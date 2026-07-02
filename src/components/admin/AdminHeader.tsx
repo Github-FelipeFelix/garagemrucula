@@ -10,6 +10,7 @@ const NAV = [
   { href: "/admin", label: "Carros" },
   { href: "/admin/leads", label: "Leads" },
   { href: "/admin/vendas", label: "Vendas" },
+  { href: "/admin/site", label: "Textos do site" },
 ];
 
 export function AdminHeader() {
