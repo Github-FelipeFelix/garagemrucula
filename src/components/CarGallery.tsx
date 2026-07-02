@@ -25,15 +25,25 @@ export function CarGallery({
   const [lbOpen, setLbOpen] = useState(false);
   const startX = useRef<number | null>(null);
   const swiping = useRef(false);
+  const stripRef = useRef<HTMLDivElement>(null);
   const activeThumb = useRef<HTMLButtonElement | null>(null);
 
   const n = items.length;
   const idx = Math.min(active, Math.max(0, n - 1));
   const many = n > 1;
 
-  // Ao navegar (setas/swipe), traz a miniatura ativa pra dentro da tira.
+  // Centraliza a miniatura ativa na TIRA — rolando SÓ o container (nunca a
+  // página). O scrollIntoView anterior rolava a página verticalmente e dava a
+  // impressão de "tela descendo" ao trocar de foto no celular.
   useEffect(() => {
-    activeThumb.current?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    const strip = stripRef.current;
+    const thumb = activeThumb.current;
+    if (!strip || !thumb) return;
+    const delta =
+      thumb.getBoundingClientRect().left -
+      strip.getBoundingClientRect().left -
+      (strip.clientWidth - thumb.clientWidth) / 2;
+    strip.scrollBy({ left: delta, behavior: "smooth" });
   }, [idx]);
 
   if (n === 0) {
@@ -160,7 +170,7 @@ export function CarGallery({
       </div>
 
       {many && (
-        <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+        <div ref={stripRef} className="no-scrollbar flex gap-2 overflow-x-auto px-0.5 py-1.5">
           {items.map((it, i) => (
             <button
               key={it.path + i}

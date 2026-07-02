@@ -28,6 +28,8 @@ export function Lightbox({
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [smooth, setSmooth] = useState(false);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const activeThumbRef = useRef<HTMLButtonElement | null>(null);
 
   const g = useRef({
     dragging: false,
@@ -69,6 +71,18 @@ export function Lightbox({
   useEffect(() => {
     reset();
   }, [index, reset]);
+
+  // Mantém a miniatura ativa visível na tira (rolagem só do container).
+  useEffect(() => {
+    const strip = stripRef.current;
+    const thumb = activeThumbRef.current;
+    if (!strip || !thumb) return;
+    const delta =
+      thumb.getBoundingClientRect().left -
+      strip.getBoundingClientRect().left -
+      (strip.clientWidth - thumb.clientWidth) / 2;
+    strip.scrollBy({ left: delta, behavior: "smooth" });
+  }, [index]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -260,10 +274,14 @@ export function Lightbox({
       </div>
 
       {many && (
-        <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 sm:justify-center">
+        <div
+          ref={stripRef}
+          className="no-scrollbar flex gap-2 overflow-x-auto px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 sm:justify-center"
+        >
           {items.map((it, i) => (
             <button
               key={it.path + i}
+              ref={i === index ? activeThumbRef : null}
               type="button"
               onClick={() => onNavigate(i)}
               aria-label={`Ver ${i + 1}`}
