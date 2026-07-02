@@ -9,7 +9,7 @@ metadata:
 
 # Garagem Rúcula — plano
 
-> **STATUS (02/07/2026):** v1 IMPLEMENTADO e no ar no domínio próprio https://www.garagemrucula.com.br. Este arquivo é o plano/escopo original; o **estado atual e as pendências** (cadastro dos carros reais, rate-limit distribuído opcional) vivem no [[MEMORY]] e no `CLAUDE.md`.
+> **STATUS (02/07/2026):** v1 no ar no domínio próprio https://www.garagemrucula.com.br, com **carros REAIS cadastrados (5)** + **editor de textos no admin** (o primo edita Sobre/hero sozinho). Este arquivo é o plano/escopo ORIGINAL; o **estado atual e as pendências** vivem no [[MEMORY]] e no `CLAUDE.md`.
 
 Vitrine de carros do primo do Felipe. Nicho: antigos, importados, modificados (turbo, rebaixado, rodas, som…). Ninguém compra pelo site → redireciona pro **WhatsApp +55 19 97416-5880** (mensagem pré-preenchida com o carro) ou **Instagram @garagem_rucula** (~40 mil seguidores). Domínio reservado: **www.garagemrucula.com.br** (Registro.br). E-mail do primo: **garagemrucula@gmail.com**.
 

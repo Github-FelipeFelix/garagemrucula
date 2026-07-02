@@ -16,7 +16,7 @@ metadata:
 - **Supabase:** conta `garagemrucula@gmail.com` (ref `lryzyydzjodywvzhiumx`). Schema rodado (`supabase/migrations/0001_init.sql`: cars, leads, car_sales + RLS + RPC `bump_car_view`). Bucket `car-media` (público). `.env.local` com URL + anon + service_role + `NEXT_PUBLIC_SITE_URL`.
 
 ## 🔜 Falta (detalhe nas PENDÊNCIAS do MEMORY.md)
-Primo cadastrar os carros reais (+ apagar o `fusca-teste`) · rate-limit distribuído opcional (Upstash) · melhorias contínuas (mandato aberto). Cosméticos, domínio, fotos HD, login Google e fix do admin mobile: **FEITOS**.
+**Sem pendência crítica.** Carros reais já cadastrados (5 no ar) e `fusca-teste` apagado. Melhorias opcionais que o Felipe pediu pra **NÃO implementar por ora**: e-mail de notificação de lead, HEIC no upload, rate-limit distribuído (Upstash), liberar contato no editor de textos. **FEITOS:** v1, cosméticos "UAU", domínio, fotos HD, login Google, admin mobile, fix do "super zoom", selos, marca sem acento, editor de textos do site no admin.
 
 ## Continuidade entre 2 PCs (via GitHub, NÃO mais Drive)
 - **Fonte:** GitHub. Início: hook `SessionStart` → `sessao-inicio.ps1` faz `git pull` (ff-only) + ajusta `autoMemoryDirectory` pra `memory/` deste repo. **Fim de sessão: `git push`.**

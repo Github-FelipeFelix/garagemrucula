@@ -33,5 +33,5 @@ Crie um `.env.local` a partir do `.env.example` com as chaves do Supabase.
 
 - **Vitrine** com filtros: marca, ano, faixa de preço, estilo (turbo/rebaixado/…) e busca
 - **Página do carro**: galeria de fotos/vídeos, ficha técnica, modificações, botão "tenho interesse" (abre o WhatsApp e registra o lead), QR Code, compartilhar
-- **Admin**: cadastro com upload de fotos arrastáveis (dnd-kit), status, destaque na home, contador de visualizações, histórico de vendas (privado)
+- **Admin**: cadastro com upload de fotos arrastáveis (dnd-kit), status, destaque na home, contador de visualizações, histórico de vendas (privado), **editor de textos do site** (Sobre/subtítulo do hero — sem mexer no código)
 - Carros vendidos permanecem na vitrine com selo **"VENDIDO"** (prova social)
