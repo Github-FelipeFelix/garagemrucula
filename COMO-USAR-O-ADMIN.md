@@ -50,5 +50,14 @@ Pra não precisar digitar o endereço toda vez (ótimo pra usar em eventos):
 ## Interesses (leads)
 - Toda vez que alguém clica em **“Tenho interesse”** num carro, fica registrado no menu **“Leads”** (e o cliente vai pro seu WhatsApp com a mensagem pronta).
 
+## Mudar os textos do site (sem depender de ninguém) ✍️
+- No topo do painel tem a aba **“Textos do site”**.
+- Ali você edita:
+  - a **frase que aparece embaixo do nome** na página inicial;
+  - os **2 parágrafos da página “Sobre”** (a história da garagem);
+  - os **3 cartões de diferenciais** (título + texto) da página “Sobre”.
+- Escreva e toque em **“Salvar textos”** — as mudanças **aparecem no site na hora**.
+- (Telefone, WhatsApp e Instagram ficam fixos de propósito, pra ninguém trocar sem querer o contato que traz as vendas. Se precisar mudar, fala com o Felipe.)
+
 ---
 Qualquer dúvida ou coisa pra mudar, é só falar com o Felipe. 💚
