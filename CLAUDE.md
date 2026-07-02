@@ -85,7 +85,7 @@ Next.js 16 (App Router) · React 19 · TypeScript strict · Tailwind v4 (`@tailw
 11. **Moeda BR / pt-BR** em toda a UI. Responder ao Felipe **sempre em português**.
 
 ## Continuidade entre os 2 PCs
-- A pasta sincroniza pelo **Google Drive**. **Não rodar o Claude nos 2 PCs ao mesmo tempo** (risco de conflito no Drive).
+- Sincroniza via **GitHub** (não mais pelo Drive): início de sessão `git pull` (hook), fim de sessão `git push`. **Não rodar o Claude nos 2 PCs ao mesmo tempo** (risco de conflito no git).
 - Hook `SessionStart` → `scripts/sessao-inicio.ps1`: sincroniza git (se houver remote) e conserta o `autoMemoryDirectory` desta máquina pra apontar pra `memory/` deste projeto.
 - **1ª vez em cada PC:** rodar na mão `& "<repo>\scripts\sessao-inicio.ps1"`, depois **REINICIAR o Claude** (o ponteiro de memória só vale na próxima sessão).
-- Toolchain do PC principal (C:): Node v20.12.2, npm 10.5.0, git 2.45.1. Vercel CLI NÃO instalado (deploy é git push). dev-browser disponível.
+- Toolchain (os 2 PCs): Node v20.12.2, npm 10.5.0. Vercel CLI NÃO instalado (deploy é git push). dev-browser disponível — ⚠️ no PC 2 o daemon está travado por processo órfão elevado; bypass = Playwright direto de `~/.dev-browser/node_modules` (ver `memory/aprendizados_rebobina.md` #29).

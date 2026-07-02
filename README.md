@@ -2,7 +2,7 @@
 
 Site de vitrine de carros da **Garagem Rúcula** — compra e venda de veículos antigos, importados e modificados (fuscas, kombis, projetos turbo e rebaixado). O cliente vê os carros disponíveis (fotos, vídeos, ficha, modificações) e é levado ao **WhatsApp** (com mensagem pronta) ou **Instagram**. Inclui painel `/admin` mobile-first para o dono gerenciar tudo — inclusive do celular, em eventos.
 
-🔗 **Site:** https://garagemrucula.vercel.app
+🔗 **Site:** https://www.garagemrucula.com.br
 📸 **Instagram:** [@garagem_rucula](https://www.instagram.com/garagem_rucula/)
 
 ## Stack
