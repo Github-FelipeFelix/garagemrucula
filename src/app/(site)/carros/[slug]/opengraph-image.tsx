@@ -5,7 +5,7 @@ import { formatBRL } from "@/lib/format";
 // Imagem de preview (WhatsApp/Instagram/Google) gerada por carro: foto de capa
 // + nome + preço + marca. Substitui a og:image estática pela versão estilizada.
 export const runtime = "nodejs";
-export const alt = "Garagem Rúcula";
+export const alt = "Garagem Rucula";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -13,7 +13,7 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const { slug } = await params;
   const car = await getCarBySlug(slug).catch(() => null);
   const cover = car?.photos?.[0]?.url;
-  const title = car?.title ?? "Garagem Rúcula";
+  const title = car?.title ?? "Garagem Rucula";
   const price = car ? formatBRL(car.price) : "";
   const tags = (car?.tags ?? []).slice(0, 3);
 

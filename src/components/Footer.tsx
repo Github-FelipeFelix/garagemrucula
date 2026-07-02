@@ -13,7 +13,7 @@ export function Footer() {
       >
         {/* Logo centralizado com o texto (no mobile e no desktop). */}
         <div className="flex max-w-sm flex-col items-center text-center">
-          <Image src="/logo.png" alt="Garagem Rúcula" width={160} height={117} className="h-14 w-auto" />
+          <Image src="/logo.png" alt="Garagem Rucula" width={160} height={117} className="h-14 w-auto" />
           <p className="mt-4 text-sm leading-relaxed text-muted">
             Compra e venda de carros antigos, importados e modificados. Fuscas, kombis e projetos
             que contam história.
@@ -24,7 +24,7 @@ export function Footer() {
         <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
           <p className="eyebrow">Contato</p>
           <a
-            href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
+            href={whatsappLink("Olá! Vim pelo site da Garagem Rucula 🚗")}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2.5 text-sm text-ink transition hover:text-zap"
@@ -49,7 +49,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-line py-5 text-center text-xs text-muted">
-        © {new Date().getFullYear()} Garagem Rúcula. Todos os direitos reservados.
+        © {new Date().getFullYear()} Garagem Rucula. Todos os direitos reservados.
         {" · "}
         {/* Acesso discreto ao painel (o primo acha o admin de qualquer aparelho). A trava e o login. */}
         <Link href="/admin" className="text-muted/70 transition hover:text-ink">

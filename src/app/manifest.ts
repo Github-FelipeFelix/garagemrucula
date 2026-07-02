@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 // PWA — app unico, instalavel no celular (ele usa em eventos). SW e network-first (regra 5/10).
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Garagem Rúcula",
-    short_name: "Rúcula",
+    name: "Garagem Rucula",
+    short_name: "Rucula",
     description: "Carros antigos, importados e modificados — compra e venda.",
     start_url: "/",
     scope: "/",

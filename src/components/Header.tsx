@@ -38,9 +38,9 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Image src="/logo.png" alt="Garagem Rúcula" width={140} height={102} className="h-10 w-auto" priority />
+          <Image src="/logo.png" alt="Garagem Rucula" width={140} height={102} className="h-10 w-auto" priority />
           <span className="hidden font-display text-lg font-extrabold uppercase tracking-wide sm:block">
-            Garagem <span className="text-rucula-bright">Rúcula</span>
+            Garagem <span className="text-rucula-bright">Rucula</span>
           </span>
         </Link>
 

@@ -331,7 +331,7 @@ h1, h2, h3 {
   mask-image: radial-gradient(ellipse 75% 55% at 50% 35%, #000 30%, transparent 75%);
 }
 
-/* Brilho no texto de destaque (ex.: "Rúcula" no H1 do hero) */
+/* Brilho no texto de destaque (ex.: "Rucula" no H1 do hero) */
 .text-glow-rucula {
   text-shadow: 0 0 28px rgba(74, 222, 128, 0.45);
 }

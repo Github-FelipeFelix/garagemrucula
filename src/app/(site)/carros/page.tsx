@@ -4,7 +4,7 @@ import { Vitrine } from "@/components/Vitrine";
 
 export const metadata: Metadata = {
   title: "Carros",
-  description: "Todos os carros da Garagem Rúcula: antigos, importados e modificados.",
+  description: "Todos os carros da Garagem Rucula: antigos, importados e modificados.",
 };
 
 export const revalidate = 60;

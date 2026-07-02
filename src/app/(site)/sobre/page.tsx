@@ -7,7 +7,7 @@ import { whatsappLink } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Sobre",
-  description: "A história da Garagem Rúcula — do fusca verde rúcula ao nome que virou marca.",
+  description: "A história da Garagem Rucula — do fusca verde rucula ao nome que virou marca.",
 };
 
 const DIFERENCIAIS = [
@@ -20,21 +20,21 @@ export default function SobrePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div data-reveal className="flex flex-col items-center text-center">
-        <Image src="/logo.png" alt="Garagem Rúcula" width={220} height={160} className="h-auto w-40" />
+        <Image src="/logo.png" alt="Garagem Rucula" width={220} height={160} className="h-auto w-40" />
         <p className="eyebrow mt-6">Nossa história</p>
         <h1 className="mt-3 font-display text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
-          A Garagem <span className="text-rucula-bright">Rúcula</span>
+          A Garagem <span className="text-rucula-bright">Rucula</span>
         </h1>
       </div>
 
       <div data-reveal className="mt-8 space-y-5 leading-relaxed text-muted">
         <p>
-          Tudo começou com um Fusca <span className="text-ink">verde rúcula</span> — turbo, rodas de
+          Tudo começou com um Fusca <span className="text-ink">verde rucula</span> — turbo, rodas de
           Porsche, feito no capricho. Foi esse carro que deu nome à garagem e mostrou o caminho:
           transformar clássicos em projetos que a galera para pra olhar.
         </p>
         <p>
-          De lá pra cá, a Garagem Rúcula virou referência em <span className="text-ink">carros
+          De lá pra cá, a Garagem Rucula virou referência em <span className="text-ink">carros
           antigos, importados e modificados</span> — fuscas, kombis e projetos turbo e rebaixado, cada
           um com sua história. Uma pegada que carrega a paixão pelo automobilismo e a homenagem eterna
           ao <span className="text-ink">Senna</span>, presente na nossa marca.
@@ -56,7 +56,7 @@ export default function SobrePage() {
 
       <div data-reveal className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
         <a
-          href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
+          href={whatsappLink("Olá! Vim pelo site da Garagem Rucula 🚗")}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-zap"

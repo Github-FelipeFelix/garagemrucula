@@ -36,14 +36,14 @@ export default async function HomePage() {
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center sm:py-28">
           <Image
             src="/logo.png"
-            alt="Garagem Rúcula"
+            alt="Garagem Rucula"
             width={420}
             height={306}
             className="fade-up h-auto w-52 drop-shadow-2xl sm:w-72"
             priority
           />
           <h1 className="fade-up fade-up-1 font-display text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-7xl">
-            Garagem <span className="text-rucula-bright text-glow-rucula">Rúcula</span>
+            Garagem <span className="text-rucula-bright text-glow-rucula">Rucula</span>
           </h1>
           <p className="fade-up fade-up-2 max-w-xl text-lg text-muted">
             Carros antigos, importados e modificados. Fuscas, kombis e projetos que contam história.
@@ -53,7 +53,7 @@ export default async function HomePage() {
               Ver carros disponíveis
             </Link>
             <a
-              href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
+              href={whatsappLink("Olá! Vim pelo site da Garagem Rucula 🚗")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-zap"
@@ -116,7 +116,7 @@ export default async function HomePage() {
               Chama a gente no WhatsApp ou acompanha o Instagram — chega novidade toda hora.
             </p>
             <a
-              href={whatsappLink("Olá! Queria saber dos carros disponíveis na Garagem Rúcula.")}
+              href={whatsappLink("Olá! Queria saber dos carros disponíveis na Garagem Rucula.")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-zap mx-auto mt-6"
