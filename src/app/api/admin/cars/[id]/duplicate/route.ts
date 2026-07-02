@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getAdminUser } from "@/lib/auth";
 import { ensureUniqueSlug, REVALIDATE_PATHS } from "@/lib/car-input";
+import { copyMediaToNewPaths } from "@/lib/storage-media";
 import type { Car } from "@/lib/types";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -20,6 +21,10 @@ export async function POST(_request: NextRequest, { params }: Ctx) {
 
   const car = data as Car;
   const slug = await ensureUniqueSlug(supabase, `${car.slug}-copia`);
+  // Copia os ARQUIVOS no Storage: a cópia não pode apontar pros mesmos paths do
+  // original, senão apagar um dos dois mata as fotos do outro.
+  const photos = await copyMediaToNewPaths(supabase, car.photos ?? []);
+  const videos = await copyMediaToNewPaths(supabase, car.videos ?? []);
   const payload = {
     slug,
     title: `${car.title} (cópia)`,
@@ -35,8 +40,8 @@ export async function POST(_request: NextRequest, { params }: Ctx) {
     description: car.description,
     mods: car.mods,
     tags: car.tags,
-    photos: car.photos,
-    videos: car.videos,
+    photos,
+    videos,
     status: "disponivel",
     featured: false,
   };

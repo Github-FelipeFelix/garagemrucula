@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getAdminUser } from "@/lib/auth";
 import { sanitizeCarInput, sanitizeSale, ensureUniqueSlug, REVALIDATE_PATHS } from "@/lib/car-input";
+import { removeMediaSafely, type Media } from "@/lib/storage-media";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -22,6 +23,9 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
   const supabase = createAdminClient();
   input.slug = await ensureUniqueSlug(supabase, input.slug, id);
 
+  // Snapshot das mídias ANTES do update, pra limpar do Storage o que foi removido.
+  const { data: before } = await supabase.from("cars").select("photos, videos").eq("id", id).maybeSingle();
+
   const { data, error } = await supabase
     .from("cars")
     .update(input)
@@ -31,6 +35,17 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
   if (error) {
     console.error("[PATCH /api/admin/cars]", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  // Limpa órfãos: mídias que saíram do carro na edição (e que nenhum outro carro usa).
+  if (before) {
+    const oldMedia = [
+      ...((before.photos as Media[]) ?? []),
+      ...((before.videos as Media[]) ?? []),
+    ];
+    const kept = new Set([...input.photos, ...input.videos].map((m) => m.path));
+    const removed = oldMedia.map((m) => m.path).filter((p) => p && !kept.has(p));
+    await removeMediaSafely(supabase, removed, id);
   }
 
   // Histórico de venda (privado): grava quando vendido, remove caso contrário.
@@ -53,14 +68,16 @@ export async function DELETE(_request: NextRequest, { params }: Ctx) {
   const { id } = await params;
   const supabase = createAdminClient();
 
-  // Best-effort: remove as midias do Storage antes de apagar o registro.
+  // Best-effort: remove as midias do Storage antes de apagar o registro —
+  // mas SÓ as que nenhum outro carro referencia (duplicatas antigas compartilham
+  // arquivos; apagar o original não pode matar as fotos da cópia).
   const { data: car } = await supabase.from("cars").select("photos, videos").eq("id", id).maybeSingle();
   const media = [
     ...((car?.photos as Array<{ path?: string }>) ?? []),
     ...((car?.videos as Array<{ path?: string }>) ?? []),
   ];
   const paths = media.map((m) => m?.path).filter((p): p is string => !!p);
-  if (paths.length) await supabase.storage.from("car-media").remove(paths);
+  await removeMediaSafely(supabase, paths, id);
 
   const { error } = await supabase.from("cars").delete().eq("id", id);
   if (error) {
