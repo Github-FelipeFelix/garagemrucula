@@ -92,4 +92,5 @@ export function sanitizeSale(
   return { sold_price, sold_at, notes };
 }
 
-export const REVALIDATE_PATHS = ["/", "/carros"] as const;
+// Inclui o sitemap: carro novo entra no Google sem esperar a revalidação de 1h.
+export const REVALIDATE_PATHS = ["/", "/carros", "/sitemap.xml"] as const;
