@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getCarBySlug } from "@/lib/queries";
 import { formatBRL } from "@/lib/format";
+import { siteUrl } from "@/lib/site";
 
 // Imagem de preview (WhatsApp/Instagram/Google) gerada por carro: foto de capa
 // + nome + preço + marca. Substitui a og:image estática pela versão estilizada.
@@ -12,7 +13,14 @@ export const contentType = "image/png";
 export default async function OgImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const car = await getCarBySlug(slug).catch(() => null);
-  const cover = car?.photos?.[0]?.url;
+  // Passa a capa pelo otimizador do próprio site: fotos de celular vêm com EXIF
+  // orientation, que o renderizador da OG (Satori) NÃO aplica — a foto sairia
+  // deitada no preview do WhatsApp. O /_next/image corrige a rotação (e, sem
+  // Accept de webp/avif, devolve JPEG — formato que o Satori entende).
+  const rawCover = car?.photos?.[0]?.url;
+  const cover = rawCover
+    ? `${siteUrl()}/_next/image?url=${encodeURIComponent(rawCover)}&w=1200&q=75`
+    : undefined;
   const title = car?.title ?? "Garagem Rucula";
   const price = car ? formatBRL(car.price) : "";
   const tags = (car?.tags ?? []).slice(0, 3);
@@ -80,7 +88,7 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
               letterSpacing: 4,
             }}
           >
-            GARAGEM RÚCULA
+            GARAGEM RUCULA
           </div>
           <div
             style={{
