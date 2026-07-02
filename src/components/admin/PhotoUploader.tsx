@@ -12,7 +12,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, useSortable, arrayMove, rectSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { X, Loader2, ImagePlus, GripVertical } from "lucide-react";
+import { X, Loader2, ImagePlus, GripVertical, Star } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type Media = { path: string; url: string };
@@ -21,10 +21,12 @@ function SortablePhoto({
   item,
   isCover,
   onRemove,
+  onMakeCover,
 }: {
   item: Media;
   isCover: boolean;
   onRemove: () => void;
+  onMakeCover: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: item.path,
@@ -41,27 +43,36 @@ function SortablePhoto({
       className="relative aspect-square overflow-hidden rounded-lg border border-line bg-surface-2"
     >
       <Image src={item.url} alt="" fill sizes="(max-width: 640px) 33vw, 220px" quality={82} className="object-cover" />
-      {isCover && (
-        <span className="absolute left-1 top-1 rounded bg-senna px-1.5 py-0.5 text-[10px] font-bold text-black">
-          capa
+      {isCover ? (
+        <span className="absolute bottom-1 left-1 inline-flex items-center gap-1 rounded-md bg-senna px-2 py-1 text-[11px] font-bold text-black">
+          <Star size={12} fill="currentColor" /> capa
         </span>
+      ) : (
+        <button
+          type="button"
+          onClick={onMakeCover}
+          className="absolute bottom-1 left-1 inline-flex items-center gap-1 rounded-md bg-black/70 px-2 py-1.5 text-[11px] font-semibold text-white transition hover:bg-black/90 active:scale-95"
+          aria-label="Tornar esta foto a capa"
+        >
+          <Star size={12} /> capa
+        </button>
       )}
       <button
         type="button"
         onClick={onRemove}
-        className="absolute right-1 top-1 rounded-full bg-black/70 p-1 text-white"
+        className="absolute right-1 top-1 rounded-md bg-black/70 p-2 text-white transition hover:bg-red-500/90 active:scale-95"
         aria-label="Remover foto"
       >
-        <X size={12} />
+        <X size={16} />
       </button>
       <button
         type="button"
         {...attributes}
         {...listeners}
-        className="absolute bottom-1 right-1 cursor-grab touch-none rounded bg-black/70 p-1 text-white"
-        aria-label="Arrastar"
+        className="absolute bottom-1 right-1 cursor-grab touch-none rounded-md bg-black/70 p-2 text-white transition hover:bg-black/90 active:cursor-grabbing"
+        aria-label="Arrastar para reordenar"
       >
-        <GripVertical size={12} />
+        <GripVertical size={16} />
       </button>
     </div>
   );
@@ -126,6 +137,7 @@ export function PhotoUploader({
                 item={item}
                 isCover={i === 0}
                 onRemove={() => onChange(value.filter((m) => m.path !== item.path))}
+                onMakeCover={() => onChange(arrayMove(value, i, 0))}
               />
             ))}
             <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-line bg-surface text-muted transition hover:border-rucula-bright">
@@ -143,7 +155,10 @@ export function PhotoUploader({
           </div>
         </SortableContext>
       </DndContext>
-      <p className="mt-1.5 text-xs text-muted">A primeira foto é a capa. Arraste pela alça para reordenar.</p>
+      <p className="mt-1.5 text-xs text-muted">
+        A primeira foto é a capa — toque em ⭐ <strong>capa</strong> para escolher outra. Pelo <strong>X</strong> você
+        remove e pela alça você arrasta para reordenar.
+      </p>
     </div>
   );
 }

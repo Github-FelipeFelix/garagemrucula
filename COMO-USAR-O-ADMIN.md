@@ -11,7 +11,7 @@ Guia rápido pra cadastrar e gerenciar os carros. Dá pra fazer tudo pelo **celu
 1. Clique em **“+ Novo carro”**
 2. Preencha o **Título** (ex: *VW Fusca 1973 Turbo*). O resto é opcional, mas quanto mais, melhor.
 3. **Preço**: deixe vazio se quiser mostrar “Sob consulta”.
-4. **Fotos**: clique em **adicionar** e escolha as fotos. **A primeira foto é a capa** — arraste pela alcinha pra reordenar. Dá pra pôr vídeos também.
+4. **Fotos**: toque em **adicionar** e escolha as fotos. **A primeira foto é a capa** — pra trocar, toque no botão **⭐ capa** da foto que você quer. O **X** remove a foto, e a alcinha (canto de baixo) arrasta pra reordenar. Dá pra pôr vídeos também.
 5. **Tags**: separe por vírgula (ex: `turbo, rebaixado, antigo`) — viram os filtros do site.
 6. **Modificações**: uma por linha.
 7. Clique em **“Criar carro”**. Pronto, já aparece no site!

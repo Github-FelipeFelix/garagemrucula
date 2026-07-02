@@ -53,10 +53,10 @@ export function VideoUploader({
           <button
             type="button"
             onClick={() => onChange(value.filter((x) => x.path !== v.path))}
-            className="rounded p-1 text-muted hover:text-red-400"
+            className="rounded-md p-2 text-muted transition hover:bg-red-500/10 hover:text-red-400 active:scale-95"
             aria-label="Remover vídeo"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
       ))}
