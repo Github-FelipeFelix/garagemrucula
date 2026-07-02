@@ -171,7 +171,7 @@ export function Vitrine({ cars }: { cars: Car[] }) {
       {filtered.length > 0 ? (
         <>
           <p className="mb-4 text-sm text-muted">{filtered.length} carro(s)</p>
-          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal-stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((car) => (
               <CarCard key={car.id} car={car} />
             ))}

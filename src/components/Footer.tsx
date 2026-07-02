@@ -7,8 +7,12 @@ import { WhatsAppIcon, InstagramIcon } from "./icons";
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-line bg-surface">
-      <div data-reveal className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:justify-between">
-        <div className="max-w-sm">
+      <div
+        data-reveal
+        className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 py-12 text-center sm:flex-row sm:items-start sm:justify-between"
+      >
+        {/* Logo centralizado com o texto (no mobile e no desktop). */}
+        <div className="flex max-w-sm flex-col items-center text-center">
           <Image src="/logo.png" alt="Garagem Rúcula" width={160} height={117} className="h-14 w-auto" />
           <p className="mt-4 text-sm leading-relaxed text-muted">
             Compra e venda de carros antigos, importados e modificados. Fuscas, kombis e projetos
@@ -16,7 +20,8 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        {/* Contato: centralizado no mobile, alinhado à esquerda no desktop. */}
+        <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
           <p className="eyebrow">Contato</p>
           <a
             href={whatsappLink("Olá! Vim pelo site da Garagem Rúcula 🚗")}
@@ -36,7 +41,7 @@ export function Footer() {
             <InstagramIcon className="h-5 w-5 text-rucula-bright" />
             @{INSTAGRAM_HANDLE}
           </a>
-          <nav className="mt-3 flex flex-col gap-2 text-sm text-muted">
+          <nav className="mt-3 flex flex-col items-center gap-2 text-sm text-muted sm:items-start">
             <Link href="/carros" className="transition hover:text-ink">Ver carros</Link>
             <Link href="/sobre" className="transition hover:text-ink">Sobre a garagem</Link>
           </nav>

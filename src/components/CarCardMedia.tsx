@@ -22,6 +22,9 @@ export function CarCardMedia({
   priority?: boolean;
 }) {
   const [idx, setIdx] = useState(0);
+  // "warm": depois do 1º hover/toque, pré-carregamos as fotos vizinhas pra que
+  // trocar de foto seja instantâneo (sem penalizar o load inicial da home).
+  const [warm, setWarm] = useState(false);
   const startX = useRef<number | null>(null);
   const swiping = useRef(false);
   const many = photos.length > 1;
@@ -37,6 +40,7 @@ export function CarCardMedia({
   function onTouchStart(e: React.TouchEvent) {
     startX.current = e.touches[0].clientX;
     swiping.current = false;
+    setWarm(true);
   }
   function onTouchMove(e: React.TouchEvent) {
     if (startX.current != null && Math.abs(e.touches[0].clientX - startX.current) > 10) {
@@ -62,6 +66,7 @@ export function CarCardMedia({
   return (
     <div
       className="absolute inset-0"
+      onPointerEnter={() => setWarm(true)}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -84,6 +89,24 @@ export function CarCardMedia({
           priority={priority}
         />
       </Link>
+
+      {/* Pré-carrega as fotos vizinhas após o 1º hover/toque (troca instantânea). */}
+      {warm && many &&
+        [...new Set([(idx + 1) % photos.length, (idx - 1 + photos.length) % photos.length])]
+          .filter((i) => i !== idx)
+          .map((i) => (
+            <Image
+              key={photos[i]}
+              src={photos[i]}
+              alt=""
+              aria-hidden
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={82}
+              loading="eager"
+              className="pointer-events-none -z-10 object-cover opacity-0"
+            />
+          ))}
 
       {many && (
         <>

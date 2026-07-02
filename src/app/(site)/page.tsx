@@ -78,7 +78,7 @@ export default async function HomePage() {
               Em <span className="text-senna">destaque</span>
             </h2>
           </div>
-          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal-stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((car, i) => (
               <CarCard key={car.id} car={car} priority={i < 3} />
             ))}
@@ -102,7 +102,7 @@ export default async function HomePage() {
         </div>
 
         {disponiveis.length > 0 ? (
-          <div data-reveal-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-reveal-stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {disponiveis.slice(0, 6).map((car) => (
               <CarCard key={car.id} car={car} />
             ))}

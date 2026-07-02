@@ -1,10 +1,11 @@
 import type { CarStatus } from "@/lib/types";
 import { CAR_STATUS_LABEL } from "@/lib/types";
 
+// Fundo sólido pra leitura clara (antes era translúcido /15 e "sumia" no preto).
 const styles: Record<CarStatus, string> = {
-  disponivel: "bg-rucula/15 text-rucula-bright border-rucula/40",
-  reservado: "bg-senna/15 text-senna border-senna/40",
-  vendido: "bg-white/10 text-white/60 border-white/20",
+  disponivel: "bg-rucula-bright text-black border-transparent",
+  reservado: "bg-senna text-black border-transparent",
+  vendido: "bg-black/70 text-white/90 border-white/30",
 };
 
 export function StatusBadge({ status, className = "" }: { status: CarStatus; className?: string }) {

@@ -61,7 +61,7 @@ export default async function AdminDashboard() {
         <Stat label="Interesses" value={leadsCount} />
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <h2 className="mb-3 font-display text-lg font-bold">Carros</h2>
           <div className="flex flex-col gap-2">
