@@ -24,7 +24,7 @@ export function CarCard({ car, priority = false }: { car: Car; priority?: boolea
         </div>
 
         {car.featured && !sold && (
-          <div className="pointer-events-none absolute right-3 top-3 z-30 rounded-full bg-senna px-2 py-0.5 text-xs font-bold text-black">
+          <div className="pointer-events-none absolute right-3 top-3 z-30 inline-flex items-center rounded-full bg-senna px-2.5 py-1 text-xs font-semibold tracking-wide text-black">
             ★ destaque
           </div>
         )}
