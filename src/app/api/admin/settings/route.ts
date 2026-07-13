@@ -4,8 +4,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getAdminUser } from "@/lib/auth";
 import { mergeSettings } from "@/lib/settings";
 
-// Salva o conteúdo editável do site (Sobre, diferenciais, subtítulo do hero).
-// Protegido por admin. mergeSettings coage/normaliza; aqui só limitamos tamanho.
+// Salva o conteúdo editável do site (Sobre, diferenciais, subtítulo do hero,
+// fotos do espaço). Protegido por admin. mergeSettings coage/normaliza; aqui só
+// limitamos tamanho e limpamos do Storage as fotos do espaço que saíram.
 export async function POST(request: NextRequest) {
   const admin = await getAdminUser();
   if (!admin) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
@@ -25,9 +26,15 @@ export async function POST(request: NextRequest) {
       titulo: cap(d.titulo, 80),
       texto: cap(d.texto, 400),
     })),
+    aboutPhotos: merged.aboutPhotos,
   };
 
   const supabase = createAdminClient();
+
+  // Snapshot das fotos ANTES do save, pra remover do bucket as que o admin tirou.
+  const { data: prev } = await supabase.from("site_settings").select("data").eq("id", 1).maybeSingle();
+  const oldPhotos = mergeSettings(prev?.data).aboutPhotos;
+
   const { error } = await supabase
     .from("site_settings")
     .upsert({ id: 1, data: clean, updated_at: new Date().toISOString() });
@@ -38,6 +45,19 @@ export async function POST(request: NextRequest) {
       ? "A tabela de conteúdo ainda não foi criada no banco. Rode a migração 0002_site_settings.sql."
       : error.message;
     return NextResponse.json({ error: friendly }, { status: 400 });
+  }
+
+  // Limpa órfãos das fotos do espaço (best-effort). Essas fotos só são
+  // referenciadas AQUI (linha única), então basta o diff old→new. Falhar aqui
+  // nunca quebra o save (foto sumindo é que não pode; lixo no bucket é barato).
+  const kept = new Set(clean.aboutPhotos.map((p) => p.path));
+  const removed = oldPhotos.map((p) => p.path).filter((p) => p && !kept.has(p));
+  if (removed.length) {
+    try {
+      await supabase.storage.from("car-media").remove(removed);
+    } catch (e) {
+      console.error("[/api/admin/settings] cleanup", e);
+    }
   }
 
   revalidatePath("/");

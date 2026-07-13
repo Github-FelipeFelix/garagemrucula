@@ -23,6 +23,11 @@ export function carWhatsappMessage(car: { title: string; slug: string }): string
   return `Olá! Tenho interesse no *${car.title}* que vi no site: ${siteUrl()}/carros/${car.slug}`;
 }
 
+// Mensagem pronta ao clicar "tenho interesse" numa peça.
+export function partWhatsappMessage(part: { title: string; slug: string }): string {
+  return `Olá! Tenho interesse na peça *${part.title}* que vi no site: ${siteUrl()}/pecas/${part.slug}`;
+}
+
 // Gera slug a partir do titulo (usado no admin ao criar carro).
 export function slugify(text: string): string {
   return text

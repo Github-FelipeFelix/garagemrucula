@@ -44,7 +44,16 @@ export default async function LeadsPage() {
               className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-3"
             >
               <div className="min-w-0">
-                <p className="truncate font-medium text-ink">{l.car_title || "(carro removido)"}</p>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                      l.part_id ? "bg-azul/25 text-azul-bright" : "bg-rucula/20 text-rucula-bright"
+                    }`}
+                  >
+                    {l.part_id ? "peça" : "carro"}
+                  </span>
+                  <p className="truncate font-medium text-ink">{l.car_title || "(item removido)"}</p>
+                </div>
                 <p className="text-xs text-muted">
                   {new Date(l.created_at).toLocaleString("pt-BR")}
                 </p>

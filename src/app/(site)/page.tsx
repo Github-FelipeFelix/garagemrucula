@@ -2,8 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { getFeaturedCars, getCars } from "@/lib/queries";
+import { getParts } from "@/lib/parts-queries";
 import { getSiteSettings } from "@/lib/settings";
 import { CarCard } from "@/components/CarCard";
+import { PartCard } from "@/components/PartCard";
 import { WhatsAppIcon } from "@/components/icons";
 import { InstallApp } from "@/components/InstallApp";
 import { whatsappLink } from "@/lib/format";
@@ -12,13 +14,15 @@ import { whatsappLink } from "@/lib/format";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [featured, all, settings] = await Promise.all([
+  const [featured, all, parts, settings] = await Promise.all([
     getFeaturedCars(6),
     getCars({ limit: 8 }),
+    getParts({ limit: 6 }),
     getSiteSettings(),
   ]);
   const disponiveis = all.filter((c) => c.status !== "vendido");
   const hasCars = all.length > 0;
+  const partsDisponiveis = parts.filter((p) => p.status !== "vendido");
 
   return (
     <>
@@ -130,6 +134,31 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {/* PEÇAS — chamada pra área de peças (some sozinha se não houver peças) */}
+      {partsDisponiveis.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pb-16">
+          <div data-reveal className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow mb-3">Do nosso estoque</p>
+              <h2 className="section-title">
+                Peças & <span className="text-senna">acessórios</span>
+              </h2>
+            </div>
+            <Link
+              href="/pecas"
+              className="inline-flex items-center gap-1 text-sm font-medium text-rucula-bright hover:underline"
+            >
+              ver todas <ArrowRight size={16} />
+            </Link>
+          </div>
+          <div data-reveal-stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {partsDisponiveis.slice(0, 3).map((part) => (
+              <PartCard key={part.id} part={part} />
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

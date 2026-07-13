@@ -8,10 +8,14 @@ export async function POST(request: NextRequest) {
   const admin = await getAdminUser();
   if (!admin) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
 
-  const body = (await request.json().catch(() => ({}))) as { ext?: unknown };
+  const body = (await request.json().catch(() => ({}))) as { ext?: unknown; folder?: unknown };
   const ext =
     typeof body.ext === "string" && /^[a-z0-9]{1,5}$/i.test(body.ext) ? body.ext.toLowerCase() : "jpg";
-  const path = `cars/${crypto.randomUUID()}.${ext}`;
+  // Pasta dentro do MESMO bucket público (car-media). Allowlist: nunca confiar no
+  // cliente pra montar o path. Default "cars" mantém o fluxo dos carros idêntico.
+  const FOLDERS = ["cars", "parts", "espaco"];
+  const folder = typeof body.folder === "string" && FOLDERS.includes(body.folder) ? body.folder : "cars";
+  const path = `${folder}/${crypto.randomUUID()}.${ext}`;
 
   const supabase = createAdminClient();
   const { data, error } = await supabase.storage.from("car-media").createSignedUploadUrl(path);

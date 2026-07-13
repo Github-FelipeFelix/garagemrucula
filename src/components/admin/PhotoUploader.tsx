@@ -81,9 +81,11 @@ function SortablePhoto({
 export function PhotoUploader({
   value,
   onChange,
+  folder = "cars",
 }: {
   value: Media[];
   onChange: (m: Media[]) => void;
+  folder?: "cars" | "parts" | "espaco";
 }) {
   const [uploading, setUploading] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
@@ -99,7 +101,7 @@ export function PhotoUploader({
         const res = await fetch("/api/admin/upload-url", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ext }),
+          body: JSON.stringify({ ext, folder }),
         });
         if (!res.ok) continue;
         const { path, token, publicUrl } = await res.json();

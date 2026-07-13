@@ -43,6 +43,7 @@ export function Footer() {
           </a>
           <nav className="mt-3 flex flex-col items-center gap-2 text-sm text-muted sm:items-start">
             <Link href="/carros" className="transition hover:text-ink">Ver carros</Link>
+            <Link href="/pecas" className="transition hover:text-ink">Peças e acessórios</Link>
             <Link href="/sobre" className="transition hover:text-ink">Sobre a garagem</Link>
           </nav>
         </div>

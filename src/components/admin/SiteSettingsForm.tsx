@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Toast } from "./Toast";
+import { PhotoUploader } from "./PhotoUploader";
 import type { SiteSettings } from "@/lib/settings";
 
 // Editor dos textos do site (o primo mexe sem depender de ninguém). Salva em
@@ -85,6 +86,17 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettings }) {
             <textarea className="input min-h-20" value={d.texto} onChange={(e) => setDif(i, "texto", e.target.value)} />
           </div>
         ))}
+      </section>
+
+      <section className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-4">
+        <div>
+          <p className="font-display font-bold">Fotos do espaço (&quot;Nosso espaço&quot; no Sobre)</p>
+          <p className="mt-1 text-sm text-muted">
+            Mostre um pouco da garagem. A ordem aqui é a ordem que aparece no site — arraste pra
+            reordenar; toque no <strong>X</strong> pra remover. Se ficar sem fotos, a seção some do site.
+          </p>
+        </div>
+        <PhotoUploader value={f.aboutPhotos} onChange={(p) => setF((s) => ({ ...s, aboutPhotos: p }))} folder="espaco" />
       </section>
 
       {toast && <Toast message={toast} />}

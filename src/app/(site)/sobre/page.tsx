@@ -5,6 +5,7 @@ import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/lib/site";
 import { whatsappLink } from "@/lib/format";
 import { getSiteSettings } from "@/lib/settings";
+import { EspacoGallery } from "@/components/EspacoGallery";
 
 export const metadata: Metadata = {
   title: "Sobre",
@@ -47,6 +48,8 @@ export default async function SobrePage() {
           </div>
         ))}
       </div>
+
+      <EspacoGallery photos={s.aboutPhotos} />
 
       <div data-reveal className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
         <a
