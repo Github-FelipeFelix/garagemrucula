@@ -2,6 +2,8 @@
 
 ## ➤ ONDE PARAMOS — ler ISTO primeiro · atualizar por último
 **att. 13/07/2026 (Opus 4.8):** NOVA **ÁREA DE PEÇAS** (tabela `parts` própria, menu "Peças" → `/pecas` + admin) + galeria **"Nosso espaço"** no Sobre (admin sobe fotos) + botão **"Mover para Peças"** (converte carro→peça sem recadastrar). Migração `0003_parts.sql` rodada pelo Felipe. Tudo no ar. Detalhe em [[historico_garagem_rucula]].
+> **Sessão 13/07 (tarde) — sem código:** consultoria de **precificação** (quanto cobrar por um site desse porte). A referência COM números/estratégia ficou **PRIVADA no Google Drive** (`G:\Meu Drive\004_Projetos\Garagem_Rucula\PRECIFICACAO-referencia.md`, sincroniza nos 2 PCs) — **fora do git** porque o repo é público. No git só o ponteiro sem números ([[precificacao_projeto]]). Nenhuma mudança de código/produto.
+
 > Continuidade entre os 2 PCs via **GitHub**. Início: hook roda `git pull`. Fim: `git push`. Canônico também no `CLAUDE.md` da raiz.
 
 **🟢 SITE NO AR (domínio próprio): https://www.garagemrucula.com.br** (apex → 308 pro www; `garagemrucula.vercel.app` também responde). Carros + **Peças** + Sobre c/ "Nosso espaço", cosméticos "UAU", fotos HD, lightbox c/ zoom, carrossel no card, login Google, admin mobile-first, editor de textos/fotos no admin. Deploy automático a cada `git push origin main`.
@@ -40,3 +42,4 @@
 - [Setup & continuidade (local + GitHub)](setup_continuidade.md)
 - [Histórico/changelog detalhado (commits, arquivos, PORQUÊ)](historico_garagem_rucula.md)
 - [Aprendizados técnicos (Rebobina + deploy/infra)](aprendizados_rebobina.md)
+- [Precificação — quanto cobrar por um site desse porte](precificacao_projeto.md) — só PONTEIRO; conteúdo (faixas/recorrência/estratégia) fica PRIVADO no Drive (`G:\Meu Drive\004_Projetos\Garagem_Rucula\`), fora do git público

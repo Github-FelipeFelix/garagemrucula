@@ -20,6 +20,7 @@
 **⚠️ LIÇÃO 2 (NEXT_PUBLIC_SITE_URL / SEO):** a env var vazou o `http://localhost:3000` do `.env.local` pra Vercel. Como `NEXT_PUBLIC_*` é embutida no **build**, sitemap/robots/canonical/og/QR saíam com `localhost` em produção (SEO e preview do WhatsApp quebrados). Corrigido em 2 camadas: (a) `siteUrl()` em `src/lib/site.ts` virou **defensivo** — env NÃO-local vence; senão, em qualquer deploy Vercel usa o domínio (nunca localhost); no client, QR/compartilhar usam `window.location.origin` (host real); (b) Felipe corrigiu a env var na Vercel pro domínio. Provado com `VERCEL=1` + env localhost → gera o domínio. Regra: **nunca** copiar o `.env.local` inteiro pra Vercel sem revisar `NEXT_PUBLIC_SITE_URL`.
 
 **Estado (att. 13/07/2026 — NOVA ÁREA DE PEÇAS + galeria "Nosso espaço" no Sobre + "Mover para Peças"; migração 0003 rodada pelo Felipe; tudo no ar):**
+- 💼 **Sessão 13/07 (tarde) — SEM código:** consultoria de **precificação** (quanto cobrar por um site desse porte). A referência com números/estratégia ficou **PRIVADA no Google Drive** (`G:\Meu Drive\004_Projetos\Garagem_Rucula\PRECIFICACAO-referencia.md`, sincroniza nos 2 PCs) — **fora do git** porque o repo é público. No git só o ponteiro sem números (`memory/precificacao_projeto.md` + seção "💼 Precificação" mais abaixo). Nenhuma mudança de código/produto.
 - ✅ **Peças + galeria do espaço + mover (13/07, Opus 4.8, commits `ad0442b` + `eec25a3`):**
   - **ÁREA DE PEÇAS separada dos carros:** tabela `parts` PRÓPRIA (migração `0003_parts.sql`; reusa o bucket `car-media` com prefixo `parts/`). Fluxo de carros INTOCADO (`queries.ts`/`car-input.ts`/`storage-media.ts`/`api/admin/cars`). Admin: aba "Peças" (lista + CRUD + duplicar + QR, mesmo form dos carros). Site: menu "Peças" → `/pecas` (filtros categoria/estado/preço) + página por peça (galeria/ficha/WhatsApp/share/OG) + teaser na home. Leads unificados c/ selo peça/carro (`leads.part_id`). Libs `part-input`/`parts-queries`/`parts-storage`.
   - **Galeria "Nosso espaço" (Sobre):** admin sobe/reordena fotos em `/admin/site` (`site_settings.aboutPhotos` jsonb, SEM migração), grade HD → Lightbox. Uploaders ganharam prop `folder`.
@@ -88,6 +89,10 @@
   2. **Captura de leads** — clique em "tenho interesse" vai pro WhatsApp E registra no admin (qual carro, quando).
   3. **Contador de visualizações** por carro.
   4. **Histórico de vendas** — registrar por quanto cada carro foi vendido (controle particular, não aparece no site).
+
+## 💼 Precificação (comercial)
+> Existe uma **referência de precificação** — quanto cobrar pra vender um site/sistema desse porte (faixas, à la carte, recorrência, estrutura de proposta, estratégia de venda). Levantada 13/07/2026 a pedido do Felipe ("por ora não faz nada; deixa registrado — se me chamarem, damos andamento"). NÃO é orçamento fechado com ninguém.
+> ⚠️ **O conteúdo (números/estratégia) NÃO fica no git** — repo é PÚBLICO. Está **privado no Drive** (sincroniza nos 2 PCs): `G:\Meu Drive\004_Projetos\Garagem_Rucula\PRECIFICACAO-referencia.md`. Ponteiro sem números em `memory/precificacao_projeto.md`.
 
 ## Escopo
 **Site público:** Home (marca + destaques + grid de disponíveis) · Vitrine com filtros (marca, ano, faixa de preço, tags do nicho: turbo/rebaixado/antigo/importado…) · Página do carro (galeria fotos+vídeos, preço, ficha técnica [ano, km, motor, câmbio, cor, combustível], lista de modificações/acessórios, botão WhatsApp com msg pré-preenchida + Instagram + compartilhar) · botão WhatsApp flutuante · Sobre/Contato.
