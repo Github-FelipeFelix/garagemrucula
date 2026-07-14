@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Trash2, Loader2, Copy } from "lucide-react";
+import { Trash2, Loader2, Copy, Package } from "lucide-react";
 import type { Car, CarSale } from "@/lib/types";
 import { PhotoUploader } from "./PhotoUploader";
 import { VideoUploader } from "./VideoUploader";
@@ -112,6 +112,30 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
     }, 700);
   }
 
+  async function onMoveToParts() {
+    if (!editing) return;
+    if (
+      !window.confirm(
+        `Mover "${car.title}" para Peças?\n\nEla sai dos Carros e vira uma Peça — as fotos e os dados vão junto (você não precisa recadastrar). Depois é só escolher a categoria da peça.`,
+      )
+    )
+      return;
+    setSaving(true);
+    setError(null);
+    const res = await fetch(`/api/admin/cars/${car.id}/move-to-parts`, { method: "POST" });
+    const j = (await res.json().catch(() => ({}))) as { id?: string; error?: string };
+    if (!res.ok || !j.id) {
+      setError(j.error || "Erro ao mover para Peças.");
+      setSaving(false);
+      return;
+    }
+    setToast("Movido para Peças! ✓");
+    setTimeout(() => {
+      router.push(`/admin/pecas/${j.id}`);
+      router.refresh();
+    }, 800);
+  }
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-6 pb-24">
       <section className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-4">
@@ -201,6 +225,24 @@ export function CarForm({ car, sale }: { car?: Car; sale?: CarSale | null }) {
         <section className="rounded-xl border border-line bg-surface p-4">
           <label className="label">QR Code — imprima e cole no vidro (abre a página do carro)</label>
           <QrCard slug={car.slug} />
+        </section>
+      )}
+
+      {editing && (
+        <section className="rounded-xl border border-line bg-surface p-4">
+          <p className="label">Isso não é um carro?</p>
+          <p className="mb-3 text-sm text-muted">
+            Se você cadastrou uma <strong>peça</strong> aqui por engano, mova pra área de Peças sem
+            recadastrar — as fotos e os dados vão junto. Depois é só escolher a categoria.
+          </p>
+          <button
+            type="button"
+            onClick={onMoveToParts}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm font-semibold text-ink transition hover:border-rucula-bright hover:text-rucula-bright disabled:opacity-50"
+          >
+            <Package size={16} /> Mover para Peças
+          </button>
         </section>
       )}
 
