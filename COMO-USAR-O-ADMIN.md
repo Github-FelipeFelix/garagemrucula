@@ -1,6 +1,6 @@
 # Como usar o painel da Garagem Rúcula 🚗
 
-Guia rápido pra cadastrar e gerenciar os carros. Dá pra fazer tudo pelo **celular**.
+Guia rápido pra cadastrar e gerenciar os **carros e as peças**. Dá pra fazer tudo pelo **celular**.
 
 ## Entrar
 1. Acesse **garagemrucula.com.br/admin** (ou garagemrucula.vercel.app/admin enquanto o domínio não fica pronto)
@@ -39,6 +39,23 @@ Pra não precisar digitar o endereço toda vez (ótimo pra usar em eventos):
 - **Destaque na home**: marque pra ele aparecer em “Em destaque”.
 - **Duplicar**: botão no rodapé da edição — cria uma cópia (ótimo pra carros parecidos).
 
+## Peças (rodas, pneus, faróis, som…) 🔧
+As peças ficam **separadas dos carros**, numa área só delas.
+1. No topo do painel, toque na aba **“Peças”**.
+2. Toque em **“+ Nova peça”**.
+3. Preencha o **Nome** (ex: *Jogo de rodas Porsche aro 15*) e o que mais quiser:
+   - **Categoria** (Rodas, Pneus, Faróis, Som…), **Estado** (Novo / Seminovo / Usado);
+   - **Marca/fabricante** (ex: BBS, Pirelli) e **Compatibilidade** (“serve em: Fusca, Brasília”);
+   - **Preço** (vazio = “Sob consulta”), **fotos** (igual aos carros: ⭐ capa, X remove, arrasta pra ordenar) e **descrição**.
+4. Toque em **“Criar peça”** — já aparece no site, no menu **“Peças”**.
+- Editar / apagar / **duplicar** e o **QR Code** funcionam igualzinho aos carros. Quem clicar em **“Tenho interesse”** numa peça também cai no seu WhatsApp e fica registrado nos **Leads** (com a marquinha “peça”).
+
+### Cadastrou uma peça como se fosse carro? É só mover 🔁
+Se você tinha posto uma peça lá nos **Carros** (antes de existir a área de Peças):
+1. Abra esse item na lista de **Carros** e toque pra editar.
+2. Lá embaixo, em **“Isso não é um carro?”**, toque em **“Mover para Peças”**.
+3. Pronto: ela sai dos Carros e vira uma Peça — **as fotos e os dados vão junto, você não recadastra nada**. Depois é só escolher a **categoria** da peça.
+
 ## Vendeu? (controle particular)
 - Mude o status pra **Vendido** → aparece um campo pra registrar **por quanto vendeu** e a data.
 - Isso é **só seu** — não aparece no site. Veja o total no menu **“Vendas”**.
@@ -50,13 +67,14 @@ Pra não precisar digitar o endereço toda vez (ótimo pra usar em eventos):
 ## Interesses (leads)
 - Toda vez que alguém clica em **“Tenho interesse”** num carro, fica registrado no menu **“Leads”** (e o cliente vai pro seu WhatsApp com a mensagem pronta).
 
-## Mudar os textos do site (sem depender de ninguém) ✍️
-- No topo do painel tem a aba **“Textos do site”**.
+## Mudar os textos e as fotos do site (sem depender de ninguém) ✍️
+- No topo do painel tem a aba **“Textos e fotos do site”**.
 - Ali você edita:
   - a **frase que aparece embaixo do nome** na página inicial;
   - os **2 parágrafos da página “Sobre”** (a história da garagem);
-  - os **3 cartões de diferenciais** (título + texto) da página “Sobre”.
-- Escreva e toque em **“Salvar textos”** — as mudanças **aparecem no site na hora**.
+  - os **3 cartões de diferenciais** (título + texto) da página “Sobre”;
+  - as **Fotos do espaço** — fotos da sua garagem/oficina que aparecem na seção **“Nosso espaço”** da página Sobre. Toque em **adicionar**, arraste pra ordenar (a ordem aqui é a do site) e o **X** remove. Se ficar sem fotos, a seção some sozinha.
+- Escreva/escolha as fotos e toque em **“Salvar”** — as mudanças **aparecem no site na hora**.
 - (Telefone, WhatsApp e Instagram ficam fixos de propósito, pra ninguém trocar sem querer o contato que traz as vendas. Se precisar mudar, fala com o Felipe.)
 
 ---
