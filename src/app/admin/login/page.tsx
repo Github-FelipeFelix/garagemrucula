@@ -76,7 +76,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-6">
-        <Image src="/logo.png" alt="Garagem Rucula" width={120} height={88} className="mx-auto h-14 w-auto" />
+        <Image src="/logo-badge.png" alt="Garagem Rucula" width={160} height={160} className="mx-auto h-20 w-20" />
         <h1 className="mt-4 text-center font-display text-xl font-bold">Painel · Garagem Rucula</h1>
 
         <button

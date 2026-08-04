@@ -13,7 +13,7 @@ export function Footer() {
       >
         {/* Logo centralizado com o texto (no mobile e no desktop). */}
         <div className="flex max-w-sm flex-col items-center text-center">
-          <Image src="/logo.png" alt="Garagem Rucula" width={160} height={117} className="h-14 w-auto" />
+          <Image src="/logo-wordmark.png" alt="Garagem Rucula" width={245} height={100} className="h-auto w-48" />
           <p className="mt-4 text-sm leading-relaxed text-muted">
             Compra e venda de carros antigos, importados e modificados. Fuscas, kombis e projetos
             que contam história.

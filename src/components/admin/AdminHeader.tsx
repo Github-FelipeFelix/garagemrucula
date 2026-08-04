@@ -38,7 +38,8 @@ export function AdminHeader() {
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center justify-between py-3">
           <Link href="/admin" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="" width={90} height={66} className="h-8 w-auto" />
+            {/* Barra bem baixa: o badge le melhor que o wordmark em 32px. */}
+            <Image src="/logo-badge.png" alt="" width={64} height={64} className="h-8 w-8" />
             <span className="font-display font-bold">Painel</span>
           </Link>
           <div className="flex items-center gap-3 text-sm text-muted">

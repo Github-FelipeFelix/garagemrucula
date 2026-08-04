@@ -5,11 +5,22 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 0aec57f9-58d7-4a8e-bbc0-d1e9eac92fac
+  modified: 2026-08-04T23:47:26.118Z
 ---
 
 # Histórico / changelog — Garagem Rúcula
 
 > Detalhe por sessão (mais recente primeiro). O estado atual e as pendências vivem no [[MEMORY]]; o plano/escopo em [[project_garagem_rucula]]; regras técnicas em [[aprendizados_rebobina]].
+
+## 04/08/2026 (Opus 5) — LOGO NOVO da marca em todo o site
+O primo redesenhou a marca; o Felipe passou o caminho da pasta (`Logos Garagem/`, agora **committada** como fonte da verdade). **No ar.**
+- **O que veio (e o que é cada arquivo):** `Arte_Rucula_01.png` e `Arte_Rucula_02.png` (3380×3381) = o MESMO **badge redondo** (Kombi rebaixada + "GARAGEM" em arco + ★ EST. 2024 + `www.garagemrucula.com.br`), diferindo **só nas rodas** (01 aro escuro, 02 aro claro/cromado) → **escolhido o 02** (lê melhor em tamanho pequeno; diferença medida por bbox de diff, ver #49). `Arte_Rucula.png` (2387×2652) = folha com **2 lockups do wordmark** ("GARAGEM" + script "Rucula"): o de cima com GARAGEM condensado, o de baixo espaçado → usado **o de cima** (o espaçado vira tracinhos a 44px). O `WhatsApp Image….jpeg` é o mesmo wordmark achatado em JPEG, sem transparência — descartado.
+- **A questão de fundo (site é `#0a0a0a`):** o **badge NÃO precisou de tratamento** — o interior do círculo é branco OPACO na própria arte (48% dos pixels), então ele vira um "adesivo" branco legível no preto. O **wordmark é preto** (feito pra fundo claro) e ficava OCO → gerada a **versão negativa** (cinzas invertidos, verde preservado e clareado pro `#4ade80`, a variante clara da paleta). Método em [[aprendizados_rebobina]] #49.
+- **Distribuição (decidida com o Felipe):** wordmark negativo no **header** (`h-11 sm:h-12`; o texto "Garagem Rucula" que ficava ao lado FOI REMOVIDO — o wordmark já escreve o nome) e no **rodapé** (`w-48`). Badge no **hero** (`w-44 sm:w-56`), **Sobre** (`w-40`), **login do admin** (`h-20 w-20`) e no **header do admin** (32px — o wordmark viraria borrão nessa altura). O logo antigo (fusca + kombi + silhueta do Senna) saiu: **`public/logo.png` apagado**, zero referência restante.
+- **Assets gerados** (`public/logo-badge.png` 1024², `public/logo-wordmark.png` 1400×571, `icon-192/512`, `icon-maskable-512` (78% + `#0a0a0a`), `apple-touch-icon` 180, `src/app/icon.png`, `src/app/favicon.ico` 48+32, `public/og.jpg` 1200×630 novo = badge + wordmark sobre o preto com glow verde/petróleo). O OG **por carro/peça** não usa logo — intocado.
+- **`scripts/gerar-logos.cjs`** (novo) refaz TUDO a partir da arte original: `node scripts/gerar-logos.cjs`. Se o primo mandar arte nova, troca o PNG e roda. (`png-to-ico` é ESM → `await import()` num `.cjs`; sharp não lê `.ico`.)
+- **QA:** build TS strict OK; build de produção local + Playwright em **desktop 1440 e iPhone 390** (`isMobile`): home/vitrine/Sobre/login, header e rodapé, `scrollWidth == innerWidth` nos dois (sem overflow), 0 404 de imagem; só os erros conhecidos (`/_vercel/insights/script.js` 404 em localhost, `_rsc` abortado = prefetch). Favicon 32px e ícone 192 inspecionados ampliados. Aprendizados #49–51.
+- ⚠️ **Quem já instalou o app precisa remover + re-adicionar** pra ver o ícone novo.
 
 ## 13/07/2026 (Opus 4.8) — Área de PEÇAS + galeria "Nosso espaço" + "Mover para Peças"
 Commits `ad0442b` (peças + espaço) e `eec25a3` (mover). **Tudo no ar.**

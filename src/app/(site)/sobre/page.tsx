@@ -24,7 +24,7 @@ export default async function SobrePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div data-reveal className="flex flex-col items-center text-center">
-        <Image src="/logo.png" alt="Garagem Rucula" width={220} height={160} className="h-auto w-40" />
+        <Image src="/logo-badge.png" alt="Garagem Rucula" width={320} height={320} className="h-auto w-40" />
         <p className="eyebrow mt-6">Nossa história</p>
         <h1 className="mt-3 font-display text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
           A Garagem <span className="text-rucula-bright">Rucula</span>

@@ -3,6 +3,8 @@
 > ⚠️ **Rebobina 3D é OUTRO negócio/projeto**, com memória PRÓPRIA em `G:\Outros computadores\Meu laptop\Rebobina 3D\memory\` (sincroniza por Google Drive, NÃO por git). **NÃO misturar impressão 3D / Blender / vulcão / filamentos aqui** — este repo (`garagemrucula`) é PÚBLICO e é só do site do primo do Felipe.
 
 ## ➤ ONDE PARAMOS — ler ISTO primeiro · atualizar por último
+**att. 04/08/2026 (Opus 5): LOGO NOVO da marca no site inteiro.** O primo redesenhou: **badge redondo** (Kombi rebaixada + GARAGEM em arco + EST. 2024 + site) e **wordmark** (GARAGEM + script "Rucula"). Arte original committada em `Logos Garagem/`; `scripts/gerar-logos.cjs` regenera TODOS os assets. Wordmark **negativo** (branco+verde claro) no header e rodapé — o texto "Garagem Rucula" ao lado do logo no header SAIU; badge no hero/Sobre/login/ícones/og. Logo antigo (fusca+kombi+Senna) apagado (`public/logo.png` não existe mais). ⚠️ quem já instalou o app precisa remover+re-adicionar pra ver o ícone novo. Detalhe em [[historico_garagem_rucula]], método em [[aprendizados_rebobina]] #49–51.
+
 **att. 13/07/2026 (Opus 4.8):** NOVA **ÁREA DE PEÇAS** (tabela `parts` própria, menu "Peças" → `/pecas` + admin) + galeria **"Nosso espaço"** no Sobre (admin sobe fotos) + botão **"Mover para Peças"** (converte carro→peça sem recadastrar). Migração `0003_parts.sql` rodada pelo Felipe. Tudo no ar. Detalhe em [[historico_garagem_rucula]].
 > **Sessão 13/07 (tarde) — sem código:** consultoria de **precificação** (quanto cobrar por um site desse porte). A referência COM números/estratégia ficou **PRIVADA no Google Drive** (`G:\Meu Drive\004_Projetos\Garagem_Rucula\PRECIFICACAO-referencia.md`, sincroniza nos 2 PCs) — **fora do git** porque o repo é público. No git só o ponteiro sem números ([[precificacao_projeto]]). Nenhuma mudança de código/produto.
 
@@ -24,6 +26,7 @@
 6. 🔎 *(só se repetir)* Login Google "fresh" — provável já resolvido pelo fix do OAuth mobile; se repetir, ver logs da Vercel.
 
 ## ✅ JÁ FEITO (uma linha cada — detalhe/commits/PORQUÊ em [[historico_garagem_rucula]])
+- **Logo novo (04/08):** badge da Kombi (arte funciona no preto sem tratamento — disco branco opaco) + wordmark negativo no header/rodapé; ícones PWA/favicon/og.jpg refeitos; `scripts/gerar-logos.cjs` regenera tudo da arte original.
 - **Peças (13/07):** área nova SEPARADA dos carros — tabela `parts`, menu "Peças", `/pecas` (filtros) + página por peça (galeria, ficha, WhatsApp, share, OG), admin CRUD/duplicar/QR, teaser na home, leads unificados c/ selo peça/carro, botão "Mover para Peças". Fluxo de carros intocado. Migração 0003.
 - **Galeria "Nosso espaço" no Sobre (13/07):** admin sobe/reordena fotos em `/admin/site` (`site_settings.aboutPhotos`, sem migração), grade HD → Lightbox.
 - **Site público (v1):** home (hero+destaques+grid), vitrine c/ filtros, página do carro (galeria fotos+vídeos, ficha, "tenho interesse"→WhatsApp+lead, QR, compartilhar, "veja também", selo VENDIDO), sobre, 404/error.
@@ -33,7 +36,7 @@
 - **Segurança:** 4 camadas OK (whitelist → `proxy.ts` `getUser()` → cada `/api/admin/*` re-checa `getAdminUser()` → RLS). ⚠️ pendente pro Felipe: 2FA na conta `garagemrucula@gmail.com`.
 - **Senha do admin:** trocada pelo Felipe — **NUNCA versionar senha** (repo é público).
 
-**Decisões fechadas:** sem vídeo na home; tema escuro/preto; vendidos c/ selo "VENDIDO"; **marca no site/admin SEM acento ("Rucula", 02/07)** — só os `.md` internos ficam com "Rúcula"; extras v1 (QR, leads, views, histórico vendas) TODOS feitos; **peças SEPARADAS dos carros** (tabela/menu/páginas próprios, 13/07). Paleta: verde rúcula #24a54b (claro #4ade80) + petróleo #013c43 + amarelo Senna #f3e838 + azul #204ba0 sobre preto #0a0a0a.
+**Decisões fechadas:** **logo novo (04/08): badge redondo da Kombi na arte ORIGINAL (sem inverter) + wordmark NEGATIVO no header/rodapé, badge 02 (aro claro) entre os dois arquivos quase idênticos**; sem vídeo na home; tema escuro/preto; vendidos c/ selo "VENDIDO"; **marca no site/admin SEM acento ("Rucula", 02/07)** — só os `.md` internos ficam com "Rúcula"; extras v1 (QR, leads, views, histórico vendas) TODOS feitos; **peças SEPARADAS dos carros** (tabela/menu/páginas próprios, 13/07). Paleta: verde rúcula #24a54b (claro #4ade80) + petróleo #013c43 + amarelo Senna #f3e838 + azul #204ba0 sobre preto #0a0a0a.
 
 **Contas:** Supabase = `garagemrucula@gmail.com` (ref projeto `lryzyydzjodywvzhiumx`). Vercel = `felipeherrera.contato@gmail.com` (Hobby). git `user.email` DEVE ser `felipeherrera.contato@gmail.com` (bate com a Vercel).
 

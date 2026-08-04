@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 67654963-a746-4d27-9b3c-c0f1c1074895
+  modified: 2026-08-04T23:47:06.325Z
 ---
 
 # Aprendizados herdados (Rebobina 3D + EnergyDex)
@@ -75,5 +76,10 @@ Fontes: `Rebobina 3D/rebobina3d` (Next 16 + Supabase + Vercel + PWA, maduro) e `
 46. **Migrar registro entre tabelas SEM perder mídia (mover carro→peça):** COPIAR os arquivos pra novos paths na tabela destino (a nova linha vira dona), apagar a linha origem e remover do bucket **só os paths órfãos que a nova linha NÃO adotou** (`oldPaths.filter(p => !adoptedByNew.has(p))`). Se a cópia cair no fallback (mesmo path), ele fica de fora da remoção → a mídia da nova linha nunca some. Provado no banco/Storage real (foto da peça lê 200 após apagar o carro).
 47. **Verificar remoção no Storage do Supabase: o public URL tem CACHE de CDN** — logo após um DELETE (que retorna 200), o `GET .../object/public/...` ainda pode devolver 200 por minutos (edge cache). Pra confirmar de verdade que sumiu, usar a **API de listagem** (`POST /storage/v1/object/list/<bucket>` com `prefix`/`search`) — é a fonte da verdade, sem CDN. (Junto com #40, mais uma pegadinha de QA de storage.)
 48. **CMS-lite jsonb aceita campos novos sem migração:** adicionar `aboutPhotos` ao `site_settings.data` (jsonb) não precisou de DDL — só estender o tipo + `mergeSettings`/sanitize + o form. Migração só é necessária pra COLUNA/TABELA nova, não pra chave nova dentro de um jsonb existente.
+
+## Aprendizados novos — sessão 9 (04/08/2026, logo novo da marca)
+49. **Arte de marca feita pra fundo CLARO num site de fundo escuro — como decidir sem chutar.** Antes de escolher asset, medir com sharp: `metadata()` (dimensões/alpha), `stats().isOpaque`, `trim()` (o quanto é margem vazia) e um **histograma de cor quantizado** (`>>5` por canal) contando os transparentes. Foi isso que revelou os 2 achados que mudaram tudo: (a) o **badge redondo tinha 48% de pixels quase-brancos** = o interior do círculo é branco OPACO na arte → ele já funciona sobre `#0a0a0a` sem nenhum tratamento (o que "pareceria" ilegível na verdade vira adesivo); (b) o **wordmark é preto** com keyline branca → no preto fica OCO. Pra versão negativa NÃO usar `negate` global (inverte o verde da marca em rosa): classificar por **croma** (`max-min` dos canais) — croma baixo = cinza, inverte (`255-v`); croma alto = cor da marca, **mistura proporcional ao croma** (`t = min(1, croma/60)`) pro tom CLARO da paleta, o que preserva as bordas anti-aliased sem serrar. Comparar 2 arquivos "quase iguais" (aqui `Arte_01` vs `Arte_02`) por **bbox das diferenças** + crop dessa região: eram só as rodas.
+50. **Print de página inteira mente com reveal-on-scroll.** `screenshot({fullPage:true})` sai com o rodapé VAZIO porque o `data-reveal` só ganha opacidade quando entra no viewport — o IntersectionObserver nunca disparou. Pra conferir rodapé/seções baixas: `window.scrollTo(0, document.body.scrollHeight)` + espera, e só então o print. (Não é bug do site; é bug do QA.)
+51. **`next/image` com `w-auto`/`h-auto`: os props `width`/`height` só definem a PROPORÇÃO e as candidatas do srcset** — passar a dimensão intrínseca gigante (1400px) faz baixar imagem grande à toa; passar valores próximos do tamanho de exibição (ex. `147x60`) gera srcset 256/384. Escolher o par mantendo a razão exata (aqui múltiplos de 49×20 pra 1400/571) pra não achatar 1% o logo.
 
 Aplicação no projeto em [[project_garagem_rucula]] e [[setup_continuidade]]. Changelog em [[historico_garagem_rucula]].

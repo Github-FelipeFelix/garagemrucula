@@ -44,11 +44,11 @@ export default async function HomePage() {
 
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center sm:py-28">
           <Image
-            src="/logo.png"
+            src="/logo-badge.png"
             alt="Garagem Rucula"
-            width={420}
-            height={306}
-            className="fade-up h-auto w-52 drop-shadow-2xl sm:w-72"
+            width={448}
+            height={448}
+            className="fade-up h-auto w-44 drop-shadow-2xl sm:w-56"
             priority
           />
           <h1 className="fade-up fade-up-1 font-display text-5xl font-black uppercase leading-[0.95] tracking-tight sm:text-7xl">
