@@ -189,7 +189,11 @@ export function CarGallery({
               aria-current={i === idx}
             >
               {it.type === "photo" ? (
-                <Image src={it.url} alt="" fill sizes="160px" className="object-cover" />
+                // Tamanho fixo (não fill+sizes em px): o srcset sai com 2 opções
+                // (1x/2x) em vez de TODAS as 15 larguras. Robô que baixa o srcset
+                // inteiro gerava 15 variantes por miniatura, e cada uma puxava o
+                // original de ~5 MB do Supabase — foi o que estourou a cota em out/2026.
+                <Image src={it.url} alt="" width={80} height={64} className="h-full w-full object-cover" />
               ) : (
                 <span className="flex h-full w-full items-center justify-center bg-black text-white">
                   <Play size={18} />

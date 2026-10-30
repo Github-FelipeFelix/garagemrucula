@@ -290,7 +290,8 @@ export function Lightbox({
               }`}
             >
               {it.type === "photo" ? (
-                <Image src={it.url} alt="" fill sizes="64px" className="object-cover" />
+                // Tamanho fixo = srcset com 2 opções, não 15 (ver CarGallery).
+                <Image src={it.url} alt="" width={64} height={48} className="h-full w-full object-cover" />
               ) : (
                 <span className="flex h-full w-full items-center justify-center bg-white/10 text-[10px] text-white">
                   vídeo
