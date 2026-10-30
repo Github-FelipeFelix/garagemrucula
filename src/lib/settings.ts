@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { createReadClient } from "@/lib/supabase/read";
+import { isMissingSchema } from "@/lib/db-errors";
 
 // Conteúdo editável do site pelo /admin (sem precisar mexer no código).
 // Escopo v1: textos de marketing (seguros). Contato/WhatsApp fica no código de
@@ -69,17 +70,19 @@ export function mergeSettings(raw: unknown): SiteSettings {
 }
 
 // cache(): dedupe por render (Header/Footer/página podem chamar sem N queries).
+// Defaults só quando a tabela não existe ou está vazia. Falha de serviço estoura:
+// no site o ISR mantém a versão boa; no /admin/site impede abrir o formulário
+// com os padrões — salvar por cima apagaria os textos E as fotos do espaço.
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
-  try {
-    const supabase = createReadClient();
-    const { data, error } = await supabase
-      .from("site_settings")
-      .select("data")
-      .eq("id", 1)
-      .maybeSingle();
-    if (error || !data) return DEFAULT_SETTINGS; // tabela ainda não existe / vazia
-    return mergeSettings(data.data);
-  } catch {
-    return DEFAULT_SETTINGS;
+  const supabase = createReadClient();
+  const { data, error } = await supabase
+    .from("site_settings")
+    .select("data")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) {
+    if (isMissingSchema(error)) return DEFAULT_SETTINGS;
+    throw new Error(`[getSiteSettings] ${error.message}`);
   }
+  return data ? mergeSettings(data.data) : DEFAULT_SETTINGS;
 });

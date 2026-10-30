@@ -119,11 +119,14 @@ export function CarGallery({
         })}
 
         {cur.type === "video" && (
+          // preload="metadata": só baixa o vídeo de verdade no play. Vídeo vem
+          // direto do Supabase e conta na cota de tráfego (ver PhotoUploader).
           <video
             key={cur.path}
             src={cur.url}
             controls
             playsInline
+            preload="metadata"
             className="absolute inset-0 z-[1] h-full w-full object-contain"
           />
         )}

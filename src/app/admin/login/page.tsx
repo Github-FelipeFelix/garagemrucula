@@ -16,18 +16,39 @@ function GoogleIcon() {
   );
 }
 
+const MSG_FORA_DO_AR =
+  "O sistema do painel está fora do ar no momento — não é problema na sua senha. Tente de novo mais tarde.";
+
+// true = servidor de login respondendo. Na dúvida (a própria checagem falhou),
+// não bloqueia: melhor tentar o login do que travar à toa.
+async function servidorNoAr(): Promise<boolean> {
+  try {
+    const s = await fetch("/api/status", { cache: "no-store" }).then((r) => r.json());
+    return s?.ok !== false;
+  } catch {
+    return true;
+  }
+}
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [foraDoAr, setForaDoAr] = useState(false);
 
   // Erro devolvido pelo callback do OAuth (?erro=oauth).
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("erro") === "oauth") {
       setError("Não foi possível entrar com o Google. Confirme que a conta tem acesso ao painel.");
     }
+  }, []);
+
+  // Avisa de cara se o servidor de login estiver fora (ex.: Supabase bloqueado
+  // por cota) — antes disso o primo via "senha inválida" e achava que errou.
+  useEffect(() => {
+    servidorNoAr().then((ok) => setForaDoAr(!ok));
   }, []);
 
   function nextUrl() {
@@ -41,7 +62,16 @@ export default function LoginPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) {
-      setError("E-mail ou senha inválidos.");
+      // Só 400/invalid_credentials é senha errada. 402 (cota), 5xx e falha de
+      // rede (status 0) são o servidor fora — dizer "senha inválida" engana.
+      if (error.code === "invalid_credentials" || error.status === 400) {
+        setError("E-mail ou senha inválidos.");
+      } else if (error.status === 429) {
+        setError("Muitas tentativas seguidas. Espere alguns minutos e tente de novo.");
+      } else {
+        setForaDoAr(true);
+        setError(MSG_FORA_DO_AR);
+      }
       setLoading(false);
       return;
     }
@@ -54,6 +84,14 @@ export default function LoginPage() {
   async function signInWithGoogle() {
     setGoogleLoading(true);
     setError(null);
+    // O login do Google sai do site direto pro Supabase: se ele estiver fora,
+    // a pessoa cai numa página de erro crua. Checa antes e explica aqui.
+    if (!(await servidorNoAr())) {
+      setForaDoAr(true);
+      setError(MSG_FORA_DO_AR);
+      setGoogleLoading(false);
+      return;
+    }
     const supabase = createClient();
     // skipBrowserRedirect + redirect manual: no navegador do celular / PWA o
     // redirect automático às vezes não disparava (botão ficava esmaecido e nada
@@ -78,6 +116,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-6">
         <Image src="/logo-badge.png" alt="Garagem Rucula" width={160} height={160} className="mx-auto h-20 w-20" />
         <h1 className="mt-4 text-center font-display text-xl font-bold">Painel · Garagem Rucula</h1>
+
+        {foraDoAr && !error && (
+          <p role="status" className="mt-4 rounded-lg border border-senna/40 bg-senna/10 px-3 py-2 text-sm text-senna">
+            {MSG_FORA_DO_AR}
+          </p>
+        )}
 
         <button
           type="button"

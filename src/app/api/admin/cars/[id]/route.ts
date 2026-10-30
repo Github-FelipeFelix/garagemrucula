@@ -24,7 +24,7 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
   input.slug = await ensureUniqueSlug(supabase, input.slug, id);
 
   // Snapshot das mídias ANTES do update, pra limpar do Storage o que foi removido.
-  const { data: before } = await supabase.from("cars").select("photos, videos").eq("id", id).maybeSingle();
+  const { data: before } = await supabase.from("cars").select("slug, photos, videos").eq("id", id).maybeSingle();
 
   const { data, error } = await supabase
     .from("cars")
@@ -58,6 +58,9 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
 
   for (const p of REVALIDATE_PATHS) revalidatePath(p);
   revalidatePath(`/carros/${data.slug}`);
+  // Anúncio fica em cache (ISR): se o título mudou o slug, o endereço antigo
+  // também precisa sair do cache.
+  if (before?.slug && before.slug !== data.slug) revalidatePath(`/carros/${before.slug}`);
   return NextResponse.json({ id: data.id, slug: data.slug });
 }
 
@@ -71,7 +74,7 @@ export async function DELETE(_request: NextRequest, { params }: Ctx) {
   // Best-effort: remove as midias do Storage antes de apagar o registro —
   // mas SÓ as que nenhum outro carro referencia (duplicatas antigas compartilham
   // arquivos; apagar o original não pode matar as fotos da cópia).
-  const { data: car } = await supabase.from("cars").select("photos, videos").eq("id", id).maybeSingle();
+  const { data: car } = await supabase.from("cars").select("slug, photos, videos").eq("id", id).maybeSingle();
   const media = [
     ...((car?.photos as Array<{ path?: string }>) ?? []),
     ...((car?.videos as Array<{ path?: string }>) ?? []),
@@ -86,5 +89,6 @@ export async function DELETE(_request: NextRequest, { params }: Ctx) {
   }
 
   for (const p of REVALIDATE_PATHS) revalidatePath(p);
+  if (car?.slug) revalidatePath(`/carros/${car.slug}`); // anúncio em cache (ISR) sai junto
   return NextResponse.json({ ok: true });
 }

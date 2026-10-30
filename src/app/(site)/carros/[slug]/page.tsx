@@ -15,6 +15,14 @@ import { INSTAGRAM_URL, siteUrl } from "@/lib/site";
 
 export const revalidate = 60;
 
+// Lista vazia = cada anúncio é gerado na 1ª visita e fica em cache (ISR; o admin
+// revalida na hora ao salvar). Sem isto a rota era 100% dinâmica: o revalidate
+// acima não valia, cada visita fazia 2 consultas ao banco e, com o banco fora,
+// nenhum anúncio tinha uma versão boa pra continuar no ar.
+export function generateStaticParams() {
+  return [];
+}
+
 type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

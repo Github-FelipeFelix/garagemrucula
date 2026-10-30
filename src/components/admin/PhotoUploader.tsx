@@ -17,6 +17,49 @@ import { createClient } from "@/lib/supabase/client";
 
 type Media = { path: string; url: string };
 
+// Cada upload ganha um nome único (UUID) e nunca é sobrescrito → pode ficar em
+// cache por 1 ano (navegador e CDN), em vez da 1 hora padrão do Supabase.
+const CACHE_1_ANO = "31536000";
+
+// Fotos de câmera chegam com 3–8 MB e 4000px+, mas o site nunca exibe acima de
+// ~2560px. Reduzir ANTES de subir deixa o upload mais rápido no 4G dos eventos,
+// ocupa menos Storage e corta o tráfego de saída do Supabase: a Vercel baixa o
+// original inteiro a cada variante que otimiza, e estourar a cota do plano grátis
+// derrubou site e painel em out/2026. De quebra a foto sai sem EXIF (a rotação
+// fica aplicada nos pixels e o GPS do celular não vai junto).
+const MAX_LADO = 2560;
+const QUALIDADE_JPEG = 0.85;
+// Só foto de câmera: PNG/WebP podem ter transparência, que em JPEG viraria fundo preto.
+const TIPOS_COMPRIMIR = ["image/jpeg", "image/heic", "image/heif"];
+
+async function comprimirFoto(file: File): Promise<File> {
+  if (!TIPOS_COMPRIMIR.includes(file.type)) return file;
+  const src = URL.createObjectURL(file);
+  try {
+    const img = document.createElement("img");
+    img.src = src;
+    await img.decode(); // HEIC fora do Safari não decodifica → catch → sobe o original
+    const escala = Math.min(1, MAX_LADO / Math.max(img.naturalWidth, img.naturalHeight));
+    if (escala === 1 && file.size <= 1_500_000) return file; // já é leve: re-encodar só perderia nitidez
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.naturalWidth * escala);
+    canvas.height = Math.round(img.naturalHeight * escala);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", QUALIDADE_JPEG),
+    );
+    if (!blob || blob.size >= file.size) return file; // nunca piorar
+    return new File([blob], file.name.replace(/\.[^.]*$/, "") + ".jpg", { type: "image/jpeg" });
+  } catch {
+    return file;
+  } finally {
+    URL.revokeObjectURL(src);
+  }
+}
+
 function SortablePhoto({
   item,
   isCover,
@@ -95,8 +138,9 @@ export function PhotoUploader({
     setUploading(true);
     const supabase = createClient();
     const added: Media[] = [];
-    for (const file of Array.from(files)) {
+    for (const original of Array.from(files)) {
       try {
+        const file = await comprimirFoto(original);
         const ext = file.name.split(".").pop() || "jpg";
         const res = await fetch("/api/admin/upload-url", {
           method: "POST",
@@ -105,7 +149,9 @@ export function PhotoUploader({
         });
         if (!res.ok) continue;
         const { path, token, publicUrl } = await res.json();
-        const { error } = await supabase.storage.from("car-media").uploadToSignedUrl(path, token, file);
+        const { error } = await supabase.storage
+          .from("car-media")
+          .uploadToSignedUrl(path, token, file, { cacheControl: CACHE_1_ANO });
         if (error) {
           console.error("[upload]", error.message);
           continue;

@@ -16,6 +16,11 @@ import { INSTAGRAM_URL, siteUrl } from "@/lib/site";
 
 export const revalidate = 60;
 
+// Gera cada peça na 1ª visita e mantém em cache (ver carros/[slug]/page.tsx).
+export function generateStaticParams() {
+  return [];
+}
+
 type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

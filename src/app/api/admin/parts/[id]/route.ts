@@ -24,7 +24,7 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
   input.slug = await ensureUniquePartSlug(supabase, input.slug, id);
 
   // Snapshot das mídias ANTES do update, pra limpar do Storage o que foi removido.
-  const { data: before } = await supabase.from("parts").select("photos, videos").eq("id", id).maybeSingle();
+  const { data: before } = await supabase.from("parts").select("slug, photos, videos").eq("id", id).maybeSingle();
 
   const { data, error } = await supabase
     .from("parts")
@@ -50,6 +50,8 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
 
   for (const p of PART_REVALIDATE_PATHS) revalidatePath(p);
   revalidatePath(`/pecas/${data.slug}`);
+  // Peça fica em cache (ISR): slug antigo (título mudou) também sai do cache.
+  if (before?.slug && before.slug !== data.slug) revalidatePath(`/pecas/${before.slug}`);
   return NextResponse.json({ id: data.id, slug: data.slug });
 }
 
@@ -63,7 +65,7 @@ export async function DELETE(_request: NextRequest, { params }: Ctx) {
   // Remove as mídias do Storage antes de apagar o registro — mas SÓ as que nenhuma
   // outra peça referencia (duplicatas antigas podem compartilhar; apagar uma não
   // pode matar as fotos da outra).
-  const { data: part } = await supabase.from("parts").select("photos, videos").eq("id", id).maybeSingle();
+  const { data: part } = await supabase.from("parts").select("slug, photos, videos").eq("id", id).maybeSingle();
   const media = [
     ...((part?.photos as Array<{ path?: string }>) ?? []),
     ...((part?.videos as Array<{ path?: string }>) ?? []),
@@ -78,5 +80,6 @@ export async function DELETE(_request: NextRequest, { params }: Ctx) {
   }
 
   for (const p of PART_REVALIDATE_PATHS) revalidatePath(p);
+  if (part?.slug) revalidatePath(`/pecas/${part.slug}`); // peça em cache (ISR) sai junto
   return NextResponse.json({ ok: true });
 }
