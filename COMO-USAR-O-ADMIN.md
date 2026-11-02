@@ -9,6 +9,8 @@ Guia rápido pra cadastrar e gerenciar os **carros e as peças**. Dá pra fazer 
 
 > 💡 O painel funciona no computador **e no celular** — cada aparelho faz o login uma vez e já fica salvo. Não precisa estar no computador pra mexer.
 
+> ⚠️ Se aparecer o aviso amarelo **“O sistema do painel está fora do ar no momento — não é problema na sua senha”**, **não troque a senha**: é o servidor do site que está bloqueado/fora. Avise o Felipe. (Só a mensagem **“E-mail ou senha inválidos”** quer dizer senha errada.)
+
 ## Deixar o painel a um toque no celular (recomendado)
 Pra não precisar digitar o endereço toda vez (ótimo pra usar em eventos):
 
@@ -28,7 +30,8 @@ Pra não precisar digitar o endereço toda vez (ótimo pra usar em eventos):
 1. Clique em **“+ Novo carro”**
 2. Preencha o **Título** (ex: *VW Fusca 1973 Turbo*). O resto é opcional, mas quanto mais, melhor.
 3. **Preço**: deixe vazio se quiser mostrar “Sob consulta”.
-4. **Fotos**: toque em **adicionar** e escolha as fotos. **A primeira foto é a capa** — pra trocar, toque no botão **⭐ capa** da foto que você quer. O **X** remove a foto, e a alcinha (canto de baixo) arrasta pra reordenar. Dá pra pôr vídeos também.
+4. **Fotos**: toque em **adicionar** e escolha as fotos. **A primeira foto é a capa** — pra trocar, toque no botão **⭐ capa** da foto que você quer. O **X** remove a foto, e a alcinha (canto de baixo) arrasta pra reordenar. As fotos do celular são **otimizadas sozinhas no envio** (ficam bem mais leves, sem perder qualidade visível) — pode mandar direto da galeria.
+   - **Vídeos**: até **50 MB** cada. Vídeo pesa muito mais que foto pro servidor do site (o plano grátis tem limite de tráfego por mês) — **prefira poucos e curtos**; vídeo longo, melhor no Instagram.
 5. **Tags**: separe por vírgula (ex: `turbo, rebaixado, antigo`) — viram os filtros do site.
 6. **Modificações**: uma por linha.
 7. Clique em **“Criar carro”**. Pronto, já aparece no site!

@@ -5,12 +5,13 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 0ee22cde-c09a-4101-bafb-2d288ea4fc2b
+  modified: 2026-11-02T17:22:02.776Z
 ---
 
 # Setup & continuidade — Garagem Rúcula
 
 ## ✅ Tudo configurado (site no ar em https://www.garagemrucula.com.br)
-- **Ambiente:** projeto em disco LOCAL `C:\dev\garagemrucula` (Next 16 + React 19 + TS + Tailwind v4). NÃO no Google Drive (o `npm install` corrompe lá — EBADF).
+- **Ambiente (desde 07/08/2026):** projeto numa pasta de projetos sincronizada pelo OneDrive — caminho absoluto só no `.claude/settings.local.json`, fora do git (Next 16 + React 19 + TS + Tailwind v4); o `C:\dev\garagemrucula` antigo não existe mais e o PC 2 saiu de uso. Pasta sincronizada pelo OneDrive → `npm install`/`next build` NÃO rodam aqui dentro (EPERM); QA em cópia curta fora ([[aprendizados_rebobina]] #56).
 - **GitHub:** `github.com/Github-FelipeFelix/garagemrucula` — **PÚBLICO** (tornado público pra destravar o deploy Hobby). Fonte da verdade; sincroniza código + markdowns + `memory/`.
 - **Vercel:** conta do Felipe (`felipeherrera.contato@gmail.com`, Hobby). Deploy automático a cada `git push origin main`. As 4 env vars do `.env.local` estão configuradas lá.
 - **Supabase:** conta `garagemrucula@gmail.com` (ref `lryzyydzjodywvzhiumx`). Migrações rodadas: `0001_init.sql` (cars, leads, car_sales + RLS + RPC `bump_car_view`), `0002_site_settings.sql` (textos/fotos editáveis), `0003_parts.sql` (peças + `leads.part_id` + RPC `bump_part_view`). Bucket `car-media` (público, prefixos `cars/`/`parts/`/`espaco/`). `.env.local` com URL + anon + service_role + `NEXT_PUBLIC_SITE_URL`.
@@ -18,7 +19,10 @@ metadata:
 ## 🔜 Falta (detalhe nas PENDÊNCIAS do MEMORY.md)
 **Sem pendência crítica.** Carros reais no ar. Melhorias opcionais que o Felipe pediu pra **NÃO implementar por ora**: e-mail de notificação de lead, HEIC no upload, rate-limit distribuído (Upstash), liberar contato no editor de textos. **FEITOS:** v1, cosméticos "UAU", domínio, fotos HD, login Google, admin mobile, fix do "super zoom", selos, marca sem acento, editor de textos do site, **área de PEÇAS** (`/pecas` + admin, tabela `parts` própria), **galeria "Nosso espaço"** no Sobre, **"Mover para Peças"** (carro→peça). Detalhe/changelog em [[historico_garagem_rucula]].
 
-## Continuidade entre 2 PCs (via GitHub, NÃO mais Drive)
+## QA local (desde 30/10/2026)
+Build/QA **fora** da pasta do OneDrive, numa cópia curta em `%TEMP%\grqa`, com Supabase simulado — receita e scripts em `scripts/qa/README.md`.
+
+## Continuidade entre 2 PCs (via GitHub, NÃO mais Drive) — HISTÓRICO: o PC 2 saiu de uso em 07/08/2026 e o projeto vive no OneDrive
 - **Fonte:** GitHub. Início: hook `SessionStart` → `sessao-inicio.ps1` faz `git pull` (ff-only) + ajusta `autoMemoryDirectory` pra `memory/` deste repo. **Fim de sessão: `git push`.**
 - **NÃO** rodar o Claude nos 2 PCs ao mesmo tempo (conflito git).
 - **Setup de um PC NOVO:**

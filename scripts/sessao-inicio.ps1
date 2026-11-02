@@ -1,4 +1,4 @@
-# sessao-inicio.ps1 — Garagem Rucula
+# sessao-inicio.ps1 - Garagem Rucula
 # Objetivo: continuar SEMPRE de onde paramos, em qualquer um dos 2 PCs (sincroniza via GitHub).
 # Projeto vive em disco LOCAL (ex: C:\dev\garagemrucula); o GitHub e a fonte da verdade.
 # 1) Sincroniza codigo com origin/main (se houver remote git), com fast-forward seguro.
@@ -60,12 +60,22 @@ if ($git) {
 if (-not $memDir) {
   Write-Host "[ATENCAO] NAO achei a pasta 'memory' com MEMORY.md."
 } else {
+  # 07/08/2026 - CAMINHO ABSOLUTO, OBRIGATORIAMENTE.
+  # "./memory" NAO funciona: o Claude Code valida com path.isAbsolute() e DESCARTA
+  # caminho relativo EM SILENCIO - sem aviso, sem log. O settings parece certo e a
+  # memoria vai pro caminho global. Por isso resolvemos o absoluto a cada sessao.
   $wantMem = $memDir
   try { $wantMem = (Resolve-Path -LiteralPath $memDir -ErrorAction Stop).Path } catch {}
-  $wantMem = $wantMem -replace '\\', '/'   # barras normais para settings.json
 
-  $cfgDir = Join-Path $HOME '.claude'
-  $cfg    = Join-Path $cfgDir 'settings.json'
+  # 07/08/2026 - ESCREVE NO SETTINGS DO PROJETO, NUNCA NO GLOBAL.
+  # Este script vinha do PC antigo gravando em $HOME\.claude\settings.json (GLOBAL).
+  # Isso CONTAMINA TODOS OS OUTROS PROJETOS: depois de abrir este uma vez, qualquer
+  # projeto sem override passava a gravar memoria
+  # NA PASTA DESTE. Foi a causa raiz do problema que o Felipe teve por meses.
+  # A pasta do projeto e a MAE da 'memory' encontrada na etapa 1.
+  $projDir = Split-Path $memDir -Parent
+  $cfgDir  = Join-Path $projDir '.claude'
+  $cfg     = Join-Path $cfgDir 'settings.local.json'
   try {
     if (-not (Test-Path $cfgDir)) { New-Item -ItemType Directory -Path $cfgDir -Force | Out-Null }
     if (Test-Path $cfg) { $j = Get-Content $cfg -Raw -Encoding UTF8 | ConvertFrom-Json } else { $j = [pscustomobject]@{} }

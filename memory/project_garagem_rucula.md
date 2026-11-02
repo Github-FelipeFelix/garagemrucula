@@ -5,9 +5,12 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 67654963-a746-4d27-9b3c-c0f1c1074895
+  modified: 2026-10-30T16:30:10.449Z
 ---
 
 # Garagem Rúcula — plano
+
+> **⚠️ RESTRIÇÃO DE INFRA (desde out/2026):** o Supabase é o plano **GRÁTIS** (decisão do Felipe em 30/10, depois do incidente) — **5 GB/mês de tráfego de arquivos** (cached egress) e 1 GB de storage. Estourar = site e admin fora (402) até o mês virar, e da 2ª vez sem aviso. Tudo que mexe com mídia deve pensar no egress: fotos sobem comprimidas, srcset enxuto, firewall da Vercel barrando robôs, vídeos curtos. Detalhe em [[historico_garagem_rucula]] (29–30/10) e [[aprendizados_rebobina]] #52–60.
 
 > **STATUS (13/07/2026):** v1 no ar no domínio próprio https://www.garagemrucula.com.br, com carros REAIS + **editor de textos/fotos no admin** + **ÁREA DE PEÇAS** (rodas/pneus/faróis…, separada dos carros: menu "Peças" → `/pecas`, tabela `parts` própria) + galeria **"Nosso espaço"** no Sobre. Este arquivo é o plano/escopo ORIGINAL; o **estado atual, o changelog e as pendências** vivem no [[MEMORY]], no [[historico_garagem_rucula]] e no `CLAUDE.md`.
 

@@ -44,3 +44,12 @@ next-env.d.ts
 # Google Drive (arquivos temporarios de sync)
 .tmp.driveupload/
 .tmp.drivedownload/
+# config local do Claude Code (caminho absoluto desta maquina) - nunca versionar
+.claude/settings.local.json
+# So desta maquina (isolamento entre projetos, atalhos, backups de config) - o repo e PUBLICO
+.claude/hooks/
+.claude/abrir.sh
+.claude/*.bak-*
+abrir-garagemrucula.bat
+_arquivo/
+memory/setup-projeto-e-memoria.md
