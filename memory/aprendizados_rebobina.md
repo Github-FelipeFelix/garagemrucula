@@ -5,12 +5,12 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 67654963-a746-4d27-9b3c-c0f1c1074895
-  modified: 2026-11-02T17:22:45.510Z
+  modified: 2026-11-02T17:24:57.790Z
 ---
 
 # Aprendizados herdados (Rebobina 3D + EnergyDex)
 
-Fontes: `Rebobina 3D/rebobina3d` (Next 16 + Supabase + Vercel + PWA, maduro) e `AppEnergy/energydex` (Next 16 + React 19 + Tailwind v4 + Supabase SSR + PWA).
+Fontes: dois projetos anteriores do Felipe, com a mesma stack (Next 16 + React 19 + Tailwind v4 + Supabase SSR + Vercel + PWA).
 
 1. **PostgREST: nunca embedded joins** (`.select('*, x:y(*)')`) — sem FK constraints retorna `data:null` silencioso. Sempre 2 queries + join manual no TS.
 2. **Admin protegido por e-mail hardcoded no `src/middleware.ts`** (`ADMIN_EMAILS`). Deslogado→login (?next); logado sem permissão→home; API→401. Rate-limit opcional (Upstash) em rotas sensíveis.
@@ -27,7 +27,7 @@ Fontes: `Rebobina 3D/rebobina3d` (Next 16 + Supabase + Vercel + PWA, maduro) e `
 
 ## Aprendizados novos — sessão Garagem Rúcula (01–02/07/2026)
 13. **npm no Google Drive CORROMPE** (EBADF/EPERM; o `G:` nem aceita junction/reparse). Projetos Next ficam em disco LOCAL (`C:\dev\...`), sincronizados via GitHub — não pela pasta do Drive.
-14. **`git clone` NÃO herda o `user.email` local** → o commit sai com o e-mail GLOBAL (ex: `felipe.felix@housi.com.br`). Rodar `git config user.email felipeherrera.contato@gmail.com` em CADA clone, senão a Vercel bloqueia o deploy.
+14. **`git clone` NÃO herda o `user.email` local** → o commit sai com o e-mail GLOBAL da máquina (aqui, o corporativo). Rodar `git config user.email felipeherrera.contato@gmail.com` em CADA clone, senão a Vercel bloqueia o deploy.
 15. **Vercel Hobby + repo PRIVADO bloqueia deploy** se o commit author/co-author não for membro ("commit author did not have contributing access"). Solução definitiva: **repo PÚBLICO** (some a trava); alternativa: author = dono + sem co-authors.
 16. **SW cache-first em `/_next/static` → FALSO "hydration mismatch" no DEV** (serve bundle JS velho enquanto o server tem o novo). Em PROD NÃO afeta (assets têm hash de conteúdo). Ao investigar hydration no dev-browser: desregistrar o SW + `caches.delete()` antes de testar.
 17. **Registro.br: apex/raiz = campo Nome VAZIO** (não `@`, que Cloudflare et al. usam). `A`→IP no raiz (vazio); `CNAME`→`www`.
@@ -46,7 +46,7 @@ Fontes: `Rebobina 3D/rebobina3d` (Next 16 + Supabase + Vercel + PWA, maduro) e `
 
 ## Aprendizados novos — sessão 3 (02/07/2026, PC 2)
 28. **Alvo de toque mobile ≥32px + ação explícita em vez de drag:** ícone 12px + `p-1` ≈ 20px é INTOCÁVEL no dedo (mínimo recomendado ~44px; 32px já resolve em tile pequeno). E ação essencial NUNCA pode existir só via drag: no admin, "trocar capa" era só arrastar-pra-1ª-posição pela alça (dnd-kit com listeners SÓ na alça → tocar na foto não faz nada) — pro leigo no celular = "não funciona". Fix: botão explícito ("⭐ capa" → `arrayMove(i→0)`); drag vira atalho secundário.
-29. **dev-browser daemon órfão v2 (named pipe) + bypass Playwright:** daemon quebra com `EADDRINUSE \\.\pipe\dev-browser-daemon-<user>`; se o processo velho for de sessão elevada, `taskkill /F` dá "Acesso negado" (sem UAC não mata). Limpar `daemon.pid`/`daemon-spawn.lock` não basta enquanto o pipe estiver preso. **Bypass que funciona:** usar o Playwright que o dev-browser instala em `~/.dev-browser/node_modules` DIRETO num script Node (`require('C:/Users/<user>/.dev-browser/node_modules/playwright')`; chromium já está em `%LOCALAPPDATA%\ms-playwright`). Bônus: `newContext({ hasTouch:true, isMobile:true, viewport:{width:390,...} })` + `locator().tap()` = QA com TOQUE real, mais fiel que click pra bug mobile.
+29. **dev-browser daemon órfão v2 (named pipe) + bypass Playwright:** daemon quebra com `EADDRINUSE \\.\pipe\dev-browser-daemon-<user>`; se o processo velho for de sessão elevada, `taskkill /F` dá "Acesso negado" (sem UAC não mata). Limpar `daemon.pid`/`daemon-spawn.lock` não basta enquanto o pipe estiver preso. **Bypass que funciona:** usar o Playwright que o dev-browser instala em `~/.dev-browser/node_modules` DIRETO num script Node (`require(process.env.USERPROFILE + '/.dev-browser/node_modules/playwright')`; chromium já está em `%LOCALAPPDATA%\ms-playwright`). Bônus: `newContext({ hasTouch:true, isMobile:true, viewport:{width:390,...} })` + `locator().tap()` = QA com TOQUE real, mais fiel que click pra bug mobile.
 
 ## Aprendizados novos — sessão 4 (02/07/2026, acesso admin no celular + segurança)
 30. **`next start` local acusa 404 de `/_vercel/insights/script.js` — FALSO alarme:** o Vercel Analytics injeta esse `<script>`, mas o arquivo só é servido pela infra da Vercel em PRODUÇÃO; em localhost dá SEMPRE 404, 100% inofensivo. Não perder tempo investigando — confirmar com `curl -o /dev/null -w "%{http_code}"` em prod (200). Junto com #16 (SW) e #27 (hot-reload), é mais um "erro só no dev/local" que não é bug.

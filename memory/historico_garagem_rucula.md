@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 0aec57f9-58d7-4a8e-bbc0-d1e9eac92fac
-  modified: 2026-11-02T17:22:49.719Z
+  modified: 2026-11-02T17:25:00.746Z
 ---
 
 # Histórico / changelog — Garagem Rúcula
@@ -18,7 +18,7 @@ O Felipe avisou que o site voltou (a virada do ciclo de 30/10 levou dias pra ser
 - **Backup:** 166 arquivos, 731 MB (164 JPEG + 2 PNG, **nenhum vídeo**), em `%USERPROFILE%\garagemrucula-backup\2026-11-02` + `manifest.json` (sha256), conferido no disco (contagem/bytes/hash).
 - **Recompressão:** ensaio seco + amostra lado a lado (orientação EXIF 8 aplicada certo, detalhe ok a 100%) → 142 fotos de 723 MB pra 103 MB (−86%); 22 já leves e os 2 PNG intocados. A 1ª rodada parou na 3ª foto porque a releitura voltava a versão ANTIGA: a CDN (Cloudflare) do Storage grátis não invalida ao sobrescrever (`cf-cache-status: HIT`) — o upload estava certo (`object/info` com o tamanho novo). Script ajustado (fura-cache `?cb=` + retomável) e concluído com cada foto conferida. Relatórios no backup (`relatorio-seco.json`, `relatorio-recompressao.json`).
 - **Deploy:** push de `eb80e59` + `d27d682` (autor `felipeherrera.contato@gmail.com`), no ar 13h49. Validação 15/15 (`scripts/qa/valida-producao.cjs`); os 3 "falhas" da 1ª rodada eram do teste (o HTML de toda página traz "Página não encontrada" no payload do Next; a 1ª visita pós-deploy dá MISS) — critérios corrigidos.
-- **Docs publicados (02/11, a pedido do Felipe):** antes, varredura do que era novo (175 ocorrências: nomes dos outros projetos, caminho local do OneDrive, usuário do Windows). Trechos reescritos de forma genérica (bloco de isolamento sem a lista de projetos, caminhos com `%USERPROFILE%`), e o que é só da máquina foi pro `.gitignore` (`.claude/hooks/`, `.claude/abrir.sh`, `.claude/*.bak-*`, `abrir-garagemrucula.bat`, `_arquivo/`, `memory/setup-projeto-e-memoria.md`). Commit de docs + memória + `scripts/qa` + `.gitignore` + `sessao-inicio.ps1`. Guarda permanente: `scripts/qa/varre-sensivel.cjs` (aprendizado #63).
+- **Docs publicados (02/11, a pedido do Felipe):** antes, varredura do que era novo (175 ocorrências: nomes dos outros projetos, caminho local do OneDrive, usuário do Windows). Trechos reescritos de forma genérica (bloco de isolamento sem a lista de projetos, caminhos com `%USERPROFILE%`), e o que é só da máquina foi pro `.gitignore` (`.claude/hooks/`, `.claude/abrir.sh`, `.claude/*.bak-*`, `abrir-garagemrucula.bat`, `_arquivo/`, `memory/setup-projeto-e-memoria.md`). Commit de docs + memória + `scripts/qa` + `.gitignore` + `sessao-inicio.ps1`. Guarda permanente: `scripts/qa/varre-sensivel.cjs` (aprendizado #63). Depois, uma varredura COMPLETA (não só do que era novo) achou 3 trechos de julho já públicos — o e-mail corporativo (LIÇÃO do CLAUDE.md e aprendizado #14) e os nomes de pasta/repo de 2 projetos no cabeçalho do aprendizados — também generalizados. O nome "Rebobina" segue nos docs como origem das regras herdadas (público desde julho; nome do arquivo `aprendizados_rebobina.md`).
 - **Pendente:** ~09/11 olhar egress do Supabase e o registro do Bot Protection (decidir sobre Challenge).
 
 ## 29/10/2026 (Opus 5.5) — INCIDENTE: Supabase bloqueado por cota (402) + correções
